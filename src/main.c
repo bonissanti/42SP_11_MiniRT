@@ -4,7 +4,7 @@ int	main(int argc, char **argv)
 {
 	t_data data;
 
-	memset(&data, 0, sizeof(t_data)); // add libft
+	init_structs(&data);		
 	if (argc != 2)
 	{
 		ft_putstr_fd("Error\nInvalid number of arguments\n", 2);

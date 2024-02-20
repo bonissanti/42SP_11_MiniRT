@@ -4,7 +4,7 @@ int	file_extension(char *file, char *ext)
 {
 	char	*ptr;
 
-	ptr = strrchr(file, '.'); // add libft
+	ptr = ft_strrchr(file, '.'); // add libft
 	if (!ptr || ptr == file)
 	{
 		ft_putstr_fd("Error\nFile has no extension\n", 2);
@@ -47,39 +47,73 @@ int	valid_file(char *file, t_data *data)
 	return (0);
 }
 
-// int	count_identifiers(char *line, t_parser *parser)
-// {
-// 	return (parser.has_A == 1 && parser->has_C == 1 && parser->has_L == 1);
-// }
+/**
+ * Function: analyze_line
+ * --------------------
+ * Analyzes each line of the input data to ensure specific conditions are met.
+ *
+ * This function checks the first character of each line to increment counters
+ * for 'A', 'C', and 'L' characters within a 'parser' structure inside 'data'.
+ * These characters are essential for the validity of the input data, with the
+ * requirement that exactly one of each must be present in the entire input.
+ * If the input does not meet this condition, the function outputs an error 
+ * message to stderr and terminates the program.
+ * 
+ * Additionally, if a line starts with 'A', 'C' or 'L', it calls the appropriate
+ * function to perform further analysis on the remainder of the line.
+ *
+ * @param data: A pointer to the main data structure.
+ * 
+ * @return: 0 if the parsing was successful.
+ */
 
-int	analyze_line(char *line, t_parser *parser)
+int	analyze_line(char *line, t_data *data)
 {
-	parser->has_A += (line[0] == 'A');
-	parser->has_C += (line[0] == 'C');
-	parser->has_L += (line[0] == 'L');
+	data->parser.has_A += (line[0] == 'A');
+	data->parser.has_C += (line[0] == 'C');
+	data->parser.has_L += (line[0] == 'L');
 	if (line[0] == 'A')
-		analyze_amblight(line + 1);	
+		if (analyze_amblight(line + 1, data) != 0)
+			exit (1);
+	
+	// if (line[0] == 'C')
+	// 	if (analyze_camera(line + 1, data) != 0)
+	// 		exit (1);
+	//
 	return (0);
 }
+
+/**
+ * Function: parse_lines
+ * --------------------
+ * Parses the contents of a buffer into individual lines and analyzes each line.
+ *
+ * This function takes a buffer that contains the contents of a file and splits 
+ * it into individual lines using the newline character ('\n') as a delimiter.
+ * Each line is then passed to the function 'analyze_line' for further processing. 
+ *
+ * @param data: A pointer to the main data structure.
+ * 
+ * @return: 0 if the parsing was successful.
+ */
 
 int	parse_lines(t_data *data)
 {
 	char	*line;
 	char 	*buffer;
-	t_parser	parser;
 
-	memset(&parser, 0, sizeof(parser));
 	buffer = data->buffer;
 	line = ft_strtok(buffer, "\n");
 	while (line)
 	{
-		analyze_line(line, &parser);
+		analyze_line(line, data);
 		line = ft_strtok(NULL, "\n");
 	}
-	if (parser.has_A != 1 || parser.has_C != 1 || parser.has_L != 1)
+	if (data->parser.has_A != 1 || data->parser.has_C != 1 || data->parser.has_L != 1)
 	{
-		ft_putstr_fd("Error\nMap must contain at least one A, C and L\n", 2);
+		ft_putstr_fd("Error\nInvalid number of A, C, or L characters\n", 2);
 		return (1);
 	}
+
 	return (0);
 }
