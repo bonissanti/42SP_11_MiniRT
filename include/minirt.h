@@ -8,6 +8,9 @@
 # include <fcntl.h>
 # include "../my_libft/include/libft.h"
 
+# define OK 		0 
+# define ERROR 		1
+
 typedef struct s_parser
 {
     int    has_A;
@@ -40,6 +43,7 @@ int	    valid_file(char *file, t_data *data);
 
 int	    parse_lines(t_data *data);
 int     analyze_amblight(char *line, t_data *data);
+int		analyze_camera(char *line, t_data *data);
 
 // #############################  Aux Functions  ##############################
 
@@ -48,5 +52,7 @@ char	*ft_strtok(char *str, const char *delim);
 void    free_array(char **array);
 int		count_token(char **tokens, int expected_count, const char *msg);
 double	ft_atod(char *str);
+
+
 
 #endif

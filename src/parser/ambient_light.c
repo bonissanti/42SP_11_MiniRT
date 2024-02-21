@@ -8,11 +8,10 @@ static int set_ambient_ratio(char *ratio_line, t_data *data)
 	if (ratio < 0.0 || ratio > 1.0)
 	{
 		ft_putstr_fd("Error\nInvalid ratio value or out of the range [0.0 - 1.0]\n", 2);
-		return (1);
+		return (ERROR);
 	}
 	data->amblight.ratio = ratio;
-	printf("ratio = %f\n", data->amblight.ratio);
-	return (0);
+	return (OK);
 }
 
 static int	validate_colors(char **color_str, t_data *data)
@@ -27,14 +26,11 @@ static int	validate_colors(char **color_str, t_data *data)
 		if (color < 0 || color > 255)
 		{
 			ft_putstr_fd("Error:\nColor out of range [0, 255]\n", 2);
-			return (1);
+			return (ERROR);
 		}
 		data->amblight.color[i] = color;
 	}
-	printf("color[0] = %d\n", data->amblight.color[0]);
-	printf("color[1] = %d\n", data->amblight.color[1]);
-	printf("color[2] = %d\n", data->amblight.color[2]);
-	return (0);
+	return (OK);
 }
 
 static int	set_ambient_colors(char *color_line, t_data *data)
@@ -52,34 +48,34 @@ static int	set_ambient_colors(char *color_line, t_data *data)
 	{
 		ft_putstr_fd("Error:\nIncorrect number of RGB componentes, [e.g 255,255,255]\n", 2);
 		free_array(token);
-		return (1);
+		return (ERROR);
 	}
 	if (validate_colors(token, data) != 0)
 	{
 		free_array(token);
-		return (1);
+		return (ERROR);
 	}
-	free_array(token);
-	return (0);
+	free_array(token); 
+	return (OK);
 }
 
 int analyze_amblight(char *line, t_data *data)
 {
 	char    **token;
 
-    token = ft_split(line, ' ');
+    token = ft_split_space(line);
 	if (count_token(token, 2, "Error\nAmbient light has wrong number of arguments\n"))
-		return (1);
+		return (ERROR);
     if (set_ambient_ratio(token[0], data) != 0)
 	{
 		free_array(token);
-		return (1);
+		return (ERROR);
 	}
 	if (set_ambient_colors(token[1], data) != 0)
 	{
 		free_array(token);
-		return (1);
+		return (ERROR);
 	}
     free_array(token);
-    return (0);    
+    return (OK);    
 }

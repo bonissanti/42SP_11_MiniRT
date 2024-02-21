@@ -27,24 +27,23 @@ int	valid_file(char *file, t_data *data)
 	if (fd < -1)
 	{
 		ft_putstr_fd("Error\nFile not found\n", 2);
-		return (1);
+		return (ERROR);
 	}
 	bytes_read = read(fd, data->buffer, 4095);
     if (bytes_read <= -1)
     {
         ft_putstr_fd("Error\nFile is empty or could not be read\n", 2);
 		close(fd);
-        return (1);
+        return (ERROR);
     }
 	data->buffer[bytes_read] = '\0';
 	if (file_extension(file, ".rt"))
 	{
 		close(fd);
-		return (1);
+		return (ERROR);
 	}		
-	// printf("%s\n", data->buffer); // debug
 	close(fd);
-	return (0);
+	return (OK);
 }
 
 /**
@@ -76,10 +75,10 @@ int	analyze_line(char *line, t_data *data)
 		if (analyze_amblight(line + 1, data) != 0)
 			exit (1);
 	
-	// if (line[0] == 'C')
-	// 	if (analyze_camera(line + 1, data) != 0)
-	// 		exit (1);
-	//
+	if (line[0] == 'C')
+		if (analyze_camera(line + 1, data) != 0)
+			exit (1);
+
 	return (0);
 }
 
@@ -112,8 +111,7 @@ int	parse_lines(t_data *data)
 	if (data->parser.has_A != 1 || data->parser.has_C != 1 || data->parser.has_L != 1)
 	{
 		ft_putstr_fd("Error\nInvalid number of A, C, or L characters\n", 2);
-		return (1);
+		return (ERROR);
 	}
-
-	return (0);
+	return (OK);
 }

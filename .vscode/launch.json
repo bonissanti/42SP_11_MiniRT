@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/miniRT",
-            "args": ["scenes/test_amblight_comma.rt"],
+            "args": ["scenes/test_camera_coordinates.rt"],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",
             "environment": [],

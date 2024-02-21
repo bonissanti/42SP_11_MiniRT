@@ -23,7 +23,7 @@ BIN_MLX = ./MLX42/build/libmlx42.a
 
 INIT		= init/init.c
 FREE		= free/free.c
-PARSER 		= parser/aux_functions.c parser/validation.c parser/ambient_light.c
+PARSER 		= parser/aux_functions.c parser/validation.c parser/ambient_light.c parser/camera.c
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(FREE)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
@@ -40,7 +40,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42
+LDFLAGS = -L./MLX42/build
 
 ################################ Progress ###################################
 
