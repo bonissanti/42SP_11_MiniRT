@@ -8,14 +8,14 @@ int	file_extension(char *file, char *ext)
 	if (!ptr || ptr == file)
 	{
 		ft_putstr_fd("Error\nFile has no extension\n", 2);
-		return (1);
+		return (ERROR);
 	}
 	if (strcmp(ptr, ext) != 0) // add libft
 	{
 		ft_putstr_fd("Error\nFile must have .rt extension\n", 2);
-		return (1);
+		return (ERROR);
 	}
-	return (0);
+	return (OK);
 }
 
 int	valid_file(char *file, t_data *data)
@@ -25,16 +25,12 @@ int	valid_file(char *file, t_data *data)
 
 	fd = open(file, O_RDONLY);
 	if (fd < -1)
-	{
-		ft_putstr_fd("Error\nFile not found\n", 2);
-		return (ERROR);
-	}
+		return (print_error("File not found\n"));
 	bytes_read = read(fd, data->buffer, 4095);
     if (bytes_read <= -1)
     {
-        ft_putstr_fd("Error\nFile is empty or could not be read\n", 2);
 		close(fd);
-        return (ERROR);
+        return (print_error("File is empty or could not be read\n"));
     }
 	data->buffer[bytes_read] = '\0';
 	if (file_extension(file, ".rt"))
@@ -79,7 +75,7 @@ int	analyze_line(char *line, t_data *data)
 		if (analyze_camera(line + 1, data) != 0)
 			exit (1);
 
-	return (0);
+	return (OK);
 }
 
 /**

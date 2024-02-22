@@ -22,9 +22,9 @@ BIN_MLX = ./MLX42/build/libmlx42.a
 ################################# Sources ###################################
 
 INIT		= init/init.c
-FREE		= free/free.c
+UTILS		= utils/to_finish.c
 PARSER 		= parser/aux_functions.c parser/validation.c parser/ambient_light.c parser/camera.c
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(FREE)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 

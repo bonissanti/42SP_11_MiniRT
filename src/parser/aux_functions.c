@@ -166,6 +166,7 @@ inline int	count_token(char **tokens, int expected_count, const char *msg)
 		count++;
 	if (count != expected_count)
 	{
+		ft_putstr_fd("Error\n");
 		ft_putstr_fd(msg, 2);
 		free_array(tokens);
 		return (1);

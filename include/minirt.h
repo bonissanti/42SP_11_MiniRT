@@ -7,28 +7,17 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "../my_libft/include/libft.h"
+# include "elements.h"
 
 # define OK 		0 
 # define ERROR 		1
 
-typedef struct s_parser
-{
-    int    has_A;
-    int    has_C;
-    int    has_L;
-}               t_parser;
-
-typedef struct s_amblight
-{
-	double  ratio;
-   	int    color[3];
-}               t_amblight;
-
-typedef struct s_data
-{
+typedef struct s_data 
+{ 
 	char		buffer[4096];
 	t_parser	parser;
 	t_amblight	amblight;
+	t_camera	camera;
 } 				t_data;
 
 // ################################# Init #####################################
@@ -52,7 +41,6 @@ char	*ft_strtok(char *str, const char *delim);
 void    free_array(char **array);
 int		count_token(char **tokens, int expected_count, const char *msg);
 double	ft_atod(char *str);
-
-
+int		print_error(char *msg);
 
 #endif
