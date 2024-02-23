@@ -15,7 +15,7 @@ RESET	= \033[0m
 
 NAME 	= miniRT
 HEADER 	= ./include
-LIBFT	= ./my_libft	
+LIBFT	= ./libft	
 MLX 	= ./MLX42/include/MLX42
 BIN_MLX = ./MLX42/build/libmlx42.a
 
@@ -23,7 +23,14 @@ BIN_MLX = ./MLX42/build/libmlx42.a
 
 INIT		= init/init.c
 UTILS		= utils/to_finish.c
-PARSER 		= parser/aux_functions.c parser/validation.c parser/ambient_light.c parser/camera.c
+PARSER 		= parser/aux_functions.c 	\
+			parser/validation.c 		\
+			parser/ambient.c 			\
+			parser/ambient_set_valid.c 	\
+			parser/camera.c 			\
+			parser/camera_set.c			\
+			parser/camera_validation.c	\
+
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
@@ -40,7 +47,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build
+LDFLAGS = -L./MLX42/build -lm
 
 ################################ Progress ###################################
 

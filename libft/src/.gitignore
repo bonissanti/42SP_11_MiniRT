@@ -1,0 +1,20 @@
+#Testers
+libftTester
+libft-war-machine
+MinUnit_Tester
+
+#Prequisites
+*.d
+
+#Object files
+*.o
+*.obj
+*.so
+
+#Libraries
+*.a
+*.lib
+
+#Executable files
+*.out
+*.exe
