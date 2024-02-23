@@ -10,7 +10,7 @@ int validate_range_3d(char **str)
 	{
 		range = ft_atod(str[i]);
 		if (range < -1.0 || range > 1.0)
-			return (print_error("Value out of range, e.g[-1.1,0.0,1.0]"));
+			return (print_error("Value out of range, e.g [-1.1,0.0,1.0]"));
 	}
 	return (OK);
 }
@@ -23,7 +23,7 @@ int	validate_split(char **str)
 	while (++i < 3)
 	{
 		if (is_number(str[i]) == ERROR)
-			return (print_error("This is not a valid coordinate\n"));
+			return (print_error("Invalid number"));
 	}
 	return (OK);
 }
@@ -54,7 +54,7 @@ int	validate_fov(char *fov_line, t_data *data)
 
 	fov = ft_atod(fov_line);
 	if (fov < 0.0 || fov > 180.0)
-		return (print_error("Fov outside of the degrees in range, e.g[0 to 180]"));
+		return (print_error("Fov is outside the allowable range, e.g [0 to 180]"));
 	data->camera.fov = fov;
 	printf("fov: %f\n", data->camera.fov);
 	return (OK);
