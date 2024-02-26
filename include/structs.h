@@ -20,6 +20,14 @@ typedef struct s_parser
  * --------------------
  * Includes t_coords, t_vec3 and t_camera.
  * 
+ * @struct t_coords: Generic struct to coordenates, used by
+ * camera and lights.
+ *
+ * @struct t_vec3: Struct used to get coordenates of an
+ * object. (revisar)
+ * 
+ * @struct t_camera: Camera lol
+ *
 **/
 
 typedef struct s_coords
@@ -36,6 +44,7 @@ typedef struct s_vec3
 	double		z;
 }				t_vec3;
 
+
 typedef struct s_camera
 { 
 	int			hview;
@@ -46,9 +55,20 @@ typedef struct s_camera
 }				t_camera;
 
 /**
- * Structs from amblight
+ * Struct: light
  * --------------------
- * Only one struct. 
+ * 
+**/
+
+typedef struct s_light
+{
+	t_coords	position;
+	double		brightness;
+}				t_light;
+
+/**
+ * Structs: amblight
+ * --------------------
  * 
 **/
 
@@ -72,6 +92,7 @@ typedef struct s_data
 	t_parser	parser;
 	t_amblight	amblight;
 	t_camera	camera;
+	t_light		light;
 } 				t_data;
 
 # endif

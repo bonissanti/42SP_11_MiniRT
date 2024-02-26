@@ -173,3 +173,20 @@ inline int	count_token(char **tokens, int expected_count, const char *msg)
 	}
 	return (0);
 }
+
+int	set_coordinates(char *coord_line)
+{
+	char **coord_split;
+	
+	coord_split = ft_split(coord_line, ',');
+	if (count_token(coord_split, 3, "Incorrect number of coordinates, e.g [-10.0,0,0]\n"))
+		return (ERROR);
+	if (validate_split(coord_split) == ERROR)
+	{
+		free_array(coord_split);
+		return (ERROR); 
+	}
+	free_array(coord_split);
+	return (OK); 
+}
+

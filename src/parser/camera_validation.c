@@ -56,6 +56,5 @@ int	validate_fov(char *fov_line, t_data *data)
 	if (fov < 0.0 || fov > 180.0)
 		return (print_error("Fov is outside the allowable range, e.g [0 to 180]"));
 	data->camera.fov = fov;
-	printf("fov: %f\n", data->camera.fov);
 	return (OK);
 }

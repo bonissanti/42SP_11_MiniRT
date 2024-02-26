@@ -1,24 +1,5 @@
 #include "../../include/minirt.h"
 
-int	set_coordinates(char *coord_line, t_data *data)
-{
-	char **coord_split;
-	
-	coord_split = ft_split(coord_line, ',');
-	if (count_token(coord_split, 3, "Incorrect number of coordinates, e.g [-10.0,0,0]\n"))
-		return (ERROR);
-	if (validate_split(coord_split) == ERROR)
-	{
-		free_array(coord_split);
-		return (ERROR); 
-	}
-	data->camera.point.x = ft_atod(coord_split[0]);
-	data->camera.point.y = ft_atod(coord_split[1]);
-	data->camera.point.z = ft_atod(coord_split[2]);
-	free_array(coord_split);
-	return (OK); 
-}
-
 int	set_vector_3d(char *vector_line, t_data *data)
 {
 	char **vector_split;
@@ -53,3 +34,4 @@ int	set_fov(char *fov_line, t_data *data)
 		return (ERROR);
 	return (OK);
 }
+

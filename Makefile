@@ -30,6 +30,8 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/camera.c 			\
 			parser/camera_set.c			\
 			parser/camera_validation.c	\
+			parser/light.c				\
+			parser/sphere.c				\
 
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS)
 
