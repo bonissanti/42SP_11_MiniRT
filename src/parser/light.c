@@ -38,11 +38,12 @@ int	analyze_light(char *line, t_data *data)
 		return (ERROR);
 	}
 	fill_coordnates(token[0], data);
-	if (set_brightness(token[1], data) == ERROR)
+	if (set_range(token[1], 0.0, 1.0) == ERROR)
 	{
 		free_array(token);
-		return (ERROR);
+		return (print_error("[L] Invalid range"));
 	}
+	data->light.brightness = ft_atod(token[1]);
 	free_array(token);
 	return (OK);
 }

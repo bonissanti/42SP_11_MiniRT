@@ -24,12 +24,10 @@ BIN_MLX = ./MLX42/build/libmlx42.a
 INIT		= init/init.c
 UTILS		= utils/to_finish.c
 PARSER 		= parser/aux_functions.c 	\
+			parser/aux_functions2.c		\
 			parser/validation.c 		\
 			parser/ambient.c 			\
-			parser/ambient_set_valid.c 	\
 			parser/camera.c 			\
-			parser/camera_set.c			\
-			parser/camera_validation.c	\
 			parser/light.c				\
 			parser/sphere.c				\
 
@@ -53,7 +51,7 @@ LDFLAGS = -L./MLX42/build -lm
 
 ################################ Progress ###################################
 
-TOTAL_FILES = $(words $(SRC))
+TOTAL_FILES =	$(words $(SRC))
 CURRENT_FILES = 0
 
 define print_progress
@@ -61,7 +59,31 @@ define print_progress
 	@echo -n "\r$(MAG_B)Progress: $(MAGENT)$(CURRENT_FILES) / $(TOTAL_FILES) [$$((($(CURRENT_FILES) * 100) / $(TOTAL_FILES)))%] $(RESET) : $(BLUE)$(1)$(RESET) "
 endef
 
-################################# Rules #####################################
+################################# Test Sources ##############################
+
+TEST_SRCS	= tests/tests_amblight.c \
+TEST_OBJS	= $(TEST_SRCS:.c=.0)
+TEST_EXEC	= test_miniRT
+
+################################# Test Rules ################################
+
+test: $(TEST_EXEC)
+
+$(TEST_EXEC): $(LIBFT_LIB) $(TEST_OBJS)
+	@$(CC) $(CFLAGS) $(TEST_OBJS) $(OBJS:%=$(OBJS_DIR)/%) -o $(TEST_EXEC) $(LDFLAGS) -L$(LIBFT) -lft
+	@echo "$(GREEN)Running tests... $(RESET)"
+	# @./$(TEST_EXEC)
+
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	$(call print_progress, $(BLUE_B)Compiling:$(RESET) $<)
+
+clean_test:
+	@rm -f $(TEST_OBJS)
+	@rm -f $(TEST_EXEC)
+	@echo "$(RED)Test objects and executable deleted$(RESET)"
+
+################################# Rules ####################################
 
 all: $(NAME)
 
@@ -86,10 +108,10 @@ clean:
 
 fclean: clean
 	@$(LIBFT_MAKE) fclean
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(TEST_EXEC)
 	@rm -rf $(OBJS_DIR)
 	@echo "$(RED)$(NAME) deleted$(RESET)"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean test clean_test re

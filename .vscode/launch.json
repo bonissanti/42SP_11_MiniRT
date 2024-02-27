@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/miniRT",
+            "program": "${workspaceFolder}/test_miniRT",
             "args": ["scenes/test_light.rt"],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",

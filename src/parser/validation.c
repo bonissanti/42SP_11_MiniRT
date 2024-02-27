@@ -74,13 +74,13 @@ int	analyze_line(char *line, t_data *data)
 	if (line[0] == 'C')
 		if (analyze_camera(line + 1, data) != 0)
 			exit (1);
-	
+
 	if (line[0] == 'L')
 		if (analyze_light(line + 1, data) != 0)
 			exit (1);
 
 	if (line[0] == 's' && line[1] == 'p')
-		if (analyze_sphere(line + 1, data) != 0)
+		if (analyze_sphere(line + 2, data) != 0)
 			exit (1);
 	return (OK);
 }
@@ -118,3 +118,5 @@ int	parse_lines(t_data *data)
 	}
 	return (OK);
 }
+
+
