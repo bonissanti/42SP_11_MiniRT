@@ -3537,6 +3537,7 @@ alpha	MLX42/include/lodepng/lodepng.h	/^  unsigned alpha; \/*image is not opaque
 amblight	include/structs.h	/^	t_amblight	amblight;$/;"	m	struct:s_data	typeref:typename:t_amblight
 analyze_amblight	src/parser/ambient.c	/^int analyze_amblight(char *line, t_data *data)$/;"	f	typeref:typename:int
 analyze_camera	src/parser/camera.c	/^int	analyze_camera(char *line, t_data *data)$/;"	f	typeref:typename:int
+analyze_cylinder	src/parser/cylinder.c	/^int	analyze_cylinder(char *line, t_data *data)$/;"	f	typeref:typename:int
 analyze_light	src/parser/light.c	/^int	analyze_light(char *line, t_data *data)$/;"	f	typeref:typename:int
 analyze_line	src/parser/validation.c	/^int	analyze_line(char *line, t_data *data)$/;"	f	typeref:typename:int
 analyze_plane	src/parser/plane.c	/^int	analyze_plane(char *line, t_data *data)$/;"	f	typeref:typename:int
@@ -3593,6 +3594,9 @@ close_hook	MLX42/include/MLX42/MLX42_Int.h	/^	mlx_close_t		close_hook;$/;"	m	str
 codes	MLX42/lib/png/lodepng.c	/^  unsigned* codes; \/*the huffman codes (bit patterns representing the symbols)*\/$/;"	m	struct:HuffmanTree	typeref:typename:unsigned *	file:
 color	MLX42/include/lodepng/lodepng.h	/^  LodePNGColorMode color;     \/*color type and bits, palette and transparency of the PNG file*\/$/;"	m	struct:LodePNGInfo	typeref:typename:LodePNGColorMode
 color	include/structs.h	/^   	int    		color[3];$/;"	m	struct:s_amblight	typeref:typename:int[3]
+color	include/structs.h	/^   	int    		color[3];$/;"	m	struct:s_cylinder	typeref:typename:int[3]
+color	include/structs.h	/^   	int    		color[3];$/;"	m	struct:s_plane	typeref:typename:int[3]
+color	include/structs.h	/^   	int    		color[3];$/;"	m	struct:s_sphere	typeref:typename:int[3]
 color_convert	MLX42/include/lodepng/lodepng.h	/^  unsigned color_convert; \/*whether to convert the PNG to the color type you want. Default: yes/;"	m	struct:LodePNGDecoderSettings	typeref:typename:unsigned
 color_count	MLX42/include/MLX42/MLX42.h	/^	int32_t			color_count;$/;"	m	struct:xpm	typeref:typename:int32_t
 color_tree_add	MLX42/lib/png/lodepng.c	/^static unsigned color_tree_add(ColorTree* tree,$/;"	f	typeref:typename:unsigned	file:
@@ -3663,6 +3667,8 @@ deflateNoCompression	MLX42/lib/png/lodepng.c	/^static unsigned deflateNoCompress
 delta_time	MLX42/include/MLX42/MLX42.h	/^	double		delta_time;$/;"	m	struct:mlx	typeref:typename:double
 description	.vscode/launch.json	/^                    "description": "Enable pretty-printing for gdb",$/;"	s	object:configurations.0.setupCommands.0
 description	.vscode/launch.json	/^                    "description": "Set Disassembly Flavor to Intel",$/;"	s	object:configurations.0.setupCommands.1
+diameter	include/structs.h	/^	double		diameter;$/;"	m	struct:s_cylinder	typeref:typename:double
+diameter	include/structs.h	/^	double  	diameter; $/;"	m	struct:s_sphere	typeref:typename:double
 draw_queue	MLX42/include/MLX42/MLX42_Int.h	/^typedef struct draw_queue$/;"	s
 draw_queue_t	MLX42/include/MLX42/MLX42_Int.h	/^}	draw_queue_t;$/;"	t	typeref:struct:draw_queue
 enabled	MLX42/include/MLX42/MLX42.h	/^	bool			enabled;$/;"	m	struct:mlx_image	typeref:typename:bool
@@ -3686,8 +3692,14 @@ fclean	libft/Makefile	/^fclean: clean$/;"	t
 fclean	my_libft/Makefile	/^fclean: clean$/;"	t
 file_extension	src/parser/validation.c	/^int	file_extension(char *file, char *ext)$/;"	f	typeref:typename:int
 fill_colors	src/parser/ambient.c	/^static int	fill_colors(char *line, t_data *data)$/;"	f	typeref:typename:int	file:
+fill_colors	src/parser/plane.c	/^static int	fill_colors(char *line, t_data *data)$/;"	f	typeref:typename:int	file:
+fill_colors	src/parser/sphere.c	/^static int	fill_colors(char *line, t_data *data)$/;"	f	typeref:typename:int	file:
+fill_coordinates	src/parser/plane.c	/^static int	fill_coordinates(char *line, t_data *data)$/;"	f	typeref:typename:int	file:
+fill_coordinates	src/parser/sphere.c	/^static int	fill_coordinates(char *line, t_data *data)$/;"	f	typeref:typename:int	file:
 fill_coordnates	src/parser/camera.c	/^static int	fill_coordnates(char *cam_line, t_data *data)$/;"	f	typeref:typename:int	file:
 fill_coordnates	src/parser/light.c	/^static int	fill_coordnates(char *cam_line, t_data *data)$/;"	f	typeref:typename:int	file:
+fill_vector	src/parser/camera.c	/^static int	fill_vector(char *line, t_data *data)$/;"	f	typeref:typename:int	file:
+fill_vector	src/parser/plane.c	/^static int	fill_vector(char *line, t_data *data)$/;"	f	typeref:typename:int	file:
 filter	MLX42/lib/png/lodepng.c	/^static unsigned filter(unsigned char* out, const unsigned char* in, unsigned w, unsigned h,$/;"	f	typeref:typename:unsigned	file:
 filterScanline	MLX42/lib/png/lodepng.c	/^static void filterScanline(unsigned char* out, const unsigned char* scanline, const unsigned cha/;"	f	typeref:typename:void	file:
 filter_method	MLX42/include/lodepng/lodepng.h	/^  unsigned filter_method;     \/*filter method of the original file*\/$/;"	m	struct:LodePNGInfo	typeref:typename:unsigned
@@ -7003,6 +7015,7 @@ height	MLX42/include/MLX42/MLX42.h	/^	int32_t		height;$/;"	m	struct:mlx	typeref:
 height	MLX42/include/MLX42/MLX42.h	/^	uint32_t	height;$/;"	m	struct:mlx_texture	typeref:typename:uint32_t
 height	MLX42/src/font/font.h	/^	uint32_t		height;$/;"	m	struct:s_font	typeref:typename:uint32_t
 height	MLX42/tests/WindowFixture.hpp	/^	static const int32_t height = 400;$/;"	m	class:Window	typeref:typename:const int32_t
+height	include/structs.h	/^	double		height;$/;"	m	struct:s_cylinder	typeref:typename:double
 hooks	MLX42/include/MLX42/MLX42_Int.h	/^	mlx_list_t*		hooks;$/;"	m	struct:mlx_ctx	typeref:typename:mlx_list_t *
 hour	MLX42/include/lodepng/lodepng.h	/^  unsigned hour;    \/*0-23*\/$/;"	m	struct:LodePNGTime	typeref:typename:unsigned
 huffmanDecodeSymbol	MLX42/lib/png/lodepng.c	/^static unsigned huffmanDecodeSymbol(LodePNGBitReader* reader, const HuffmanTree* codetree) {$/;"	f	typeref:typename:unsigned	file:
@@ -7402,7 +7415,7 @@ nextfree	MLX42/lib/png/lodepng.c	/^  unsigned nextfree;$/;"	m	struct:BPMLists	ty
 nicematch	MLX42/include/lodepng/lodepng.h	/^  unsigned nicematch; \/*stop searching if >= this length found. Set to 258 for best compression/;"	m	struct:LodePNGCompressSettings	typeref:typename:unsigned
 norm	libft/Makefile	/^norm:$/;"	t
 norm	my_libft/Makefile	/^norm:$/;"	t
-normalize_and_set	src/parser/camera_set.c	/^int	normalize_and_set(char **vector_str, t_data *data)$/;"	f	typeref:typename:int
+normalize_and_set	src/parser/aux_functions2.c	/^int	normalize_and_set(char **vector_str)$/;"	f	typeref:typename:int
 num_exts_i	MLX42/lib/glad/glad.c	/^static int num_exts_i = 0;$/;"	v	typeref:typename:int	file:
 numcodes	MLX42/lib/png/lodepng.c	/^  unsigned numcodes; \/*number of symbols in the alphabet = number of codes*\/$/;"	m	struct:HuffmanTree	typeref:typename:unsigned	file:
 numcolors	MLX42/include/lodepng/lodepng.h	/^  unsigned numcolors; \/*amount of colors, up to 257. Not valid if bits == 16 or allow_palette i/;"	m	struct:LodePNGColorStats	typeref:typename:unsigned
@@ -7436,7 +7449,10 @@ pixels	MLX42/src/font/font.h	/^	char*			pixels;$/;"	m	struct:s_font	typeref:type
 plus	libft/include/libft.h	/^	unsigned int	plus;$/;"	m	struct:s_flags	typeref:typename:unsigned int
 plus	my_libft/include/ft_printf.h	/^	unsigned int	plus;$/;"	m	struct:s_flags	typeref:typename:unsigned int
 point	include/structs.h	/^	t_coords	point;$/;"	m	struct:s_camera	typeref:typename:t_coords
+position	include/structs.h	/^	t_coords	position;$/;"	m	struct:s_cylinder	typeref:typename:t_coords
 position	include/structs.h	/^	t_coords	position;$/;"	m	struct:s_light	typeref:typename:t_coords
+position	include/structs.h	/^	t_coords	position;$/;"	m	struct:s_plane	typeref:typename:t_coords
+position	include/structs.h	/^	t_coords	position;$/;"	m	struct:s_sphere	typeref:typename:t_coords
 postProcessScanlines	MLX42/lib/png/lodepng.c	/^static unsigned postProcessScanlines(unsigned char* out, unsigned char* in,$/;"	f	typeref:typename:unsigned	file:
 preProcessScanlines	MLX42/lib/png/lodepng.c	/^static unsigned preProcessScanlines(unsigned char** out, size_t* outsize, const unsigned char* i/;"	f	typeref:typename:unsigned	file:
 predefined_filters	MLX42/include/lodepng/lodepng.h	/^  const unsigned char* predefined_filters;$/;"	m	struct:LodePNGEncoderSettings	typeref:typename:const unsigned char *
@@ -7500,6 +7516,7 @@ rgba8ToPixel	MLX42/lib/png/lodepng.c	/^static unsigned rgba8ToPixel(unsigned cha
 s_amblight	include/structs.h	/^typedef struct s_amblight$/;"	s
 s_camera	include/structs.h	/^typedef struct s_camera$/;"	s
 s_coords	include/structs.h	/^typedef struct s_coords$/;"	s
+s_cylinder	include/structs.h	/^typedef struct s_cylinder$/;"	s
 s_data	include/structs.h	/^typedef struct s_data $/;"	s
 s_flags	libft/include/libft.h	/^typedef struct s_flags$/;"	s
 s_flags	my_libft/include/ft_printf.h	/^typedef struct s_flags$/;"	s
@@ -7508,6 +7525,8 @@ s_light	include/structs.h	/^typedef struct s_light$/;"	s
 s_list	libft/include/libft.h	/^typedef struct s_list$/;"	s
 s_list	my_libft/include/libft.h	/^typedef struct s_list$/;"	s
 s_parser	include/structs.h	/^typedef struct s_parser$/;"	s
+s_plane	include/structs.h	/^typedef struct s_plane$/;"	s
+s_sphere	include/structs.h	/^typedef struct s_sphere$/;"	s
 s_vec3	include/structs.h	/^typedef struct s_vec3$/;"	s
 save_file	MLX42/lib/png/lodepng.c	/^unsigned save_file(const std::vector<unsigned char>& buffer, const std::string& filename) {$/;"	f	typeref:typename:unsigned
 sbit_a	MLX42/include/lodepng/lodepng.h	/^  unsigned sbit_a;       \/*alpha component of significant bits*\/$/;"	m	struct:LodePNGInfo	typeref:typename:unsigned
@@ -7522,9 +7541,9 @@ setBitOfReversedStream	MLX42/lib/png/lodepng.c	/^static void setBitOfReversedStr
 set_brightness	src/parser/light.c	/^int	set_brightness(char *bright_line, t_data *data)$/;"	f	typeref:typename:int
 set_colors	src/parser/aux_functions.c	/^int	set_colors(char *color_line)$/;"	f	typeref:typename:int
 set_coordinates	src/parser/aux_functions.c	/^int	set_coordinates(char *coord_line)$/;"	f	typeref:typename:int
-set_fov	src/parser/camera_set.c	/^int	set_fov(char *fov_line, t_data *data)$/;"	f	typeref:typename:int
+set_fov	src/parser/camera.c	/^int	set_fov(char *fov_line, t_data *data)$/;"	f	typeref:typename:int
 set_range	src/parser/aux_functions.c	/^int	set_range(char *line, int min, int max)$/;"	f	typeref:typename:int
-set_vector_3d	src/parser/camera_set.c	/^int	set_vector_3d(char *vector_line, t_data *data)$/;"	f	typeref:typename:int
+set_vector_3d	src/parser/aux_functions2.c	/^int	set_vector_3d(char *vector_line)$/;"	f	typeref:typename:int
 setupCommands	.vscode/launch.json	/^            "setupCommands": [$/;"	a	object:configurations.0
 shaderprogram	MLX42/include/MLX42/MLX42_Int.h	/^	GLuint			shaderprogram;$/;"	m	struct:mlx_ctx	typeref:typename:GLuint
 size	MLX42/lib/png/lodepng.c	/^  size_t size; \/*size in number of unsigned longs*\/$/;"	m	struct:uivector	typeref:typename:size_t	file:
@@ -7533,6 +7552,7 @@ size	MLX42/lib/png/lodepng.c	/^  size_t size; \/*used size*\/$/;"	m	struct:ucvec
 sort_queue	MLX42/src/mlx_init.c	/^bool sort_queue = false;$/;"	v	typeref:typename:bool
 space	libft/include/libft.h	/^	unsigned int	space;$/;"	m	struct:s_flags	typeref:typename:unsigned int
 space	my_libft/include/ft_printf.h	/^	unsigned int	space;$/;"	m	struct:s_flags	typeref:typename:unsigned int
+sphere	include/structs.h	/^	t_sphere	sphere;$/;"	m	struct:s_data	typeref:typename:t_sphere
 srgb_defined	MLX42/include/lodepng/lodepng.h	/^  unsigned srgb_defined; \/* Whether an sRGB chunk is present (0 = not present, 1 = present). *\/$/;"	m	struct:LodePNGInfo	typeref:typename:unsigned
 srgb_intent	MLX42/include/lodepng/lodepng.h	/^  unsigned srgb_intent;  \/* Rendering intent: 0=perceptual, 1=rel. colorimetric, 2=saturation, /;"	m	struct:LodePNGInfo	typeref:typename:unsigned
 stopAtEntry	.vscode/launch.json	/^            "stopAtEntry": true,$/;"	b	object:configurations.0
@@ -7540,6 +7560,7 @@ string_cleanup	MLX42/lib/png/lodepng.c	/^static void string_cleanup(char** out) 
 t_amblight	include/structs.h	/^}               t_amblight;$/;"	t	typeref:struct:s_amblight
 t_camera	include/structs.h	/^}				t_camera;$/;"	t	typeref:struct:s_camera
 t_coords	include/structs.h	/^}				t_coords;$/;"	t	typeref:struct:s_coords
+t_cylinder	include/structs.h	/^}               t_cylinder;$/;"	t	typeref:struct:s_cylinder
 t_data	include/structs.h	/^} 				t_data;$/;"	t	typeref:struct:s_data
 t_flags	libft/include/libft.h	/^}					t_flags;$/;"	t	typeref:struct:s_flags
 t_flags	my_libft/include/ft_printf.h	/^}					t_flags;$/;"	t	typeref:struct:s_flags
@@ -7547,6 +7568,8 @@ t_light	include/structs.h	/^}				t_light;$/;"	t	typeref:struct:s_light
 t_list	libft/include/libft.h	/^}					t_list;$/;"	t	typeref:struct:s_list
 t_list	my_libft/include/libft.h	/^}					t_list;$/;"	t	typeref:struct:s_list
 t_parser	include/structs.h	/^}               t_parser;$/;"	t	typeref:struct:s_parser
+t_plane	include/structs.h	/^}               t_plane;$/;"	t	typeref:struct:s_plane
+t_sphere	include/structs.h	/^}               t_sphere;$/;"	t	typeref:struct:s_sphere
 t_vec3	include/structs.h	/^}				t_vec3;$/;"	t	typeref:struct:s_vec3
 table_len	MLX42/lib/png/lodepng.c	/^  unsigned char* table_len; \/*length of symbol from lookup table, or max length if secondary lo/;"	m	struct:HuffmanTree	typeref:typename:unsigned char *	file:
 table_value	MLX42/lib/png/lodepng.c	/^  unsigned short* table_value; \/*value of symbol from lookup table, or pointer to secondary tab/;"	m	struct:HuffmanTree	typeref:typename:unsigned short *	file:
@@ -7590,10 +7613,12 @@ val	MLX42/lib/png/lodepng.c	/^  int* val; \/*circular pos to hash value*\/$/;"	m
 valid_file	src/parser/validation.c	/^int	valid_file(char *file, t_data *data)$/;"	f	typeref:typename:int
 validate_colors	src/parser/aux_functions.c	/^static int	validate_colors(char **color_str)$/;"	f	typeref:typename:int	file:
 validate_numbers_dot	src/parser/aux_functions.c	/^int	validate_numbers_dot(char **str)$/;"	f	typeref:typename:int
-validate_range_3d	src/parser/camera_set.c	/^int validate_range_3d(char **str)$/;"	f	typeref:typename:int
+validate_range_3d	src/parser/aux_functions2.c	/^int validate_range_3d(char **str)$/;"	f	typeref:typename:int
 vao	MLX42/include/MLX42/MLX42_Int.h	/^	GLuint			vao;$/;"	m	struct:mlx_ctx	typeref:typename:GLuint
 vbo	MLX42/include/MLX42/MLX42_Int.h	/^	GLuint			vbo;$/;"	m	struct:mlx_ctx	typeref:typename:GLuint
 vec_point	include/structs.h	/^	t_vec3		vec_point;$/;"	m	struct:s_camera	typeref:typename:t_vec3
+vec_point	include/structs.h	/^	t_vec3		vec_point;$/;"	m	struct:s_cylinder	typeref:typename:t_vec3
+vec_point	include/structs.h	/^	t_vec3		vec_point;$/;"	m	struct:s_plane	typeref:typename:t_vec3
 version	.vscode/c_cpp_properties.json	/^    "version": 4$/;"	n
 vertex	MLX42/include/MLX42/MLX42_Int.h	/^typedef struct vertex$/;"	s
 vertex_t	MLX42/include/MLX42/MLX42_Int.h	/^}	vertex_t;$/;"	t	typeref:struct:vertex

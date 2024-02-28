@@ -27,6 +27,14 @@ int		set_brightness(char *bright_line, t_data *data);
 
 int		analyze_sphere(char *line, t_data *data);
 
+// # Cylinder ------------
+
+int		analyze_cylinder(char *line, t_data *data);
+
+// # Plane ---------------
+
+int	analyze_plane(char *line, t_data *data);
+
 // # Aux ----------------
 
 int		set_range(char *line, int min, int max);

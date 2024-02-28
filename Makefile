@@ -29,6 +29,8 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/ambient.c 			\
 			parser/camera.c 			\
 			parser/light.c				\
+			parser/cylinder.c			\
+			parser/plane.c				\
 			parser/sphere.c				\
 
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS)

@@ -28,6 +28,7 @@ static int	fill_vector(char *line, t_data *data)
 	data->camera.vec_point.x = x / magnitude;
 	data->camera.vec_point.y = y / magnitude;
 	data->camera.vec_point.z = z / magnitude;
+	free_array(vector_str);
 	return (OK);
 }
 

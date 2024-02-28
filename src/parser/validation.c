@@ -67,20 +67,24 @@ int	analyze_line(char *line, t_data *data)
 	data->parser.has_A += (line[0] == 'A');
 	data->parser.has_C += (line[0] == 'C');
 	data->parser.has_L += (line[0] == 'L');
+
 	if (line[0] == 'A')
 		if (analyze_amblight(line + 1, data) != 0)
 			exit (1);
-	
 	if (line[0] == 'C')
 		if (analyze_camera(line + 1, data) != 0)
 			exit (1);
-
 	if (line[0] == 'L')
 		if (analyze_light(line + 1, data) != 0)
 			exit (1);
-
 	if (line[0] == 's' && line[1] == 'p')
 		if (analyze_sphere(line + 2, data) != 0)
+			exit (1);
+	if (line[0] == 'p' && line[1] == 'l')
+		if (analyze_plane(line + 2, data) != 0)
+			exit (1);
+	if (line[0] == 'c' && line[1] == 'y')
+		if (analyze_cylinder(line + 2, data) != 0)
 			exit (1);
 	return (OK);
 }

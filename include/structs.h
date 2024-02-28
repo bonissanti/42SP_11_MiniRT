@@ -79,6 +79,39 @@ typedef struct s_amblight
 }               t_amblight;
 
 /**
+ * Structs: Objetcts
+ * --------------------
+ * t_sphere, t_cylinder, t_plane.
+ *
+ * Maybe t_material (to ambient, diffuse, specular) and t_matrix (to row/col)
+ *
+ *
+**/
+
+typedef struct s_sphere
+{ 
+	double  	diameter; 
+   	int    		color[3];
+	t_coords	position;
+}               t_sphere;
+
+typedef struct s_plane
+{ 
+   	int    		color[3];
+	t_coords	position;
+	t_vec3		vec_point;
+}               t_plane;
+
+typedef struct s_cylinder
+{ 
+	double		height;
+	double		diameter;
+   	int    		color[3];
+	t_coords	position;
+	t_vec3		vec_point;
+}               t_cylinder;
+
+/**
  * Struct: t_data
  * --------------------
  * Main struct of the project, all other structs are nested
@@ -93,6 +126,10 @@ typedef struct s_data
 	t_amblight	amblight;
 	t_camera	camera;
 	t_light		light;
+	t_sphere	sphere;
+	t_plane		plane;
+	t_cylinder	cylinder;
 } 				t_data;
+
 
 # endif
