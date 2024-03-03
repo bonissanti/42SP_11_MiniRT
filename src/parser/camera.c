@@ -25,9 +25,9 @@ static int	fill_vector(char *line, t_data *data)
 	y = ft_atod(vector_str[1]);
 	z = ft_atod(vector_str[2]);
 	magnitude = sqrt(x * x + y * y + z * z);
-	data->camera.vec_point.x = x / magnitude;
-	data->camera.vec_point.y = y / magnitude;
-	data->camera.vec_point.z = z / magnitude;
+	data->camera.vector.x = x / magnitude;
+	data->camera.vector.y = y / magnitude;
+	data->camera.vector.z = z / magnitude;
 	free_array(vector_str);
 	return (OK);
 }

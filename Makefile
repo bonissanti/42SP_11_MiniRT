@@ -32,8 +32,10 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/cylinder.c			\
 			parser/plane.c				\
 			parser/sphere.c				\
+	
+MMLX		= mlx/init_render.c
 
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(MMLX)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 
@@ -49,7 +51,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lm
+LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread -lglfw
 
 ################################ Progress ###################################
 
@@ -63,28 +65,28 @@ endef
 
 ################################# Test Sources ##############################
 
-TEST_SRCS	= tests/tests_amblight.c \
-TEST_OBJS	= $(TEST_SRCS:.c=.0)
-TEST_EXEC	= test_miniRT
+# TEST_SRCS	= tests/tests_amblight.c \
+# TEST_OBJS	= $(TEST_SRCS:.c=.0)
+# TEST_EXEC	= test_miniRT
 
 ################################# Test Rules ################################
 
-test: $(TEST_EXEC)
-
-$(TEST_EXEC): $(LIBFT_LIB) $(TEST_OBJS)
-	@$(CC) $(CFLAGS) $(TEST_OBJS) $(OBJS:%=$(OBJS_DIR)/%) -o $(TEST_EXEC) $(LDFLAGS) -L$(LIBFT) -lft
-	@echo "$(GREEN)Running tests... $(RESET)"
-	# @./$(TEST_EXEC)
+# test: $(TEST_EXEC)
+#
+# $(TEST_EXEC): $(LIBFT_LIB) $(TEST_OBJS)
+# 	@$(CC) $(CFLAGS) $(TEST_OBJS) $(OBJS:%=$(OBJS_DIR)/%) -o $(TEST_EXEC) $(LDFLAGS) -L$(LIBFT) -lft
+# 	@echo "$(GREEN)Running tests... $(RESET)"
+# 	# @./$(TEST_EXEC)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	$(call print_progress, $(BLUE_B)Compiling:$(RESET) $<)
 
-clean_test:
-	@rm -f $(TEST_OBJS)
-	@rm -f $(TEST_EXEC)
-	@echo "$(RED)Test objects and executable deleted$(RESET)"
-
+# clean_test:
+# 	@rm -f $(TEST_OBJS)
+# 	@rm -f $(TEST_EXEC)
+# 	@echo "$(RED)Test objects and executable deleted$(RESET)"
+#
 ################################# Rules ####################################
 
 all: $(NAME)

@@ -7616,9 +7616,9 @@ validate_numbers_dot	src/parser/aux_functions.c	/^int	validate_numbers_dot(char 
 validate_range_3d	src/parser/aux_functions2.c	/^int validate_range_3d(char **str)$/;"	f	typeref:typename:int
 vao	MLX42/include/MLX42/MLX42_Int.h	/^	GLuint			vao;$/;"	m	struct:mlx_ctx	typeref:typename:GLuint
 vbo	MLX42/include/MLX42/MLX42_Int.h	/^	GLuint			vbo;$/;"	m	struct:mlx_ctx	typeref:typename:GLuint
-vec_point	include/structs.h	/^	t_vec3		vec_point;$/;"	m	struct:s_camera	typeref:typename:t_vec3
-vec_point	include/structs.h	/^	t_vec3		vec_point;$/;"	m	struct:s_cylinder	typeref:typename:t_vec3
-vec_point	include/structs.h	/^	t_vec3		vec_point;$/;"	m	struct:s_plane	typeref:typename:t_vec3
+vector	include/structs.h	/^	t_vec3		vector;$/;"	m	struct:s_camera	typeref:typename:t_vec3
+vector	include/structs.h	/^	t_vec3		vector;$/;"	m	struct:s_cylinder	typeref:typename:t_vec3
+vector	include/structs.h	/^	t_vec3		vector;$/;"	m	struct:s_plane	typeref:typename:t_vec3
 version	.vscode/c_cpp_properties.json	/^    "version": 4$/;"	n
 vertex	MLX42/include/MLX42/MLX42_Int.h	/^typedef struct vertex$/;"	s
 vertex_t	MLX42/include/MLX42/MLX42_Int.h	/^}	vertex_t;$/;"	t	typeref:struct:vertex

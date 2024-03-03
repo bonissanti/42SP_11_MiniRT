@@ -5,9 +5,9 @@ static int	fill_coordinates(char *line, t_data *data)
 	char **split_line;
 
 	split_line = ft_split(line, ',');
-	data->plane.position.x = ft_atod(split_line[0]);
-	data->plane.position.y = ft_atod(split_line[1]);
-	data->plane.position.z = ft_atod(split_line[2]);
+	data->objects.plane.position.x = ft_atod(split_line[0]);
+	data->objects.plane.position.y = ft_atod(split_line[1]);
+	data->objects.plane.position.z = ft_atod(split_line[2]);
 	free_array(split_line);
 	return (OK);
 }
@@ -25,9 +25,9 @@ static int	fill_vector(char *line, t_data *data)
 	y = ft_atod(vector_str[1]);
 	z = ft_atod(vector_str[2]);
 	magnitude = sqrt(x * x + y * y + z * z);
-	data->plane.vec_point.x = x / magnitude;
-	data->plane.vec_point.y = y / magnitude;
-	data->plane.vec_point.z = z / magnitude;
+	data->objects.plane.vector.x = x / magnitude;
+	data->objects.plane.vector.y = y / magnitude;
+	data->objects.plane.vector.z = z / magnitude;
 	free_array(vector_str);
 	return (OK);
 }
@@ -37,9 +37,9 @@ static int	fill_colors(char *line, t_data *data)
 	char **split_line;
 
 	split_line = ft_split(line, ',');
-	data->plane.color[0] = ft_atod(split_line[0]);
-	data->plane.color[1] = ft_atod(split_line[1]);
-	data->plane.color[2] = ft_atod(split_line[2]);
+	data->objects.plane.color[0] = ft_atod(split_line[0]);
+	data->objects.plane.color[1] = ft_atod(split_line[1]);
+	data->objects.plane.color[2] = ft_atod(split_line[2]);
 	free_array(split_line);
 	return (OK);
 }

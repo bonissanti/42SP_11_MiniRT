@@ -8,12 +8,20 @@
 # include <string.h>
 # include <unistd.h>
 # include "../libft/include/libft.h"
+# include "../MLX42/include/MLX42/MLX42.h"
 # include "elements.h"
 # include "structs.h"
+# include "mlx_utils.h"
+
+/* Macros */
 
 # define OK 		0 
 # define ERROR 		1
 # define EPSILON	0.00001
+
+/* key config */
+
+# define KEY_ESC 65307
 
 // # Init --------------------
 

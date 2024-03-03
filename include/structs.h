@@ -1,12 +1,7 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-/**
- * Struct: t_parser
- * --------------------
- * Struct to save lines only.
- * 
-**/
+/*	Struct to save line only */
 
 typedef struct s_parser
 { 
@@ -15,20 +10,7 @@ typedef struct s_parser
     int    		has_L; 
 }               t_parser;
 
-/**
- * Structs from t_camera
- * --------------------
- * Includes t_coords, t_vec3 and t_camera.
- * 
- * @struct t_coords: Generic struct to coordenates, used by
- * camera and lights.
- *
- * @struct t_vec3: Struct used to get coordenates of an
- * object. (revisar)
- * 
- * @struct t_camera: Camera lol
- *
-**/
+/*	Generic structs to elements (ACL and objects) */
 
 typedef struct s_coords
 { 
@@ -44,6 +26,7 @@ typedef struct s_vec3
 	double		z;
 }				t_vec3;
 
+/*	Mandatory elements */
 
 typedef struct s_camera
 { 
@@ -51,14 +34,8 @@ typedef struct s_camera
 	int			wview;
 	double		fov;
 	t_coords	point;
-	t_vec3		vec_point;
+	t_vec3		vector;
 }				t_camera;
-
-/**
- * Struct: light
- * --------------------
- * 
-**/
 
 typedef struct s_light
 {
@@ -66,27 +43,13 @@ typedef struct s_light
 	double		brightness;
 }				t_light;
 
-/**
- * Structs: amblight
- * --------------------
- * 
-**/
-
 typedef struct s_amblight
 { 
 	double  	ratio; 
    	int    		color[3];
 }               t_amblight;
 
-/**
- * Structs: Objetcts
- * --------------------
- * t_sphere, t_cylinder, t_plane.
- *
- * Maybe t_material (to ambient, diffuse, specular) and t_matrix (to row/col)
- *
- *
-**/
+/*	Objects */
 
 typedef struct s_sphere
 { 
@@ -99,7 +62,7 @@ typedef struct s_plane
 { 
    	int    		color[3];
 	t_coords	position;
-	t_vec3		vec_point;
+	t_vec3		vector;
 }               t_plane;
 
 typedef struct s_cylinder
@@ -108,16 +71,17 @@ typedef struct s_cylinder
 	double		diameter;
    	int    		color[3];
 	t_coords	position;
-	t_vec3		vec_point;
+	t_vec3		vector;
 }               t_cylinder;
 
-/**
- * Struct: t_data
- * --------------------
- * Main struct of the project, all other structs are nested
- * within it.
- * 
-**/
+/*	Struct masters */
+
+typedef struct	s_objects
+{
+	t_sphere	sphere;
+	t_cylinder	cylinder;
+	t_plane		plane;
+}				t_objects;
 
 typedef struct s_data 
 { 
@@ -126,9 +90,7 @@ typedef struct s_data
 	t_amblight	amblight;
 	t_camera	camera;
 	t_light		light;
-	t_sphere	sphere;
-	t_plane		plane;
-	t_cylinder	cylinder;
+	t_objects	objects;
 } 				t_data;
 
 

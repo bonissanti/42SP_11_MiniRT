@@ -14,7 +14,8 @@
 
 int main(int argc, char **argv) 
 {
-	t_data data;
+	t_data	data;
+	t_mlx	mlx;
 
 	init_structs(&data);
 	if (argc != 2) 
@@ -22,9 +23,10 @@ int main(int argc, char **argv)
 		ft_putstr_fd("Error\nInvalid number of arguments\n", 2);
 		return (1);
 	}
-	else if (valid_file(argv[1], &data) != 0)
+	else if (valid_file(argv[1], &data))
 		return (1);
-	else if (!parse_lines(&data))
+	else if (parse_lines(&data))
 		return (1);
+	run_render(&mlx);
 	return (0);
 }

@@ -5,9 +5,9 @@ static int	fill_coordinates(char *line, t_data *data)
 	char **split;
 
 	split = ft_split(line, ',');
-	data->cylinder.position.x = ft_atod(split[0]);
-	data->cylinder.position.y = ft_atod(split[1]);
-	data->cylinder.position.z = ft_atod(split[2]);
+	data->objects.cylinder.position.x = ft_atod(split[0]);
+	data->objects.cylinder.position.y = ft_atod(split[1]);
+	data->objects.cylinder.position.z = ft_atod(split[2]);
 	free_array(split);	
 	return (OK);
 }
@@ -17,9 +17,9 @@ static int	fill_colors(char *line, t_data *data)
 	char **split_line;
 
 	split_line = ft_split(line, ',');
-	data->cylinder.color[0] = ft_atod(split_line[0]);
-	data->cylinder.color[1] = ft_atod(split_line[1]);
-	data->cylinder.color[2] = ft_atod(split_line[2]);
+	data->objects.cylinder.color[0] = ft_atod(split_line[0]);
+	data->objects.cylinder.color[1] = ft_atod(split_line[1]);
+	data->objects.cylinder.color[2] = ft_atod(split_line[2]);
 	free_array(split_line);
 	return (OK);
 }
@@ -37,9 +37,9 @@ static int	fill_vector(char *line, t_data *data)
 	y = ft_atod(vector_str[1]);
 	z = ft_atod(vector_str[2]);
 	magnitude = sqrt(x * x + y * y + z * z);
-	data->cylinder.vec_point.x = x / magnitude;
-	data->cylinder.vec_point.y = y / magnitude;
-	data->cylinder.vec_point.z = z / magnitude;
+	data->objects.cylinder.vector.x = x / magnitude;
+	data->objects.cylinder.vector.y = y / magnitude;
+	data->objects.cylinder.vector.z = z / magnitude;
 	free_array(vector_str);
 	return (OK);
 }
@@ -73,8 +73,8 @@ int	analyze_cylinder(char *line, t_data *data)
 		free_array(token);
 		return (print_error("[cy] Invalid height"));
 	}
-	data->cylinder.diameter = ft_atod(token[2]);
-	data->cylinder.height = ft_atod(token[3]);
+	data->objects.cylinder.diameter = ft_atod(token[2]);
+	data->objects.cylinder.height = ft_atod(token[3]);
 	if (set_colors(token[4]) == ERROR)
 	{
 		free_array(token);
@@ -82,5 +82,5 @@ int	analyze_cylinder(char *line, t_data *data)
 	}
 	fill_colors(token[4], data);
 	free_array(token);
-	return (ERROR);
+	return (OK);
 }
