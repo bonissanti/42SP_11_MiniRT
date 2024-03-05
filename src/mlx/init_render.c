@@ -1,6 +1,6 @@
 #include "../../include/minirt.h"
 
-void	run_render(t_mlx *mlx)
+void	run_render(t_canvas *mlx)
 {
 	mlx->win_ptr = NULL;
 	mlx->img_ptr = NULL;

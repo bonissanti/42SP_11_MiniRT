@@ -29,6 +29,16 @@ void	init_structs(t_data *data);
 int	    valid_file(char *file, t_data *data);
 int	    parse_lines(t_data *data);
 
+// # Generic functions -------
+
+t_vec3	normalize_vector(t_vec3 value);
+t_vec3	cross_vector(t_vec3 a, t_vec3 b);
+t_vec3	substract_vector(t_vec3 a, t_vec3 b);
+
+// # Object lists ------------
+
+int	add_objects(t_data *data, void *obj, t_object_type type);
+
 // # Aux ---------------------
 
 int		count_token(char **tokens, int expected_count, const char *msg);

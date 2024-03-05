@@ -1,4 +1,5 @@
-#include "../include/minirt.h"
+#include "../../include/minirt.h"
+#include <stdio.h>
 
 int	file_extension(char *file, char *ext)
 {
@@ -26,12 +27,14 @@ int	valid_file(char *file, t_data *data)
 	fd = open(file, O_RDONLY);
 	if (fd < -1)
 		return (print_error("File not found\n"));
-	bytes_read = read(fd, data->buffer, 4095);
+	bytes_read = read(fd, data->buffer, 65535);
     if (bytes_read <= -1)
     {
 		close(fd);
+		printf("%s\n", file);
         return (print_error("File is empty or could not be read\n"));
     }
+	printf("eu funfei");
 	data->buffer[bytes_read] = '\0';
 	if (file_extension(file, ".rt"))
 	{

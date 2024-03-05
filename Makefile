@@ -33,9 +33,10 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/plane.c				\
 			parser/sphere.c				\
 	
-MMLX		= mlx/init_render.c
+# MMLX		= mlx/init_render.c
+OPERATIONS	= operations/vector.c 
 
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(MMLX)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 
@@ -47,11 +48,12 @@ OBJS_DIR = ./objs
 ################################# Flags #####################################
 
 CC = gcc
+CCPFLAGS = ./include/
 CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread -lglfw
+LDFLAGS = -L./MLX42/build -lm -ldl -pthread -lglfw
 
 ################################ Progress ###################################
 

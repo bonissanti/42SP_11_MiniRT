@@ -32,14 +32,46 @@ static int	fill_vector(char *line, t_data *data)
 	return (OK);
 }
 
-
-int	set_fov(char *fov_line, t_data *data)
+t_vec3	set_up(t_data *data)
 {
-	if (is_number(fov_line))
+	t_vec3	default_up = {0, 1, 0};
+	t_vec3	right;
+	t_vec3	up_adjusted;
+	t_vec3	forward = {
+		data->camera.vector.x - data->camera.point.x,
+		data->camera.vector.y - data->camera.point.y,
+		data->camera.vector.z - data->camera.point.z,
+	};
+
+	forward = normalize_vector(forward);
+	right = normalize_vector(cross_vector(default_up, forward));
+	up_adjusted = cross_vector(forward, right);
+	return(up_adjusted);
+}
+
+int	set_camera(char *fov_line, t_data *data)
+{
+	double	half_height;
+	double	half_width;
+
+	if (is_number(fov_line) || set_range(fov_line, 0.0, 180.0) == ERROR)
 		return (print_error("Fov is not a valid number, e.g[0 to 180]"));
-	else if (set_range(fov_line, 0.0, 180.0))
-		return (print_error("[C] Invalid FOV"));
-	data->camera.fov = ft_atod(fov_line);
+
+	data->camera.height_v = HEIGHT;
+	data->camera.width_v = WIDTH;
+	data->camera.fov = ft_atod(fov_line) * (M_PI/180.0); //M_PI macro de PI da math.h 
+	data->camera.aspect_ratio = (double)data->camera.width_v / (double)data->camera.height_v; // 720x480
+
+	half_width = tan(data->camera.fov / 2.0); // metade da largura a partir da visão da camera, com /2 para simplificar
+	half_height = half_width * data->camera.aspect_ratio; // se der ruim, mudar para a implementação do livro
+
+	data->camera.half_width = half_width;
+	data->camera.half_height = half_height;
+
+	data->camera.pixel_size = (data->camera.half_width * 2 / data->camera.height_v); //se der ruim, mudar para a implementação do livro
+	
+	data->camera.up = set_up(data);
+
 	return (OK);
 }
 
@@ -63,7 +95,7 @@ int	analyze_camera(char *line, t_data *data)
 		return (ERROR);
 	}
 	fill_vector(token[1], data);
-	if (set_fov(token[2], data) == ERROR)
+	if (set_camera(token[2], data) == ERROR)
 	{
 		free_array(token);
 		return (ERROR);

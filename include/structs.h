@@ -30,11 +30,18 @@ typedef struct s_vec3
 
 typedef struct s_camera
 { 
-	int			hview;
-	int			wview;
+	int			height_v;
+	int			width_v;
 	double		fov;
+	double		pixel_size;
+	double		half_height;
+	double		half_width;
+	double		aspect_ratio;
 	t_coords	point;
 	t_vec3		vector;
+	t_vec3		up;
+	/* t_matriz	transform; */
+	/* t_matriz	inversed_transform; */
 }				t_camera;
 
 typedef struct s_light
@@ -51,6 +58,13 @@ typedef struct s_amblight
 
 /*	Objects */
 
+typedef enum e_object_type
+{
+	SPHERE,
+	CYLINDER,
+	PLANE
+}			t_object_type;
+
 typedef struct s_sphere
 { 
 	double  	diameter; 
@@ -61,12 +75,15 @@ typedef struct s_sphere
 typedef struct s_plane
 { 
    	int    		color[3];
+	double		radius;
 	t_coords	position;
 	t_vec3		vector;
 }               t_plane;
 
 typedef struct s_cylinder
-{ 
+{
+	double		max;
+	double		min;
 	double		height;
 	double		diameter;
    	int    		color[3];
@@ -76,21 +93,21 @@ typedef struct s_cylinder
 
 /*	Struct masters */
 
-typedef struct	s_objects
+typedef struct	s_object
 {
-	t_sphere	sphere;
-	t_cylinder	cylinder;
-	t_plane		plane;
-}				t_objects;
+	t_object_type	type;
+	void			*object;
+	struct s_object *next;
+}				t_object;
 
 typedef struct s_data 
 { 
-	char		buffer[4096];
+	char		buffer[65535];
 	t_parser	parser;
 	t_amblight	amblight;
 	t_camera	camera;
 	t_light		light;
-	t_objects	objects;
+	t_object	*objects;
 } 				t_data;
 
 

@@ -8,7 +8,7 @@ static int	fill_coordinates(char *line, t_data *data)
 	data->objects.cylinder.position.x = ft_atod(split[0]);
 	data->objects.cylinder.position.y = ft_atod(split[1]);
 	data->objects.cylinder.position.z = ft_atod(split[2]);
-	free_array(split);	
+	free_array(split);
 	return (OK);
 }
 
@@ -51,18 +51,22 @@ int	analyze_cylinder(char *line, t_data *data)
 	token = ft_split_space(line);
 	if (count_token(token, 5, "Cylinder has wrong number of arguments"))
 		return (ERROR);
+
+//set set_coordinates
 	if (set_coordinates(token[0]) == ERROR)
 	{
 		free_array(token);
 		return (ERROR);
 	}
-	fill_coordinates(token[0], data);
+
+//set vector
 	if (set_vector_3d(token[1]) == ERROR)
 	{
 		free_array(token);
 		return (ERROR);
 	}
-	fill_vector(token[1], data);
+
+//set diameter and height
 	if (is_number(token[2]) == ERROR)
 	{
 		free_array(token);
@@ -73,13 +77,18 @@ int	analyze_cylinder(char *line, t_data *data)
 		free_array(token);
 		return (print_error("[cy] Invalid height"));
 	}
-	data->objects.cylinder.diameter = ft_atod(token[2]);
-	data->objects.cylinder.height = ft_atod(token[3]);
+//set colors
 	if (set_colors(token[4]) == ERROR)
 	{
 		free_array(token);
 		return (ERROR);
 	}
+	fill_coordinates(token[0], data);
+	fill_vector(token[1], data);
+	data->objects.cylinder.diameter = ft_atod(token[2]);
+	data->objects.cylinder.height = ft_atod(token[3]);
+	data->objects.cylinder.max = data->objects.cylinder.height / 2;
+	data->objects.cylinder.min = -data->objects.cylinder.height / 2;
 	fill_colors(token[4], data);
 	free_array(token);
 	return (OK);
