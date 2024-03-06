@@ -7000,9 +7000,9 @@ glfw3_FOUND	MLX42/cmake/Findglfw3.cmake	/^	set(glfw3_FOUND "NO")$/;"	v
 glfw3_FOUND	MLX42/cmake/Findglfw3.cmake	/^	set(glfw3_FOUND "YES")$/;"	v
 gnl_strjoin	libft/src/get_next_line_utils.c	/^char	*gnl_strjoin(char *s1, char *s2)$/;"	f	typeref:typename:char *
 gnl_strlen	libft/src/get_next_line_utils.c	/^size_t	gnl_strlen(char *s)$/;"	f	typeref:typename:size_t
-has_A	include/structs.h	/^    int    		has_A;$/;"	m	struct:s_parser	typeref:typename:int
-has_C	include/structs.h	/^    int    		has_C;  $/;"	m	struct:s_parser	typeref:typename:int
-has_L	include/structs.h	/^    int    		has_L; $/;"	m	struct:s_parser	typeref:typename:int
+has_a	include/structs.h	/^    int    		has_a;$/;"	m	struct:s_parser	typeref:typename:int
+has_c	include/structs.h	/^    int    		has_c;  $/;"	m	struct:s_parser	typeref:typename:int
+has_l	include/structs.h	/^    int    		has_l; $/;"	m	struct:s_parser	typeref:typename:int
 has_ext	MLX42/lib/glad/glad.c	/^static int has_ext(const char *ext) {$/;"	f	typeref:typename:int	file:
 hash_cleanup	MLX42/lib/png/lodepng.c	/^static void hash_cleanup(Hash* hash) {$/;"	f	typeref:typename:void	file:
 hash_init	MLX42/lib/png/lodepng.c	/^static unsigned hash_init(Hash* hash, unsigned windowsize) {$/;"	f	typeref:typename:unsigned	file:
