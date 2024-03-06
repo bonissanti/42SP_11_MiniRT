@@ -33,11 +33,11 @@ int		analyze_cylinder(char *line, t_data *data);
 
 // # Plane ---------------
 
-int	analyze_plane(char *line, t_data *data);
+int		analyze_plane(char *line, t_data *data);
 
 // # Aux ----------------
 
 int		set_range(char *line, int min, int max);
 int		set_colors(char *color_line);
 
-# endif
+#endif

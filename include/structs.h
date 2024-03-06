@@ -4,19 +4,19 @@
 /*	Struct to save line only */
 
 typedef struct s_parser
-{ 
-    int    		has_A;
-    int    		has_C;  
-    int    		has_L; 
-}               t_parser;
+{
+	int			has_a;
+	int			has_c;
+	int			has_l;
+}				t_parser;
 
 /*	Generic structs to elements (ACL and objects) */
 
 typedef struct s_coords
-{ 
-	double		x; 
-	double		y; 
-	double		z; 
+{
+	double		x;
+	double		y;
+	double		z;
 }				t_coords;
 
 typedef struct s_vec3
@@ -29,7 +29,7 @@ typedef struct s_vec3
 /*	Mandatory elements */
 
 typedef struct s_camera
-{ 
+{
 	int			height_v;
 	int			width_v;
 	double		fov;
@@ -51,10 +51,10 @@ typedef struct s_light
 }				t_light;
 
 typedef struct s_amblight
-{ 
-	double  	ratio; 
-   	int    		color[3];
-}               t_amblight;
+{
+	double		ratio;
+	int			color[3];
+}				t_amblight;
 
 /*	Objects */
 
@@ -66,19 +66,19 @@ typedef enum e_object_type
 }			t_object_type;
 
 typedef struct s_sphere
-{ 
-	double  	diameter; 
-   	int    		color[3];
+{
+	double		diameter;
+	int			color[3];
 	t_coords	position;
-}               t_sphere;
+}				t_sphere;
 
 typedef struct s_plane
-{ 
-   	int    		color[3];
+{
+	int			color[3];
 	double		radius;
 	t_coords	position;
 	t_vec3		vector;
-}               t_plane;
+}				t_plane;
 
 typedef struct s_cylinder
 {
@@ -86,29 +86,29 @@ typedef struct s_cylinder
 	double		min;
 	double		height;
 	double		diameter;
-   	int    		color[3];
+	int			color[3];
 	t_coords	position;
 	t_vec3		vector;
-}               t_cylinder;
+}				t_cylinder;
 
 /*	Struct masters */
 
-typedef struct	s_object
+typedef struct s_object
 {
 	t_object_type	type;
 	void			*object;
-	struct s_object *next;
-}				t_object;
+	struct s_object	*next;
+}					t_object;
 
-typedef struct s_data 
-{ 
+typedef struct s_data
+{
 	char		buffer[65535];
 	t_parser	parser;
 	t_amblight	amblight;
 	t_camera	camera;
 	t_light		light;
 	t_object	*objects;
-} 				t_data;
+}				t_data;
 
 
-# endif
+#endif

@@ -29,4 +29,4 @@ typedef struct s_canvas
 
 /* void	run_render(t_canvas *mlx); */
 
-# endif
+#endif

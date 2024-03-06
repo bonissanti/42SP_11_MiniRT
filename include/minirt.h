@@ -26,8 +26,8 @@
 // # Init --------------------
 
 void	init_structs(t_data *data);
-int	    valid_file(char *file, t_data *data);
-int	    parse_lines(t_data *data);
+int		valid_file(char *file, t_data *data);
+int		parse_lines(t_data *data);
 
 // # Generic functions -------
 
@@ -37,7 +37,7 @@ t_vec3	substract_vector(t_vec3 a, t_vec3 b);
 
 // # Object lists ------------
 
-int	add_objects(t_data *data, void *obj, t_object_type type);
+int		add_objects(t_data *data, void *obj, t_object_type type);
 
 // # Aux ---------------------
 

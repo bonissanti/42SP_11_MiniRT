@@ -67,9 +67,9 @@ int	valid_file(char *file, t_data *data)
 
 int	analyze_line(char *line, t_data *data)
 {
-	data->parser.has_A += (line[0] == 'A');
-	data->parser.has_C += (line[0] == 'C');
-	data->parser.has_L += (line[0] == 'L');
+	data->parser.has_a += (line[0] == 'A');
+	data->parser.has_c += (line[0] == 'C');
+	data->parser.has_l += (line[0] == 'L');
 
 	if (line[0] == 'A')
 		if (analyze_amblight(line + 1, data) != 0)
@@ -118,7 +118,7 @@ int	parse_lines(t_data *data)
 		analyze_line(line, data);
 		line = ft_strtok(NULL, "\n");
 	}
-	if (data->parser.has_A != 1 || data->parser.has_C != 1 || data->parser.has_L != 1)
+	if (data->parser.has_a != 1 || data->parser.has_c != 1 || data->parser.has_l != 1)
 	{
 		ft_putstr_fd("Error\nInvalid number of A, C, or L characters\n", 2);
 		return (ERROR);
