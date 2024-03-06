@@ -93,6 +93,11 @@ typedef struct s_cylinder
 
 /*	Struct masters */
 
+/* typedef	struct	s_transofrm */
+/* { */
+/* 	double	matriz[4][4]; */
+/* }				t_transform; */
+
 typedef struct s_object
 {
 	t_object_type	type;

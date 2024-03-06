@@ -5,8 +5,8 @@
 
 /* config window */
 
-# define HEIGHT 480
-# define WIDTH 720
+# define HEIGHT 700
+# define WIDTH 1000
 # define TITLE "miniRTARDOS"
 
 /* structs to mlx */
@@ -18,15 +18,15 @@ typedef struct s_img
 	int			endian;
 }				t_img;
 
-typedef struct s_canvas
-{
+typedef struct s_mlx
+{ 
 	mlx_t		*win_ptr;
 	mlx_image_t	*img_ptr;
 	int			width;
 	int			height;
 	t_img		img;
-}				t_canvas;
-
-/* void	run_render(t_canvas *mlx); */
+}				t_mlx;
+ 
+void	create_mlx_window(t_mlx *mlx);
 
 #endif

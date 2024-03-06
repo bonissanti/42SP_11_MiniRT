@@ -1,6 +1,6 @@
 #include "../../include/minirt.h"
 
-void	run_render(t_canvas *mlx)
+void	create_mlx_window(t_mlx *mlx)
 {
 	mlx->win_ptr = NULL;
 	mlx->img_ptr = NULL;
@@ -16,11 +16,10 @@ void	run_render(t_canvas *mlx)
 		free(mlx->img_ptr);
 		return ;
 	}
-	// mlx_key_hook(mlx->win_ptr, KEY_ESC, mlx);
-	// mlx_loop_hook(mlx->win_ptr, NULL, mlx);
+	// mlx_key_hook(mlx->win_ptr, exit_key, mlx);
+	mlx_loop_hook(mlx->win_ptr, NULL, mlx);
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	// mlx_loop(mlx->win_ptr);
 	// free mlx
 }
-
 

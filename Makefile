@@ -21,7 +21,8 @@ BIN_MLX = ./MLX42/build/libmlx42.a
 
 ################################# Sources ###################################
 
-INIT		= init/init.c
+INIT		= init/init.c \
+			init/list_objects.c
 UTILS		= utils/to_finish.c
 PARSER 		= parser/aux_functions.c 	\
 			parser/aux_functions2.c		\
@@ -32,11 +33,11 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/cylinder.c			\
 			parser/plane.c				\
 			parser/sphere.c				\
-	
-# MMLX		= mlx/init_render.c
+
+MMLX		= mlx/init_render.c
 OPERATIONS	= operations/vector.c 
 
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(MMLX)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 
@@ -53,7 +54,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lm -ldl -pthread -lglfw
+LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread -lglfw
 
 ################################ Progress ###################################
 

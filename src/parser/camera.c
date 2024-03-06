@@ -69,7 +69,7 @@ int	set_camera(char *fov_line, t_data *data)
 	data->camera.half_height = half_height;
 
 	data->camera.pixel_size = (data->camera.half_width * 2 / data->camera.height_v); //se der ruim, mudar para a implementação do livro
-	
+
 	data->camera.up = set_up(data);
 
 	return (OK);
