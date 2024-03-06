@@ -23,6 +23,7 @@ typedef struct s_mlx
 	mlx_t		*win_ptr;
 	mlx_image_t	*img_ptr;
 	int			width;
+	int			*pixels;
 	int			height;
 	t_img		img;
 }				t_mlx;

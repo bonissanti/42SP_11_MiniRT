@@ -91,6 +91,14 @@ typedef struct s_cylinder
 	t_vec3		vector;
 }				t_cylinder;
 
+/* Ray */
+
+typedef struct	s_ray
+{
+	t_coords	coord;
+	t_vec3		direction;
+}				t_ray;
+
 /*	Struct masters */
 
 /* typedef	struct	s_transofrm */
