@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:35:53 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/06 18:58:32 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:59:28 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,9 @@ typedef struct s_bvh_node
 	struct s_bvh_node	*right;
 	t_aabb				bbox;
 }	t_bvh_node;
+
+t_aabb	get_bbox_sphere(t_sphere *sphere);
+t_aabb	get_bbox_cylinder(t_cylinder *cylinder);
+t_aabb	get_bbox_plane(t_plane *plane);
 
 #endif //BVH_H

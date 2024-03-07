@@ -32,12 +32,14 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/light.c				\
 			parser/cylinder.c			\
 			parser/plane.c				\
-			parser/sphere.c				\
+			parser/sphere.c				
+BVH			= bvh/create_bvh.c			\
+			bvh/get_object_bbox.c
 
 MMLX		= mlx/init_render.c
 OPERATIONS	= operations/vector.c 
 
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(MMLX)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(MMLX)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 
