@@ -8,9 +8,9 @@ t_ray	ray_for_pixel(t_data *data, int x, int y)
 	t_coords	origin_transformed;
 	t_ray		ray;
 
-	t_coords pixel_world = {px, py, -1};
 	px = (2.0 * (x + 0.5) / data->camera.width_v - 1) * data->camera.aspect_ratio * data->camera.half_width;
 	py = (1 - 2.0 * (y + 0.5) / data->camera.height_v) * data->camera.half_height;
+	t_coords pixel_world = {px, py, -1};
 	
 	pixel_transformed = matrix_multiply_point(&data->camera.transform, &pixel_world);
 	origin_transformed = matrix_multiply_point(&data->camera.transform, &(t_coords){0, 0, 0});

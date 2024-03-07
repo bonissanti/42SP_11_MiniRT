@@ -1,6 +1,7 @@
 #include "../../include/minirt.h"
 
 /**
+ *
  * Function: matrix_multiply
  * --------------------
  * The multiplication of two matrices are defined by the linear combination
