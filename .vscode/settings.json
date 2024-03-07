@@ -1,5 +1,7 @@
 {
 	"files.associations": {
-		"ranges": "c"
-	}
+		"ranges": "c",
+		"random": "c"
+	},
+	"C_Cpp.default.compilerPath": "/usr/bin/gcc"
 }
