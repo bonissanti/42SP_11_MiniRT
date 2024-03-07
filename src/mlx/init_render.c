@@ -1,11 +1,11 @@
 #include "../../include/minirt.h"
 
 
-void	render_scene(t_mlx *mlx)
+void	render_scene(t_data *data, t_mlx *mlx)
 {
 	int		x;
 	int		y;
-	t_ray	ray
+	t_ray	ray;
 
 	y = -1;
 	while (++y < HEIGHT)
@@ -13,7 +13,8 @@ void	render_scene(t_mlx *mlx)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			ray 
+			ray = ray_for_pixel(data);
+			color =
 		}
 	}
 }

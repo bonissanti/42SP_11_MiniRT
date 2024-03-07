@@ -26,6 +26,11 @@ typedef struct s_vec3
 	double		z;
 }				t_vec3;
 
+typedef struct s_matrix
+{
+	double	matrix[4][4];
+}				t_matrix;
+
 /*	Mandatory elements */
 
 typedef struct s_camera
@@ -40,8 +45,8 @@ typedef struct s_camera
 	t_coords	point;
 	t_vec3		vector;
 	t_vec3		up;
-	/* t_matriz	transform; */
-	/* t_matriz	inversed_transform; */
+	t_matrix	transform;
+	t_matrix	inversed_transform;
 }				t_camera;
 
 typedef struct s_light
@@ -91,13 +96,21 @@ typedef struct s_cylinder
 	t_vec3		vector;
 }				t_cylinder;
 
-/* Ray */
+/* Ray and color */
 
 typedef struct	s_ray
 {
-	t_coords	coord;
+	t_coords	origin;
 	t_vec3		direction;
 }				t_ray;
+
+typedef struct	s_color
+{
+	double	r;
+	double	g;
+	double	b;
+	double	a;
+}				t_color;
 
 /*	Struct masters */
 
