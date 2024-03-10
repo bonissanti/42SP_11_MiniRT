@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/07 18:27:00 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/10 14:41:38 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,30 +100,47 @@ int	compare_position(t_object *obj1, t_object *obj2)
 	return (0);
 }
 
+t_object	*get_cur(t_object *objects, int start)
+{
+	t_object	*cur;
+	int			i;
+
+	i = 0;
+	cur = objects;
+	while (i < start)
+	{
+		cur = cur->next;
+		i++;
+	}
+	return (cur);
+}
+
 t_object	*sort_by_position(t_object **objects, int start, int end, int axis)
 {
 	t_object	*temp;
+	t_object	*cur;
+	t_object	*comp;
 	int			i;
 	int			j;
 
-	i = start;
-	while (i < end)
+	cur = get_cur(objects, start);
+	while (cur && i++ < end)
 	{
-		j = i + 1;
-		while (j < end)
+		comp = cur->next;
+		while (comp && j++ < end)
 		{
-			if (get_quadrant(objects[i]) == get_quadrant(objects[j])
-				&& compare_position(objects[i], objects[j]) == 1)
+			if (get_quadrant(cur) == get_quadrant(comp)
+				&& compare_position(cur, comp) == 1)
 			{
-				temp = objects[i];
-				objects[i] = objects[j];
-				objects[j] = temp;
+				temp = cur;
+				cur = comp;
+				comp = temp;
 			}
-			j++;
+			comp = comp->next;
 		}
-		i++;
+		cur = cur->next;
 	}
-	return (objects[start]);
+	return (get_cur(objects, start));
 }
 
 t_aabb	get_obj_bbox(t_object *obj)
@@ -188,19 +205,27 @@ t_bvh_node	*construct_bvh(t_object **objects, int start, int end)
 	return (node);
 }
 
-bool	intersect_bvh_node(t_bvh_node *node, Ray ray, float *tNear,
-	float *tFar)
+void	create_bvh_test(t_object **objects, int count)
 {
-	if (!intersectAABB(node->bbox, ray, tNear, tFar)) {
-		return false;
-	}
-	if (node->object != NULL) {
-		// Leaf node: Check intersection with the object
-		return (intersectObject(node->object, ray, tNear, tFar));
-	} else {
-		// Internal node: Recursively check intersections with child nodes
-		bool hitLeft = intersect_bvh_node(node->left, ray, tNear, tFar);
-		bool hitRight = intersect_bvh_node(node->right, ray, tNear, tFar);
-		return (hitLeft || hitRight);
-	}
+	t_bvh_node* root = construct_bvh(objects, 0, count);
+	// Now we can use the root node to traverse the BVH tree
+	// and check for ray intersections
+	// ...
 }
+
+// bool	intersect_bvh_node(t_bvh_node *node, Ray ray, float *tNear,
+// 	float *tFar)
+// {
+// 	if (!intersectAABB(node->bbox, ray, tNear, tFar)) {
+// 		return false;
+// 	}
+// 	if (node->object != NULL) {
+// 		// Leaf node: Check intersection with the object
+// 		return (intersectObject(node->object, ray, tNear, tFar));
+// 	} else {
+// 		// Internal node: Recursively check intersections with child nodes
+// 		bool hitLeft = intersect_bvh_node(node->left, ray, tNear, tFar);
+// 		bool hitRight = intersect_bvh_node(node->right, ray, tNear, tFar);
+// 		return (hitLeft || hitRight);
+// 	}
+// }
