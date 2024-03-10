@@ -14,6 +14,8 @@
 # include "structs.h"
 # include "mlx_utils.h"
 # include "bvh.h"
+# include "matrix.h"
+# include "ray.h"
 
 /* Macros */
 

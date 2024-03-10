@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/06 16:57:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/06 17:56:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
+	// draw_world
 	create_mlx_window(&mlx);
 	return (0);
 }
