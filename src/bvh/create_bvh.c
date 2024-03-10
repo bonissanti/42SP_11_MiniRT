@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/10 14:41:38 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/10 14:53:11 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,23 +158,23 @@ t_aabb	get_obj_bbox(t_object *obj)
 
 t_aabb	calculate_bbox(t_object **objects, int start, int end)
 {
-	t_aabb	bbox;
+	t_aabb		bbox;
+	t_aabb		obj_bbox;
+	t_object	*obj;
 
+	obj = get_cur(objects, start);
 	bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
 	bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
 	for (int i = start; i < end; i++)
 	{
-		t_object* obj = objects[i];
-		// Assuming each object has a method to get its t_aabb
-		t_aabb obj_bbox = get_obj_bbox(obj);
-		// Update the bounding box min and max points
+		obj_bbox = get_obj_bbox(obj);
 		bbox.min.x = fmin(bbox.min.x, obj_bbox.min.x);
 		bbox.min.y = fmin(bbox.min.y, obj_bbox.min.y);
 		bbox.min.z = fmin(bbox.min.z, obj_bbox.min.z);
-
 		bbox.max.x = fmax(bbox.max.x, obj_bbox.max.x);
 		bbox.max.y = fmax(bbox.max.y, obj_bbox.max.y);
 		bbox.max.z = fmax(bbox.max.z, obj_bbox.max.z);
+		obj = obj->next;
 	}
 	return (bbox);
 }
