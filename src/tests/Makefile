@@ -1,4 +1,3 @@
-#----
 #-------------------------- Makefile for tests ----------------------------#
 
 ################################ Colors ####################################  
@@ -15,14 +14,14 @@ RESET   = \033[0m
 
 ################################# Project ###################################
 
-include ../Makefile
-NAME    = miniRT_test
+include ../../Makefile
+TEST_EXEC    = miniRT_test
 
 ################################# Sources ###################################
 
-TEST_AMBLIGHT = tests_amblight.c
+TEST_AMBLIGHT	= tests_amblight.c
 
-MAND_SRCS     = $(TEST_AMBLIGHT)
+MAND_SRCS		= $(TEST_AMBLIGHT)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 
@@ -36,15 +35,23 @@ OBJS_DIR = ./objs
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g -I.
 
-################################# Test Rules ################################
+################################ Test Rules ################################
+
+$(OBJS_DIR)/%.o: %.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(BLUE_B)Compiling:$(RESET) $<"
 
 test: $(OBJS:%=$(OBJS_DIR)/%)
-    @$(CC) $(CFLAGS) $(OBJS:%=$(OBJS_DIR)/%) -o $(NAME) $(LDFLAGS)
-    @echo "$(BLUE_B)Running tests...$(RESET)"
-    @./$(NAME) && echo "$(GREEN)Tests passed successfully!$(RESET)" || echo "$(RED)Tests failed.$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS:%=$(OBJS_DIR)/%) -o $(NAME) $(LDFLAGS)
+	@echo "$(BLUE_B)Running tests...$(RESET)"
 
-clean_test:
-    @rm -f $(OBJS:%=$(OBJS_DIR)/%)
-    @rm -f $(NAME)
-    @echo "$(RED)Test objects and executable deleted$(RESET)"
+# clean:
+	# @rm -rf $(OBJS_DIR) 
+	# @echo "$(RED)$(TEST_EXEC) objects deleted$(RESET)
 
+fclean_test:
+	@rm -f $(TEST_EXEC)
+	@echo "$(RED)$(TEST_EXEC) deleted$(RESET)"
+
+re: fclean_test test

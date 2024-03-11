@@ -1,5 +1,4 @@
-#include <assert.h>
-#include "../../include/minirt.h"
+#include "tests.h"
 
 void	test_analyze_amblight(void)
 {
