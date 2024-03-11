@@ -33,16 +33,22 @@ int		parse_lines(t_data *data);
 
 // # Generic functions -------
 
+t_coords	set_coords(double x, double y, double z);
+t_vec3	set_vector(double x, double y, double z);
+double	dot_product(t_vec3 a, t_vec3 b);
 t_vec3	normalize_vector(t_vec3 value);
 t_vec3	cross_vector(t_vec3 a, t_vec3 b);
-t_vec3	substract_vector(t_vec3 a, t_vec3 b);
+t_vec3	subtract_vector(t_vec3 a, t_vec3 b);
+t_vec3	subtract_coords(t_coords a, t_coords b);
 
 // # Object lists ------------
 
 int		add_objects(t_data *data, void *obj, t_object_type type);
+void	free_objects(t_object *objects);
 
 // # Aux ---------------------
 
+void	render_scene(t_data *data, t_mlx *mlx);
 int		count_token(char **tokens, int expected_count, const char *msg);
 int		print_error(char *msg);
 int		is_number(char *coord);

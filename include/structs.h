@@ -31,6 +31,7 @@ typedef struct s_matrix
 	double	matrix[4][4];
 }				t_matrix;
 
+
 /*	Mandatory elements */
 
 typedef struct s_camera
@@ -46,7 +47,7 @@ typedef struct s_camera
 	t_vec3		vector;
 	t_vec3		up;
 	t_matrix	transform;
-	t_matrix	inversed_transform;
+	t_matrix	inversed_t;
 }				t_camera;
 
 typedef struct s_light
@@ -114,17 +115,19 @@ typedef struct	s_color
 
 /*	Struct masters */
 
-/* typedef	struct	s_transofrm */
-/* { */
-/* 	double	matriz[4][4]; */
-/* }				t_transform; */
-
 typedef struct s_object
 {
 	t_object_type	type;
 	void			*object;
 	struct s_object	*next;
 }					t_object;
+
+/* typedef struct	s_intersections */
+/* { */
+/* 	double	distance; */
+/* 	t_object obj; */
+/* 	struct s_intersections *next; */
+/* }					t_interesections; */
 
 typedef struct s_data
 {

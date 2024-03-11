@@ -71,10 +71,9 @@ int	set_camera(char *fov_line, t_data *data)
 	data->camera.pixel_size = (data->camera.half_width * 2 / data->camera.height_v); //se der ruim, mudar para a implementação do livro
 
 	data->camera.up = set_up(data);
-
+	set_camera_transform(&data->camera);
 	return (OK);
 }
-
 
 int	analyze_camera(char *line, t_data *data)
 {

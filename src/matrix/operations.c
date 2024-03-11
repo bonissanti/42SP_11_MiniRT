@@ -1,5 +1,4 @@
 #include "../../include/minirt.h"
-
 /**
  *
  * Function: matrix_multiply

@@ -34,10 +34,14 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/plane.c				\
 			parser/sphere.c				\
 
-MMLX		= mlx/init_render.c
-OPERATIONS	= operations/vector.c 
+RENDER		= render/render.c
+OPERATIONS	= operations/vector.c \
+			  operations/coords.c 
+MATRIX		= matrix/matrix.c \
+			  matrix/transformation.c \
+			  matrix/operations.c \
 
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(MMLX)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(RENDER) $(MATRIX)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 
@@ -66,29 +70,9 @@ define print_progress
 	@echo -n "\r$(MAG_B)Progress: $(MAGENT)$(CURRENT_FILES) / $(TOTAL_FILES) [$$((($(CURRENT_FILES) * 100) / $(TOTAL_FILES)))%] $(RESET) : $(BLUE)$(1)$(RESET) "
 endef
 
-################################# Test Sources ##############################
-
-# TEST_SRCS	= tests/tests_amblight.c \
-# TEST_OBJS	= $(TEST_SRCS:.c=.0)
-# TEST_EXEC	= test_miniRT
-
-################################# Test Rules ################################
-
-# test: $(TEST_EXEC)
-#
-# $(TEST_EXEC): $(LIBFT_LIB) $(TEST_OBJS)
-# 	@$(CC) $(CFLAGS) $(TEST_OBJS) $(OBJS:%=$(OBJS_DIR)/%) -o $(TEST_EXEC) $(LDFLAGS) -L$(LIBFT) -lft
-# 	@echo "$(GREEN)Running tests... $(RESET)"
-# 	# @./$(TEST_EXEC)
-
-%.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-	$(call print_progress, $(BLUE_B)Compiling:$(RESET) $<)
-
-# clean_test:
-# 	@rm -f $(TEST_OBJS)
-# 	@rm -f $(TEST_EXEC)
-# 	@echo "$(RED)Test objects and executable deleted$(RESET)"
+# %.o: %.c
+# 	@$(CC) $(CFLAGS) -c $< -o $@
+# 	$(call print_progress, $(BLUE_B)Compiling:$(RESET) $<)
 #
 ################################# Rules ####################################
 

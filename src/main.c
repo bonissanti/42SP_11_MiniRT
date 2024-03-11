@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
-	// draw_world
-	create_mlx_window(&mlx);
+	render_scene(&data, &mlx); 
+	free_objects(data.objects);
 	return (0);
 }
