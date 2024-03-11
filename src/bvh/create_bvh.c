@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_bvh.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/10 14:53:11 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/10 22:34:15 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,33 @@ t_object	*get_cur(t_object *objects, int start)
 	return (cur);
 }
 
-t_object	*sort_by_position(t_object **objects, int start, int end, int axis)
+void swap_nodes(t_object** head_ref, t_object *cur, t_object *comp) {
+    t_object* prevX = NULL;
+    t_object* currX = *head_ref;
+    while (currX && currX != cur) {
+        prevX = currX;
+        currX = currX->next;
+    }
+    t_object* prevY = NULL;
+    t_object* currY = *head_ref;
+    while (currY && currY != comp) {
+        prevY = currY;
+        currY = currY->next;
+    }
+    if (prevX != NULL)
+        prevX->next = currY;
+    else
+        *head_ref = currY;
+    if (prevY != NULL)
+        prevY->next = currX;
+    else
+        *head_ref = currX;
+    t_object* temp = currY->next;
+    currY->next = currX->next;
+    currX->next = temp;
+}
+
+void    sort_by_position(t_object **objects, int start, int end)
 {
 	t_object	*temp;
 	t_object	*cur;
@@ -123,24 +149,35 @@ t_object	*sort_by_position(t_object **objects, int start, int end, int axis)
 	int			i;
 	int			j;
 
-	cur = get_cur(objects, start);
-	while (cur && i++ < end)
+	cur = get_cur(*objects, start);
+    i = start;
+    j = end;
+	while (cur->next)
 	{
 		comp = cur->next;
-		while (comp && j++ < end)
+		while (comp)
 		{
+            printf("\ncomparing\n");
+            printf("quadrant cur: %d\n", get_quadrant(cur));
+            printf("quadrant comp: %d\n", get_quadrant(comp));
+            printf("compare position: %d\n", compare_position(cur, comp));
 			if (get_quadrant(cur) == get_quadrant(comp)
 				&& compare_position(cur, comp) == 1)
 			{
-				temp = cur;
-				cur = comp;
-				comp = temp;
+                printf("swapping\n");
+				swap_nodes(objects, cur, comp);
+                temp = cur;
+                cur = comp;
+                comp = temp;
 			}
 			comp = comp->next;
+            j++;
 		}
+        i++;
 		cur = cur->next;
 	}
-	return (get_cur(objects, start));
+    // printf("%d\n", cur->type);
+	*objects = get_cur(*objects, start);
 }
 
 t_aabb	get_obj_bbox(t_object *obj)
@@ -162,9 +199,9 @@ t_aabb	calculate_bbox(t_object **objects, int start, int end)
 	t_aabb		obj_bbox;
 	t_object	*obj;
 
-	obj = get_cur(objects, start);
-	bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
-	bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
+	obj = get_cur(*objects, start);
+	// bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
+	// bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
 	for (int i = start; i < end; i++)
 	{
 		obj_bbox = get_obj_bbox(obj);
@@ -182,35 +219,23 @@ t_aabb	calculate_bbox(t_object **objects, int start, int end)
 t_bvh_node	*construct_bvh(t_object **objects, int start, int end)
 {
 	t_bvh_node* node = malloc(sizeof(t_bvh_node));
-	// Calculate the bounding box for the current set of objects
 	node->bbox = calculate_bbox(objects, start, end);
 
 	int count = end - start;
 	if (count == 1)
 	{
-		// Leaf node
 		node->left = NULL;
 		node->right = NULL;
-		node->object.object = objects[start];
+		node->object.object = get_cur(*objects, start);
 	}
 	else
 	{
-		// Internal node
 		int mid = start + count / 2;
-		// Split objects into two groups
 		node->left = construct_bvh(objects, start, mid);
 		node->right = construct_bvh(objects, mid, end);
 		node->object.object = NULL;
 	}
 	return (node);
-}
-
-void	create_bvh_test(t_object **objects, int count)
-{
-	t_bvh_node* root = construct_bvh(objects, 0, count);
-	// Now we can use the root node to traverse the BVH tree
-	// and check for ray intersections
-	// ...
 }
 
 // bool	intersect_bvh_node(t_bvh_node *node, Ray ray, float *tNear,

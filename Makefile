@@ -36,7 +36,7 @@ PARSER 		= parser/aux_functions.c 	\
 BVH			= bvh/create_bvh.c			\
 			bvh/get_object_bbox.c
 
-MMLX		= mlx/init_render.c
+MMLX		= render/init_render.c
 OPERATIONS	= operations/vector.c 
 
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(MMLX)
@@ -56,7 +56,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread -lglfw
+LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread 
 
 ################################ Progress ###################################
 
