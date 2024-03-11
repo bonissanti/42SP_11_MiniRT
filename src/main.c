@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/10 22:33:10 by renato           ###   ########.fr       */
+/*   Updated: 2024/03/11 12:59:00 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void traverseBVH(t_bvh_node *node, int depth) {
 int main(int argc, char **argv) 
 {
 	t_data		data;
-	// t_mlx		mlx;
+	t_mlx		mlx;
 
 	init_structs(&data);
 	if (argc != 2) 
@@ -66,12 +66,12 @@ int main(int argc, char **argv)
 	else if (parse_lines(&data) == ERROR)
 		return (1);
 	// draw_world
-	print_objects(data.objects);
-	sort_by_position(&data.objects, 0, 5);
-	print_objects(data.objects);
+	// print_objects(data.objects);
+	// sort_by_position(&data.objects, 0, 5);
+	// print_objects(data.objects);
 
 	t_bvh_node *node = construct_bvh(&data.objects, 0, 5);
 	traverseBVH(node, 0);
-	// create_mlx_window(&mlx);
+	create_mlx_window(&mlx);
 	return (0);
 }
