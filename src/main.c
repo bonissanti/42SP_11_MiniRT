@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 17:55:05 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 17:57:20 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,7 @@ int main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
-	print_objects(data.objects);
 	t_bvh_node *node = create_bvh(&data.objects);
-	print_objects(data.objects);
-	traverseBVH(node, 0);
 	render_scene(&data, &mlx);
 	free_objects(data.objects);
 	return (0);
