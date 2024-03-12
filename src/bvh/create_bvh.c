@@ -6,12 +6,11 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/12 16:10:23 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 17:53:14 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
-#include <float.h>
 #include <limits.h>
 
 t_object	*get_cur(t_object *objects, int start)
@@ -27,21 +26,6 @@ t_object	*get_cur(t_object *objects, int start)
 		i++;
 	}
 	return (cur);
-}
-
-t_aabb	get_obj_bbox(t_object *obj)
-{
-	t_aabb	bbox;
-
-	bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
-	bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
-	if (obj->type == SPHERE)
-		bbox = get_bbox_sphere(obj->object);
-	else if (obj->type == CYLINDER)
-		bbox = get_bbox_cylinder(obj->object);
-	else if (obj->type == PLANE)
-		bbox = get_bbox_plane(obj->object);
-	return (bbox);
 }
 
 t_aabb	calculate_bbox(t_object **objects, int start, int end)
@@ -106,6 +90,7 @@ t_bvh_node	*create_bvh(t_object **objects)
 		count++;
 		cur = cur->next;
 	}
+	quick_sort(*objects, get_last(*objects));
 	root = construct_bvh(objects, 0, count);
 	return (root);
 }

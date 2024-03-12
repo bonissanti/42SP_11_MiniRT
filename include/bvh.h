@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:35:53 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/12 16:08:10 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 17:50:35 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ typedef struct s_bvh_node
 	t_aabb				bbox;
 }	t_bvh_node;
 
-t_aabb		get_bbox_sphere(t_sphere *sphere);
-t_aabb		get_bbox_cylinder(t_cylinder *cylinder);
-t_aabb		get_bbox_plane(t_plane *plane);
+t_aabb		get_obj_bbox(t_object *obj);
 
-void		sort_by_position(t_object **objects, int start, int end);
+void		quick_sort(t_object *first, t_object *last);
+t_object	*get_last(t_object *cur);
 
 t_bvh_node	*create_bvh(t_object **objects);
 t_object	*get_cur(t_object *objects, int start);
+
+int			get_quadrant(t_object *obj);
 
 #endif //BVH_H

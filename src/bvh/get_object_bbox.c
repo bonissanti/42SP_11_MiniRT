@@ -6,12 +6,11 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:40:06 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/12 12:41:44 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 17:50:16 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
-#include <float.h>	
 
 t_aabb	get_bbox_sphere(t_sphere *sphere)
 {
@@ -49,5 +48,20 @@ t_aabb	get_bbox_plane(t_plane *plane)
 	bbox.min.x = (plane->position.x + 300.0) * plane->vector.x;
 	bbox.min.x = (plane->position.x + 300.0) * plane->vector.y;
 	bbox.min.x = (plane->position.x + 300.0) * plane->vector.z;
+	return (bbox);
+}
+
+t_aabb	get_obj_bbox(t_object *obj)
+{
+	t_aabb	bbox;
+
+	bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
+	bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
+	if (obj->type == SPHERE)
+		bbox = get_bbox_sphere(obj->object);
+	else if (obj->type == CYLINDER)
+		bbox = get_bbox_cylinder(obj->object);
+	else if (obj->type == PLANE)
+		bbox = get_bbox_plane(obj->object);
 	return (bbox);
 }
