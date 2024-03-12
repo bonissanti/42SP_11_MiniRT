@@ -10,5 +10,6 @@
 		"type_traits": "c",
 		"utility": "c"
 	},
-	"C_Cpp.default.compilerPath": "/usr/bin/gcc"
+	"C_Cpp.default.compilerPath": "/usr/bin/gcc",
+	"cmake.configureOnOpen": false
 }

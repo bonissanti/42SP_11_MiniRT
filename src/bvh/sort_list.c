@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:23:25 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/11 13:38:08 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 11:45:11 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,10 @@ void	sort_by_position(t_object **objects, int start, int end)
 		comp = cur->next;
 		while (comp)
 		{
-			printf("\ncomparing\n");
-			printf("quadrant cur: %d\n", get_quadrant(cur));
-			printf("quadrant comp: %d\n", get_quadrant(comp));
-			printf("compare position: %d\n", compare_position(cur, comp));
+			// printf("\ncomparing\n");
+			// printf("quadrant cur: %d\n", get_quadrant(cur));
+			// printf("quadrant comp: %d\n", get_quadrant(comp));
+			// printf("compare position: %d\n", compare_position(cur, comp));
 			if (get_quadrant(cur) == get_quadrant(comp)
 				&& compare_position(cur, comp) == 1)
 			{

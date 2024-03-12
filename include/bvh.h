@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:35:53 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/11 13:31:50 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:02:37 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_obj
 
 typedef struct s_bvh_node
 {
-	t_obj				object;
+	void				*object;
 	struct s_bvh_node	*left;
 	struct s_bvh_node	*right;
 	t_aabb				bbox;
@@ -39,7 +39,7 @@ t_aabb		get_bbox_plane(t_plane *plane);
 
 void		sort_by_position(t_object **objects, int start, int end);
 
-t_bvh_node	*construct_bvh(t_object **objects, int start, int end);
+t_bvh_node	*create_bvh(t_object **objects);
 t_object	*get_cur(t_object *objects, int start);
 
 #endif //BVH_H

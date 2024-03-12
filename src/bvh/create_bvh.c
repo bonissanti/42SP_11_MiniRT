@@ -6,11 +6,13 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/11 17:34:26 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 12:50:57 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+#include <float.h>
+#include <limits.h>
 
 t_object	*get_cur(t_object *objects, int start)
 {
@@ -31,8 +33,8 @@ t_aabb	get_obj_bbox(t_object *obj)
 {
 	t_aabb	bbox;
 
-	bbox.min.x = bbox.min.y = bbox.min.z = FLT_MIN;
-	bbox.max.x = bbox.max.y = bbox.max.z = FLT_MAX;
+	bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
+	bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
 	if (obj->type == SPHERE)
 		bbox = get_bbox_sphere(obj->object);
 	else if (obj->type == CYLINDER)
@@ -49,8 +51,8 @@ t_aabb	calculate_bbox(t_object **objects, int start, int end)
 	t_object	*obj;
 
 	obj = get_cur(*objects, start);
-	// bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
-	// bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
+	bbox.min.x = bbox.min.y = bbox.min.z = INT_MAX;
+	bbox.max.x = bbox.max.y = bbox.max.z = INT_MIN;
 	for (int i = start; i < end; i++)
 	{
 		obj_bbox = get_obj_bbox(obj);
@@ -78,14 +80,14 @@ t_bvh_node	*construct_bvh(t_object **objects, int start, int end)
 	{
 		node->left = NULL;
 		node->right = NULL;
-		node->object.object = get_cur(*objects, start);
+		node->object = get_cur(*objects, start);
 	}
 	else
 	{
 		mid = start + count / 2;
 		node->left = construct_bvh(objects, start, mid);
 		node->right = construct_bvh(objects, mid, end);
-		node->object.object = NULL;
+		node->object = NULL;
 	}
 	return (node);
 }
@@ -107,19 +109,19 @@ t_bvh_node	*create_bvh(t_object **objects)
 	return (root);
 }
 
-bool	intersect_bvh_node(t_bvh_node *node, Ray ray, float *tNear,
-	float *tFar)
-{
-	if (!intersectAABB(node->bbox, ray, tNear, tFar)) {
-		return false;
-	}
-	if (node->object != NULL) {
-		// Leaf node: Check intersection with the object
-		return (intersectObject(node->object, ray, tNear, tFar));
-	} else {
-		// Internal node: Recursively check intersections with child nodes
-		bool hitLeft = intersect_bvh_node(node->left, ray, tNear, tFar);
-		bool hitRight = intersect_bvh_node(node->right, ray, tNear, tFar);
-		return (hitLeft || hitRight);
-	}
-}
+// bool	intersect_bvh_node(t_bvh_node *node, Ray ray, float *tNear,
+// 	float *tFar)
+// {
+// 	if (!intersectAABB(node->bbox, ray, tNear, tFar)) {
+// 		return false;
+// 	}
+// 	if (node->object != NULL) {
+// 		// Leaf node: Check intersection with the object
+// 		return (intersectObject(node->object, ray, tNear, tFar));
+// 	} else {
+// 		// Internal node: Recursively check intersections with child nodes
+// 		bool hitLeft = intersect_bvh_node(node->left, ray, tNear, tFar);
+// 		bool hitRight = intersect_bvh_node(node->right, ray, tNear, tFar);
+// 		return (hitLeft || hitRight);
+// 	}
+// }

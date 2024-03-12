@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/11 12:59:00 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:57:19 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void traverseBVH(t_bvh_node *node, int depth) {
 	}
 
 	// Print node's bounding box coordinates
-	if (node->object.object != NULL)
+	if (node->object != NULL)
 		printf("Leaf: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)\n", node->bbox.min.x,
 				 node->bbox.min.y, node->bbox.min.z, node->bbox.max.x, node->bbox.max.y,
 				 node->bbox.max.z);
@@ -53,7 +53,7 @@ void traverseBVH(t_bvh_node *node, int depth) {
 int main(int argc, char **argv) 
 {
 	t_data		data;
-	t_mlx		mlx;
+	// t_mlx		mlx;
 
 	init_structs(&data);
 	if (argc != 2) 
@@ -69,9 +69,8 @@ int main(int argc, char **argv)
 	// print_objects(data.objects);
 	// sort_by_position(&data.objects, 0, 5);
 	// print_objects(data.objects);
-
-	t_bvh_node *node = construct_bvh(&data.objects, 0, 5);
+	t_bvh_node *node = create_bvh(&data.objects);
 	traverseBVH(node, 0);
-	create_mlx_window(&mlx);
+	// create_mlx_window(&mlx);
 	return (0);
 }

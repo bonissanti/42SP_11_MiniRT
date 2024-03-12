@@ -34,7 +34,8 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/plane.c				\
 			parser/sphere.c				
 BVH			= bvh/create_bvh.c			\
-			bvh/get_object_bbox.c
+			bvh/get_object_bbox.c		\
+			bvh/sort_list.c
 
 MMLX		= render/init_render.c
 OPERATIONS	= operations/vector.c 
