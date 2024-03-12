@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:35:53 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/12 14:02:37 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 16:08:10 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_obj
 
 typedef struct s_bvh_node
 {
+	t_object_type		type;
 	void				*object;
 	struct s_bvh_node	*left;
 	struct s_bvh_node	*right;

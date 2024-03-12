@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/12 12:50:57 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/12 16:10:23 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_bvh_node	*construct_bvh(t_object **objects, int start, int end)
 		node->left = NULL;
 		node->right = NULL;
 		node->object = get_cur(*objects, start);
+		node->type = (*objects)->type;
 	}
 	else
 	{
