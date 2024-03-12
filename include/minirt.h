@@ -7,11 +7,13 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <float.h>	// DBL_MAX, DBL_MIN
 # include "../libft/include/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 # include "elements.h"
 # include "structs.h"
 # include "mlx_utils.h"
+# include "bvh.h"
 # include "matrix.h"
 # include "ray.h"
 

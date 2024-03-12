@@ -34,7 +34,7 @@ int	valid_file(char *file, t_data *data)
 		printf("%s\n", file);
         return (print_error("File is empty or could not be read\n"));
     }
-	printf("eu funfei");
+	printf("eu funfei\n");
 	data->buffer[bytes_read] = '\0';
 	if (file_extension(file, ".rt"))
 	{

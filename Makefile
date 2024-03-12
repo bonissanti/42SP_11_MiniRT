@@ -32,7 +32,10 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/light.c				\
 			parser/cylinder.c			\
 			parser/plane.c				\
-			parser/sphere.c				\
+			parser/sphere.c				
+BVH			= bvh/create_bvh.c			\
+			bvh/get_object_bbox.c		\
+			bvh/sort_list.c
 
 RENDER		= render/render.c
 OPERATIONS	= operations/vector.c \
@@ -41,7 +44,7 @@ MATRIX		= matrix/matrix.c \
 			  matrix/transformation.c \
 			  matrix/operations.c \
 
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(RENDER) $(MATRIX)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(RENDER) $(MATRIX)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 
@@ -58,7 +61,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread -lglfw
+LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread 
 
 ################################ Progress ###################################
 
