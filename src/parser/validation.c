@@ -1,10 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/12 15:34:58 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/03/12 15:46:20 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minirt.h"
 #include <stdio.h>
+
 
 int	file_extension(char *file, char *ext)
 {
 	char	*ptr;
-
+	
 	ptr = ft_strrchr(file, '.'); // add libft
 	if (!ptr || ptr == file)
 	{

@@ -1,4 +1,16 @@
-#ifndef MLX_UTILS_H 
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_utils.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/12 15:35:10 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/03/12 17:14:25 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MLX_UTILS_H
 # define MLX_UTILS_H
 
 # include "../MLX42/include/MLX42/MLX42.h"
@@ -19,7 +31,7 @@ typedef struct s_img
 }				t_img;
 
 typedef struct s_mlx
-{ 
+{
 	mlx_t		*win_ptr;
 	mlx_image_t	*img_ptr;
 	int			width;
@@ -27,7 +39,7 @@ typedef struct s_mlx
 	int			height;
 	t_img		img;
 }				t_mlx;
- 
-void	create_mlx_window(t_mlx *mlx);
+
+void			create_mlx_window(t_mlx *mlx);
 
 #endif

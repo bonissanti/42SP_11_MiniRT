@@ -1,19 +1,18 @@
 #include "../../include/minirt.h"
 
-// t_color	trace_ray(t_data *data, t_ray ray)
-// {
-// 	t_intersection	*intersections;
-// 	t_intersection	*hit;
-// 	t_computations	comps;
-//
-// 	intersections = intersect_world(data, ray);
-// 	hit = find_hit(intersections);
-// 	if (!hit)
-// 		return ((t_collor){0, 0, 0});
-// 	comps = prepare_computation(hit, ray);
-// 	return (shade_hit(data, comps));
-// }
+t_color	trace_ray(t_data *data, t_ray ray)
+{
+	_Bool		hit_found;
+	t_inter	*hit;
+	t_comps			computations;
+	t_object	*closest_object;
 
+	hit_found = intersect_bvh(data, ray, closest_object);
+	if (!hit)
+		return ((t_color){0, 0, 0});
+	// computations = prepare_computation(hit, ray);
+	// return (shade_hit(data, computations));
+}
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 {
@@ -49,7 +48,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
 			// pixel_color = trace_ray(ray, data);
-			// mlx_put_pixel(mlx->img_ptr, x, y, );
+			// mlx_put_pixel(mlx->img_ptr, x, y, pixel_color);
 		}
 	(void)ray;
 	}

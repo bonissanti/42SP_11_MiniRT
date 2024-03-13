@@ -3,60 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2024/03/12 17:57:20 by rseelaen         ###   ########.fr       */
+=======
+/*   Updated: 2024/03/12 17:14:02 by brunrodr         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-void print_objects(t_object* head) {
-    t_object* current = head;
-	t_sphere *sphere;
-    int i = 0;
+void	print_objects(t_object *head)
+{
+	t_object	*current;
+	t_sphere	*sphere;
+	int			i;
+
+	current = head;
+	i = 0;
 	printf("\nPrinting objects\n----------------\n");
-    while (current != NULL) {
+	while (current != NULL)
+	{
 		sphere = (t_sphere *)current->object;
-        printf("Object %d: %f %f %f\n", i, sphere->position.x, sphere->position.y, sphere->position.z);
-        current = current->next;
-        i++;
-    }
+		printf("Object %d: %f %f %f\n", i, sphere->position.x,
+			sphere->position.y, sphere->position.z);
+		current = current->next;
+		i++;
+	}
 }
 
-void traverseBVH(t_bvh_node *node, int depth) {
-	if (node == NULL) {
-		return;
+void	traverseBVH(t_bvh_node *node, int depth)
+{
+	if (node == NULL)
+	{
+		return ;
 	}
-
 	// Print indentation based on depth
-	for (int i = 0; i < depth; ++i) {
+	for (int i = 0; i < depth; ++i)
+	{
 		printf("  ");
 	}
-
 	// Print node's bounding box coordinates
 	if (node->object != NULL)
-		printf("Leaf: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)\n", node->bbox.min.x,
-				 node->bbox.min.y, node->bbox.min.z, node->bbox.max.x, node->bbox.max.y,
-				 node->bbox.max.z);
+		printf("Leaf: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)\n",
+			node->bbox.min.x, node->bbox.min.y, node->bbox.min.z,
+			node->bbox.max.x, node->bbox.max.y, node->bbox.max.z);
 	else
-		printf("Inner Node: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)\n", node->bbox.min.x,
-				 node->bbox.min.y, node->bbox.min.z, node->bbox.max.x, node->bbox.max.y,
-				 node->bbox.max.z);
-
+		printf("Inner Node: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)\n",
+			node->bbox.min.x, node->bbox.min.y, node->bbox.min.z,
+			node->bbox.max.x, node->bbox.max.y, node->bbox.max.z);
 	// Traverse left and right subtrees
 	traverseBVH(node->left, depth + 1);
 	traverseBVH(node->right, depth + 1);
 }
 
-int main(int argc, char **argv) 
+int	main(int argc, char **argv)
 {
 	t_data		data;
 	t_mlx		mlx;
+	t_bvh_node	*node;
 
 	init_structs(&data);
-	if (argc != 2) 
+	if (argc != 2)
 	{
 		ft_putstr_fd("Error\nInvalid number of arguments\n", 2);
 		return (1);
@@ -65,7 +76,12 @@ int main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
+<<<<<<< Updated upstream
 	t_bvh_node *node = create_bvh(&data.objects);
+=======
+	node = create_bvh(&data.objects);
+	traverseBVH(node, 0);
+>>>>>>> Stashed changes
 	render_scene(&data, &mlx);
 	free_objects(data.objects);
 	return (0);

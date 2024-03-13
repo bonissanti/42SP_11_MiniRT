@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/12 15:37:10 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/03/12 17:15:20 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minirt.h"
 
 t_vec3	set_vector(double x, double y, double z)
@@ -12,7 +24,6 @@ t_vec3	normalize_vector(t_vec3 value)
 
 	ft_memset(&normalized, 0, sizeof(t_vec3));
 	magnitude = sqrt(value.x * value.x + value.y * value.y + value.z * value.z);
-
 	if (magnitude != 0)
 	{
 		normalized.x = value.x / magnitude;
