@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 17:14:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/13 17:47:11 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 /* config window */
 
-# define HEIGHT 700
-# define WIDTH 1000
+# define HEIGHT 32
+# define WIDTH 32
 # define TITLE "miniRTARDOS"
 
 /* structs to mlx */

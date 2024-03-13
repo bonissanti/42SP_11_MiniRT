@@ -27,6 +27,11 @@
 
 # define KEY_ESC 65307
 
+/* Readability */
+
+# define MIN 0
+# define MAX 1
+
 // # Init --------------------
 
 void		init_structs(t_data *data);
@@ -58,5 +63,8 @@ char		*ft_strtok(char *str, const char *delim);
 void		free_array(char **array);
 double		ft_atod(char *str);
 size_t		ft_strxspn(const char *str, const char *set, int mode);
+
+_Bool		intersection_bvh(t_bvh_node *node, t_ray ray,
+				t_object **closest_object);
 
 #endif

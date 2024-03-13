@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 19:23:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/13 15:22:09 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_obj
 
 typedef struct s_bvh_node
 {
+	t_object_type			type;
 	void					*object;
 	struct s_bvh_node		*left;
 	struct s_bvh_node		*right;
