@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/13 19:32:51 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/13 19:43:49 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,36 @@ void	traverseBVH(t_bvh_node *node, int depth)
 	traverseBVH(node->right, depth + 1);
 }
 
-void print_scene_top_view(t_object *objects) {
+void print_scene_ascii_art(t_object *objects, t_camera *camera) {
+    char grid[6][6];
     t_object *cur = objects;
+	t_sphere *sphere;
 
-    printf("Top view of the scene:\n");
+    // Initialize grid with spaces
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 6; j++) {
+            grid[i][j] = ' ';
+        }
+    }
+
+    // Set objects in grid
     while (cur) {
-        printf("Object at (%f, %f)\n", cur->x, cur->y);
+		sphere = (t_sphere *)cur->object;
+        int x = (int)(sphere->position.x) + 3;
+        int y = (int)(sphere->position.y) + 3;
+        grid[y][x] = '#';
         cur = cur->next;
+    }
+	int x = (int)(camera->point.x) + 3;
+	int y = (int)(camera->point.y) + 3;
+	grid[y][x] = 'C';
+
+    // Print grid
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 6; j++) {
+            putchar(grid[i][j]);
+        }
+        putchar('\n');
     }
 }
 
@@ -82,7 +105,7 @@ int	main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
-	print_scene_top_view(data.objects);
+	print_scene_ascii_art(data.objects, &data.camera);
 	// node = create_bvh(&data.objects);
 	// traverseBVH(node, 0);
 	render_scene(&data, &mlx);
