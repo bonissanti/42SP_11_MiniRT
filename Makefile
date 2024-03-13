@@ -38,7 +38,8 @@ BVH			= bvh/create_bvh.c			\
 			bvh/get_quadrant.c			\
 			bvh/sort_list.c				
 
-RENDER		= render/render.c
+RENDER		= render/render.c\
+			render/intersections.c
 OPERATIONS	= operations/vector.c \
 			  operations/coords.c 
 MATRIX		= matrix/matrix.c \

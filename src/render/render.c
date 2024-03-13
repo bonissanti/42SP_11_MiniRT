@@ -1,18 +1,18 @@
 #include "../../include/minirt.h"
 
-t_color	trace_ray(t_data *data, t_ray ray)
-{
-	_Bool		hit_found;
-	t_inter	*hit;
-	t_comps			computations;
-	t_object	*closest_object;
+// t_color	trace_ray(t_data *data, t_ray ray)
+// {
+// 	_Bool		hit_found;
+// 	t_inter		*hit = NULL;
+// 	t_comps		computations;
+// 	t_object	*closest_object;
 
-	hit_found = intersect_bvh(data, ray, closest_object);
-	if (!hit)
-		return ((t_color){0, 0, 0});
-	// computations = prepare_computation(hit, ray);
-	// return (shade_hit(data, computations));
-}
+// 	hit_found = intersection_bvh(data, ray, closest_object);
+// 	if (!hit)
+// 		return ((t_color){0, 0, 0, 0});
+// 	// computations = prepare_computation(hit, ray);
+// 	// return (shade_hit(data, computations));
+// }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 {
@@ -37,6 +37,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	int		y;
 	t_ray	ray;
 	t_color	pixel_color;
+	t_bvh_node *head = create_bvh(&data->objects);
+	t_object	*closest_object = NULL;
 
 	y = -1;
 	(void)mlx;
@@ -47,9 +49,11 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		while (++x < data->camera.width_v)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
+			intersection_bvh(head, ray, &closest_object);
 			// pixel_color = trace_ray(ray, data);
 			// mlx_put_pixel(mlx->img_ptr, x, y, pixel_color);
 		}
+		printf("\n");
 	(void)ray;
 	}
 	// mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);

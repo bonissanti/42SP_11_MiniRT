@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:40:06 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/12 17:50:16 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/13 14:51:08 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,32 @@
 t_aabb	get_bbox_sphere(t_sphere *sphere)
 {
 	t_aabb	bbox;
+	double	radius;
 
-	bbox.min.x = sphere->position.x - (sphere->diameter / 2.0);
-	bbox.min.y = sphere->position.y - (sphere->diameter / 2.0);
-	bbox.min.z = sphere->position.z - (sphere->diameter / 2.0);
-	bbox.max.x = sphere->position.x + (sphere->diameter / 2.0);
-	bbox.max.y = sphere->position.y + (sphere->diameter / 2.0);
-	bbox.max.z = sphere->position.z + (sphere->diameter / 2.0);
+	radius = sphere->diameter / 2.0;
+	bbox.min.x = sphere->position.x - radius;
+	bbox.min.y = sphere->position.y - radius;
+	bbox.min.z = sphere->position.z - radius;
+	bbox.max.x = sphere->position.x + radius;
+	bbox.max.y = sphere->position.y + radius;
+	bbox.max.z = sphere->position.z + radius;
 	return (bbox);
 }
 
 t_aabb	get_bbox_cylinder(t_cylinder *cylinder)
 {
 	t_aabb	bbox;
+	double	radius;
+	double	half;
 
-	bbox.min.x = cylinder->position.x - (cylinder->diameter / 2.0);
-	bbox.min.y = cylinder->position.y - (cylinder->diameter / 2.0);
-	bbox.min.z = cylinder->position.z - (cylinder->height / 2.0);
-	bbox.max.x = cylinder->position.x + (cylinder->diameter / 2.0);
-	bbox.max.y = cylinder->position.y + (cylinder->diameter / 2.0);
-	bbox.max.z = cylinder->position.z + (cylinder->height / 2.0);
+	radius = cylinder->diameter / 2.0;
+	half = cylinder->height / 2.0;
+	bbox.min.x = cylinder->position.x - radius;
+	bbox.min.y = cylinder->position.y - radius;
+	bbox.min.z = cylinder->position.z - half;
+	bbox.max.x = cylinder->position.x + radius;
+	bbox.max.y = cylinder->position.y + radius;
+	bbox.max.z = cylinder->position.z + half;
 	return (bbox);
 }
 
