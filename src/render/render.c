@@ -1,7 +1,5 @@
 #include "../../include/minirt.h"
 
-t_comps	prepare_computations();
-
 t_color	trace_ray(t_data *data, t_ray ray)
 {
 	t_inter			closest_found;
@@ -20,8 +18,6 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	// color = process_intersection(data, &closest_found, &ray);
 	delete_inter_list(inter_list);
 	return ((t_color){0, 0, 0, 0});
-	// computations = prepare_computation(hit, ray);
-	// return (shade_hit(data, computations));
 }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)

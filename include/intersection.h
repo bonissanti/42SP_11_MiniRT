@@ -1,7 +1,10 @@
 #ifndef INTERSECTION_H
 # define INTERSECTION_H
 
-#include "structs.h"
+# include "structs.h"
+
+# define MAX 1
+# define MIN 0
 
 void		add_inter_list_back(t_inter_list **list, t_inter inter);
 void		delete_inter_list(t_inter_list *list);
