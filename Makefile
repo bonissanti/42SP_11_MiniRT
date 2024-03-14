@@ -33,19 +33,26 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/cylinder.c			\
 			parser/plane.c				\
 			parser/sphere.c				
+
 BVH			= bvh/create_bvh.c			\
 			bvh/get_object_bbox.c		\
 			bvh/get_quadrant.c			\
 			bvh/sort_list.c				
 
-RENDER		= render/render.c
+RENDER		= render/render.c \
+
+INTER		= intersection/hit.c \
+			  intersection/intersections.c \
+			  intersection/list.c
+
 OPERATIONS	= operations/vector.c \
 			  operations/coords.c 
+
 MATRIX		= matrix/matrix.c \
 			  matrix/transformation.c \
 			  matrix/operations.c \
 
-MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(RENDER) $(MATRIX)
+MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(RENDER) $(INTER) $(MATRIX)
 
 SRC = $(addprefix ./src/, $(MAND_SRCS))
 

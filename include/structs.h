@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 19:23:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:31:45 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,16 @@ typedef struct s_cylinder
 }							t_cylinder;
 
 /* Ray and color */
+typedef struct s_bhaskara
+{
+	double	a;
+	double	b;
+	double	c;
+	double	delta;
+	double	root1;
+	double	root2;
+	int		status;
+}				t_bhaskara;
 
 
 typedef struct s_color
@@ -136,6 +146,7 @@ typedef struct s_obj
 typedef struct s_bvh_node
 {
 	void					*object;
+	t_object_type			type;
 	struct s_bvh_node		*left;
 	struct s_bvh_node		*right;
 	t_aabb					bbox;
@@ -152,24 +163,30 @@ typedef struct s_object
 
 typedef struct s_ray
 {
-	double					t_min;
-	double					t_max;
 	double					closest_t;
 	t_coords				origin;
 	t_vec3					direction;
 	t_object				*closest_object;
 }							t_ray;
 
-typedef struct s_intersection
+typedef struct s_inter
 {
 	double					t;
-	t_object				obj;
-	struct s_intersection	*next;
+	t_vec3					point;
+	t_vec3					normal;
+	t_object				*object;
 }							t_inter;
+
+typedef struct s_inter_list
+{
+	t_inter					inter;
+	struct s_inter_list			*next;
+}							t_inter_list;
 
 typedef struct s_comps
 {
-	double					distance;
+	double					t;
+	int						inside;
 	t_coords				point;
 	t_coords				over_point;
 	t_vec3					eyev;
@@ -186,7 +203,7 @@ typedef struct s_data
 	t_camera				camera;
 	t_light					light;
 	t_object				*objects;
-	t_bvh_node				bvh_root;
+	t_bvh_node				*bvh_root;
 }							t_data;
 
 #endif

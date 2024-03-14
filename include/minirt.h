@@ -9,19 +9,24 @@
 # include "mlx_utils.h"
 # include "ray.h"
 # include "structs.h"
+# include "intersection.h"
 # include <fcntl.h>
-# include <float.h> // DBL_MAX, DBL_MIN
 # include <math.h>
+# include <float.h> // DBL_MAX, DBL_MIN
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 /* Macros */
 
 # define OK 0
 # define ERROR 1
 # define EPSILON 0.00001
+# define NO_REAL_ROOTS 0
+# define ONE_REAL_ROOTS 1
+# define TWO_REAL_ROOTS 2
 
 /* key config */
 

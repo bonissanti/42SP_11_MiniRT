@@ -1,15 +1,25 @@
 #include "../../include/minirt.h"
 
+t_comps	prepare_computations();
+
 t_color	trace_ray(t_data *data, t_ray ray)
 {
-	_Bool		hit_found;
-	t_inter	*hit;
-	t_comps			computations;
-	t_object	*closest_object;
+	t_inter			closest_found;
+	t_inter_list	*inter_list;
+	// t_color			color;
+	bool			hit;
 
-	hit_found = intersect_bvh(data, ray, closest_object);
-	if (!hit)
-		return ((t_color){0, 0, 0});
+	ray.closest_t = INFINITY;
+	hit = intersection_bvh(data->bvh_root, &inter_list, ray);
+	find_closest_inter(&closest_found, inter_list);
+	if (!hit || find_closest_inter(&closest_found, inter_list))
+	{
+		delete_inter_list(inter_list);
+		return ((t_color){0, 0, 0, 0});
+	}
+	// color = process_intersection(data, &closest_found, &ray);
+	delete_inter_list(inter_list);
+	return ((t_color){0, 0, 0, 0});
 	// computations = prepare_computation(hit, ray);
 	// return (shade_hit(data, computations));
 }
@@ -47,7 +57,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		while (++x < data->camera.width_v)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
-			// pixel_color = trace_ray(ray, data);
+			pixel_color = trace_ray(data, ray);
 			// mlx_put_pixel(mlx->img_ptr, x, y, pixel_color);
 		}
 	(void)ray;

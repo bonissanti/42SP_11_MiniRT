@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/03/12 17:57:20 by rseelaen         ###   ########.fr       */
-=======
-/*   Updated: 2024/03/12 17:14:02 by brunrodr         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/03/13 15:41:44 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +60,7 @@ int	main(int argc, char **argv)
 {
 	t_data		data;
 	t_mlx		mlx;
-	t_bvh_node	*node;
+	// t_bvh_node	*node;
 
 	init_structs(&data);
 	if (argc != 2)
@@ -76,12 +72,8 @@ int	main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
-<<<<<<< Updated upstream
-	t_bvh_node *node = create_bvh(&data.objects);
-=======
-	node = create_bvh(&data.objects);
-	traverseBVH(node, 0);
->>>>>>> Stashed changes
+	// node = create_bvh(&data.objects);
+	// traverseBVH(node, 0);
 	render_scene(&data, &mlx);
 	free_objects(data.objects);
 	return (0);

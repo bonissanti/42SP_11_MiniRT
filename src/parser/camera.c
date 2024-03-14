@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:21 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:24 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:06:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	set_camera(char *fov_line, t_data *data)
 
 	data->camera.height_v = HEIGHT;
 	data->camera.width_v = WIDTH;
-	data->camera.fov = ft_atod(fov_line) * (M_PI/180.0); //M_PI macro de PI da math.h 
+	data->camera.fov = ft_atod(fov_line) * (M_PI / 180.0); //M_PI macro de PI da math.h 
 	data->camera.aspect_ratio = (double)data->camera.width_v / (double)data->camera.height_v; // 720x480
 
 	half_width = tan(data->camera.fov / 2.0); // metade da largura a partir da visão da camera, com /2 para simplificar
