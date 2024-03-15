@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bvh.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:35:53 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/14 15:29:14 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:52:57 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 t_aabb		get_obj_bbox(t_object *obj);
 
-void		quick_sort(t_object *first, t_object *last);
+void		quick_sort(t_object **head, t_object *first, t_object *last);
 t_object	*get_last(t_object *cur);
 
 t_bvh_node	*create_bvh(t_object **objects);

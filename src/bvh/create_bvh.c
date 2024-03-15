@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/12 17:53:14 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:54:54 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_object	*get_cur(t_object *objects, int start)
 
 	i = 0;
 	cur = objects;
-	while (i < start)
+	while (cur && i < start)
 	{
 		cur = cur->next;
 		i++;
@@ -28,16 +28,18 @@ t_object	*get_cur(t_object *objects, int start)
 	return (cur);
 }
 
-t_aabb	calculate_bbox(t_object **objects, int start, int end)
+t_aabb	calculate_bbox(t_object *objects, int start, int end)
 {
 	t_aabb		bbox;
 	t_aabb		obj_bbox;
 	t_object	*obj;
+	int			i;
 
-	obj = get_cur(*objects, start);
+	obj = get_cur(objects, start);
 	bbox.min.x = bbox.min.y = bbox.min.z = INT_MAX;
 	bbox.max.x = bbox.max.y = bbox.max.z = INT_MIN;
-	for (int i = start; i < end; i++)
+	i = start;
+	while (obj && i++ < end)
 	{
 		obj_bbox = get_obj_bbox(obj);
 		bbox.min.x = fmin(bbox.min.x, obj_bbox.min.x);
@@ -58,7 +60,7 @@ t_bvh_node	*construct_bvh(t_object **objects, int start, int end)
 	int			mid;
 
 	node = malloc(sizeof(t_bvh_node));
-	node->bbox = calculate_bbox(objects, start, end);
+	node->bbox = calculate_bbox(*objects, start, end);
 	count = end - start;
 	if (count == 1)
 	{
@@ -90,7 +92,7 @@ t_bvh_node	*create_bvh(t_object **objects)
 		count++;
 		cur = cur->next;
 	}
-	quick_sort(*objects, get_last(*objects));
+	quick_sort(objects, *objects, get_last(*objects));
 	root = construct_bvh(objects, 0, count);
 	return (root);
 }

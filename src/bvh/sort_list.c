@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:23:25 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/12 17:46:35 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:58:05 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	swap_nodes(t_object** head_ref, t_object *cur, t_object *comp)
 	currX->next = temp;
 }
 
-t_object	*partition(t_object *first, t_object *last)
+t_object	*partition(t_object **head, t_object *first, t_object *last)
 {
 	t_object	*pivot;
 	t_object	*cur;
@@ -55,12 +55,12 @@ t_object	*partition(t_object *first, t_object *last)
 	{
 		if (get_quadrant(comp) < get_quadrant(pivot))
 		{
-			swap_nodes(&first, cur, comp);
+			swap_nodes(head, cur, comp);
 			cur = cur->next;
 		}
 		comp = comp->next;
 	}
-	swap_nodes(&first, cur, last);
+	swap_nodes(head, cur, last);
 	return (cur);
 }
 
@@ -71,15 +71,15 @@ t_object	*get_last(t_object *cur)
 	return (cur);
 }
 
-void	quick_sort(t_object *first, t_object *last)
+void	quick_sort(t_object **head, t_object *first, t_object *last)
 {
 	t_object	*pivot;
 
 	if (first == last)
 		return ;
-	pivot = partition(first, last);
+	pivot = partition(head, first, last);
 	if (pivot && pivot->next && pivot->next != last)
-		quick_sort(pivot->next, last);
+		quick_sort(head, pivot->next, last);
 	if (pivot && pivot != first && pivot != last)
-		quick_sort(first, pivot);
+		quick_sort(head, first, pivot);
 }

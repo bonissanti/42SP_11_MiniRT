@@ -65,7 +65,7 @@ double		ft_atod(char *str);
 size_t		ft_strxspn(const char *str, const char *set, int mode);
 
 // # TESTING -----------------
-
+void	print_objects(t_object *head);
 void	traverseBVH(t_bvh_node *node, int depth);
 
 #endif
