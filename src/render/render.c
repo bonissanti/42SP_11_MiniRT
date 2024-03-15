@@ -8,8 +8,8 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	bool			hit;
 
 	ray.closest_t = INFINITY;
+	inter_list = NULL;
 	hit = intersection_bvh(data->bvh_root, &inter_list, ray);
-	find_closest_inter(&closest_found, inter_list);
 	if (!hit || find_closest_inter(&closest_found, inter_list))
 	{
 		delete_inter_list(inter_list);
@@ -17,7 +17,7 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	}
 	// color = process_intersection(data, &closest_found, &ray);
 	delete_inter_list(inter_list);
-	return ((t_color){0, 0, 0, 0});
+	return ((t_color){1, 0, 0, 0});
 }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
@@ -37,26 +37,40 @@ t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 	return (ray);
 }
 
+int	t_color_to_int(t_color color)
+{
+	int	red;
+	int	green;
+	int	blue;
+	int	alpha;
+
+	red = (int)(color.r * 255.999);
+	green = (int)(color.g * 255.999);
+	blue = (int)(color.b * 255.999);
+	alpha = (int)(color.a * 255.999);
+	return ((red << 24) | (green << 16) | (blue << 8) | alpha);
+}
+
 void	render_scene(t_data *data, t_mlx *mlx)
 {
 	int		x;
 	int		y;
 	t_ray	ray;
-	t_color	pixel_color;
 
+	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
+	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
+	data->bvh_root = create_bvh(&data->objects);
 	y = -1;
-	(void)mlx;
-	(void)pixel_color;
 	while (++y < data->camera.height_v)
 	{
 		x = -1;
 		while (++x < data->camera.width_v)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
-			pixel_color = trace_ray(data, ray);
-			// mlx_put_pixel(mlx->img_ptr, x, y, pixel_color);
+			mlx_put_pixel(mlx->img_ptr, x, y,
+				t_color_to_int(trace_ray(data, ray)));
 		}
-	(void)ray;
+		(void)ray;
 	}
 	// mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 }
