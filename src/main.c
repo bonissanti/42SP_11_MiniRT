@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/13 15:41:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/15 01:02:34 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	main(int argc, char **argv)
 	// node = create_bvh(&data.objects);
 	// traverseBVH(node, 0);
 	render_scene(&data, &mlx);
+	mlx_image_to_window(mlx.win_ptr, mlx.img_ptr, 0, 0);
+	mlx_loop(mlx.win_ptr);
 	free_objects(data.objects);
 	return (0);
 }

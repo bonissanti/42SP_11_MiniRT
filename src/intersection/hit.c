@@ -31,14 +31,17 @@ bool	hit_sphere(const t_sphere *sphere, const t_ray *ray, double *closest_t)
 	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - sphere->diameter * sphere->diameter / 4.0;
 	
 	result = solve_bhaskara(bhask);
-	if (bhask.status == NO_REAL_ROOTS)
+	if (result.status == NO_REAL_ROOTS)
 		return (false);
-	if (bhask.root1 > EPSILON && bhask.root1 < INFINITY)
-		*closest_t = bhask.root1;
-	else if (bhask.root2 > EPSILON && bhask.root2 < INFINITY)
-		*closest_t = bhask.root2;
+	if (result.root1 > EPSILON && result.root1 < INFINITY)
+		*closest_t = result.root1;
+	else if (result.root2 > EPSILON && result.root2 < INFINITY)
+		*closest_t = result.root2;
 	else
+	// {	printf("false\n");
 	 	return (false);
+	// }
+	// printf("true\n");
 	return (true);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/14 17:50:14 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/15 01:20:19 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	check_inter_with_object(void *object, t_ray *ray)
 	return (false);
 }
 
-_Bool	intersection_aabb(t_aabb *bbox, t_ray ray)
+_Bool	intersection_aabb(t_aabb *bbox, t_ray ray) //resultado invertido
 {
 	t_vec3	max;
 	t_vec3	min;
@@ -68,13 +68,13 @@ bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 
 	hit = false;
 	ft_memset(&temp_inter, 0, sizeof(t_inter)); 
-	if (!intersection_aabb(&node->bbox, ray)) // se não atingir o bolding box, pula fora
+	if (intersection_aabb(&node->bbox, ray)) // se não atingir o bolding box, pula fora
 		return (false);
-	
 	if (!node->left && !node->right && node->object)
 	{
 		if (check_inter_with_object(node->object, &ray))
 		{
+			// printf("object\n");
 			add_inter_list_back(list, temp_inter);
 			hit = true;
 		}
@@ -96,7 +96,6 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 	current = list;
 	closest_t = INFINITY;
 	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};
-
 	while (current)
 	{
 		if (current->inter.t < closest_t && current->inter.t > EPSILON)

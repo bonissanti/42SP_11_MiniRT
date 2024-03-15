@@ -13,11 +13,11 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	if (!hit || find_closest_inter(&closest_found, inter_list))
 	{
 		delete_inter_list(inter_list);
-		return ((t_color){0, 0, 0, 0});
+		return ((t_color){0, 0, 0, 1});
 	}
 	// color = process_intersection(data, &closest_found, &ray);
 	delete_inter_list(inter_list);
-	return ((t_color){1, 0, 0, 0});
+	return ((t_color){1, 0, 0, 1});
 }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
@@ -60,6 +60,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
 	data->bvh_root = create_bvh(&data->objects);
+	traverseBVH(data->bvh_root, 0);
 	y = -1;
 	while (++y < data->camera.height_v)
 	{
@@ -69,8 +70,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			ray = ray_for_pixel(&data->camera, x, y);
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
+			// mlx_put_pixel(mlx->img_ptr, x, y, 0xFFFF0000);
 		}
-		(void)ray;
 	}
-	// mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
+	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 }

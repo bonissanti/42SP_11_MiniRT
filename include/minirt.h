@@ -64,4 +64,8 @@ void		free_array(char **array);
 double		ft_atod(char *str);
 size_t		ft_strxspn(const char *str, const char *set, int mode);
 
+// # TESTING -----------------
+
+void	traverseBVH(t_bvh_node *node, int depth);
+
 #endif
