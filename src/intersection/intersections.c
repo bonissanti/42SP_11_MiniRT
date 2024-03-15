@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/15 01:20:19 by renato           ###   ########.fr       */
+/*   Updated: 2024/03/15 17:36:34 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ bool	check_inter_with_object(void *object, t_ray *ray)
 	t_temp = 0.0; // distancia da interseção
 	hit = false;
 	obj = (t_object*)object;
-
 	if (obj->type == SPHERE)
 		hit = hit_sphere(obj->object, ray, &t_temp); //
 	// else if (obj->type == PLANE)
@@ -30,14 +29,16 @@ bool	check_inter_with_object(void *object, t_ray *ray)
 	//  hit = hit_cylinder(obj->object, ray, &t_temp);
 	if (hit && t_temp < ray->closest_t && t_temp > EPSILON)
 	{
+		// printf("hit\n");
 		ray->closest_t = t_temp;
 		ray->closest_object = obj;
 		return (true);
 	}
+	printf("miss\n");
 	return (false);
 }
 
-_Bool	intersection_aabb(t_aabb *bbox, t_ray ray) //resultado invertido
+_Bool	intersection_aabb(t_aabb *bbox, t_ray ray)
 {
 	t_vec3	max;
 	t_vec3	min;
@@ -51,15 +52,14 @@ _Bool	intersection_aabb(t_aabb *bbox, t_ray ray) //resultado invertido
 	max.y = (bbox->max.y - ray.origin.y) * ray.direction.y;
 	min.z = (bbox->min.z - ray.origin.z) * ray.direction.z;
 	max.z = (bbox->max.z - ray.origin.z) * ray.direction.z;
-	t[MIN] = fmax(fmax(fmin(min.x, max.x), fmin(min.y, max.x)),
+	t[MIN] = fmax(fmax(fmin(min.x, max.x), fmin(min.y, max.y)),
 			fmin(min.z, max.z));
-	t[MAX] = fmin(fmin(fmax(min.x, max.x), fmax(min.y, max.x)),
+	t[MAX] = fmin(fmin(fmax(min.x, max.x), fmax(min.y, max.y)),
 			fmax(min.z, max.z));
 	if (t[MAX] < 0 || t[MIN] > t[MAX])
 		return (false);
 	return (true);
 }
-
 
 bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 {
@@ -68,7 +68,7 @@ bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 
 	hit = false;
 	ft_memset(&temp_inter, 0, sizeof(t_inter)); 
-	if (intersection_aabb(&node->bbox, ray)) // se não atingir o bolding box, pula fora
+	if (!intersection_aabb(&node->bbox, ray)) // se não atingir o bolding box, pula fora
 		return (false);
 	if (!node->left && !node->right && node->object)
 	{
@@ -89,9 +89,9 @@ bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 
 bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 {
-	bool	found;
-	double	closest_t;
-	t_inter_list *current;
+	bool			found;
+	double			closest_t;
+	t_inter_list	*current;
 
 	current = list;
 	closest_t = INFINITY;

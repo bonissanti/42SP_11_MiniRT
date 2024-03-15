@@ -69,7 +69,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42 -lm -ldl -pthread -lglfw3
+LDFLAGS = -L./MLX42/build -lmlx42 -lglfw -lm -ldl -pthread
 
 ################################ Progress ###################################
 

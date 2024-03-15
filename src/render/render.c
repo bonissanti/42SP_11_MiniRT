@@ -1,5 +1,18 @@
 #include "../../include/minirt.h"
 
+t_color	get_color(t_inter closest)
+{
+	t_color	color;
+	t_sphere	*sphere;
+
+	sphere = (t_sphere*)closest.object->object;
+	color.r = (sphere->color[0] / 255.0);
+	color.g = (sphere->color[1] / 255.0);
+	color.b = (sphere->color[2] / 255.0);
+	color.a = 1;
+	return (color);
+}
+
 t_color	trace_ray(t_data *data, t_ray ray)
 {
 	t_inter			closest_found;
@@ -16,6 +29,7 @@ t_color	trace_ray(t_data *data, t_ray ray)
 		return ((t_color){0, 0, 0, 1});
 	}
 	// color = process_intersection(data, &closest_found, &ray);
+	// color = get_color(closest_found);
 	delete_inter_list(inter_list);
 	return ((t_color){1, 0, 0, 1});
 }
@@ -70,8 +84,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			ray = ray_for_pixel(&data->camera, x, y);
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
-			// mlx_put_pixel(mlx->img_ptr, x, y, 0xFFFF0000);
 		}
 	}
+	printf("Rendering done\n");
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 }
