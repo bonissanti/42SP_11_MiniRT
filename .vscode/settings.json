@@ -9,7 +9,8 @@
 		"tuple": "c",
 		"type_traits": "c",
 		"utility": "c",
-		"minirt.h": "c"
+		"minirt.h": "c",
+		"sstream": "c"
 	},
 	"C_Cpp.default.compilerPath": "/usr/bin/gcc",
 	"cmake.configureOnOpen": false

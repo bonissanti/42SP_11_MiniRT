@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:37:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/18 19:19:07by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,34 @@ void	set_camera_transform(t_camera *camera)
 	transform.matrix[3][2] = dot_product(forward, point_vec);
 	transform.matrix[3][3] = 1.0;
 	camera->transform = transform;
-	basic_invert_matrix(&camera->transform, &camera->inversed_t);
+	invert_matrix(&camera->transform, &camera->inversed_t);
+}
+
+
+void	invert_matrix(t_matrix *original, t_matrix *inverted)
+{
+	int			i;
+	int			j;
+	double		det;
+	t_matrix	cofactor;
+	// t_matrix	transposed;
+
+	det = determinant(original);
+	if (fabs(det) < EPSILON)
+		return ;
+
+	cofactor_matrix(original, &cofactor);
+	
+	// transpose_matrix(&cofactor, &transposed);
+	i = -1;
+	while (++i < 4)
+	{
+		j = -1;
+		while (++j < 4)
+			inverted->matrix[i][j] = cofactor.matrix[i][j];
+		// inverted->matrix[i][j] = transposed.matrix[i][j] / det;			
+	}
+
 }
 
 void	basic_invert_matrix(const t_matrix *original, t_matrix *inverted)
