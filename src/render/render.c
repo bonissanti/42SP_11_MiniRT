@@ -8,15 +8,20 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	bool			hit;
 
 	ray.closest_t = INFINITY;
-	hit = intersection_bvh(data->bvh_root, &inter_list, ray);
-	find_closest_inter(&closest_found, inter_list);
-	if (!hit || find_closest_inter(&closest_found, inter_list))
-	{
-		delete_inter_list(inter_list);
-		return ((t_color){0, 0, 0, 0});
-	}
-	// color = process_intersection(data, &closest_found, &ray);
-	delete_inter_list(inter_list);
+	(void)closest_found;
+	(void)inter_list;
+	(void)ray;
+	(void)hit;
+	(void)data;
+	// hit = intersection_bvh(data->bvh_root, &inter_list, ray);
+	// find_closest_inter(&closest_found, inter_list);
+	// if (!hit || find_closest_inter(&closest_found, inter_list))
+	// {
+	// 	delete_inter_list(inter_list);
+	// 	return ((t_color){0, 0, 0, 0});
+	// }
+	// // color = process_intersection(data, &closest_found, &ray);
+	// delete_inter_list(inter_list);
 	return ((t_color){0, 0, 0, 0});
 }
 

@@ -49,6 +49,7 @@ OPERATIONS	= operations/vector.c \
 			  operations/coords.c 
 
 MATRIX		= matrix/matrix.c \
+			  matrix/inverse.c \
 			  matrix/transformation.c \
 			  matrix/operations.c \
 

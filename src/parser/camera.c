@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:21 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/14 17:06:59 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/18 12:19:08 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	fill_coordnates(char *cam_line, t_data *data)
 	data->camera.point.x = ft_atod(split_line[0]);
 	data->camera.point.y = ft_atod(split_line[1]);
 	data->camera.point.z = ft_atod(split_line[2]);
+	printf("x: %f, y: %f, z: %f", data->camera.point.x, data->camera.point.y, data->camera.point.z);
 	free_array(split_line);
 	return (OK);
 }

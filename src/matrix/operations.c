@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:37:23 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/18 18:12:22 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,3 +77,14 @@ t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
 	return (result);
 }
 
+double	det2x2(double a, double b, double c, double d)
+{
+	return (a * d - b * c);
+}
+
+double	det3x3(double m[3][3])
+{
+	return (m[0][0] * det2x2(m[1][1], m[1][2], m[2][1], m[2][2]) - 
+			m[0][1] * det2x2(m[1][0], m[1][2], m[2][0], m[2][2]) +
+			m[0][2] * det2x2(m[1][0], m[1][1], m[2][0], m[2][1]));
+}
