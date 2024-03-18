@@ -48,7 +48,7 @@ void	invert_matrix(t_matrix *original, t_matrix *inverted)
 	int			j;
 	double		det;
 	t_matrix	cofactor;
-	t_matrix	transposed;
+	// t_matrix	transposed;
 
 	det = determinant(original);
 	if (fabs(det) < EPSILON)
