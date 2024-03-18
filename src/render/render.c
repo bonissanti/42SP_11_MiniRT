@@ -2,7 +2,7 @@
 
 t_color	get_color(t_inter closest)
 {
-	t_color	color;
+	t_color		color;
 	t_sphere	*sphere;
 
 	sphere = (t_sphere*)closest.object->object;
@@ -13,25 +13,52 @@ t_color	get_color(t_inter closest)
 	return (color);
 }
 
+t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
+{
+	t_color		color;
+	t_sphere	*sphere;
+	t_vec3		normal;
+	t_vec3		eye;
+	t_vec3		light;
+	double		intensity;
+
+	sphere = (t_sphere*)closest->object->object;
+	normal = subtract_coords((t_coords){closest->point.x, closest->point.y, closest->point.z}, sphere->position);
+	normalize_vector(normal);
+	eye = (t_vec3){-ray->direction.x, -ray->direction.y, -ray->direction.z};
+	light = (t_vec3)subtract_coords(data->light.position, (t_coords){closest->point.x, closest->point.y, closest->point.z});
+	normalize_vector(light);
+	intensity = dot_product(normal, light);
+	if (intensity < 0)
+		intensity = 0;
+	color.r = (sphere->color[0] / 255.0) * intensity;
+	color.g = (sphere->color[1] / 255.0) * intensity;
+	color.b = (sphere->color[2] / 255.0) * intensity;
+	color.a = 1;
+	return (color);
+}
+
 t_color	trace_ray(t_data *data, t_ray ray)
 {
 	t_inter			closest_found;
 	t_inter_list	*inter_list;
-	// t_color			color;
+	t_color			color;
 	bool			hit;
 
 	ray.closest_t = INFINITY;
 	inter_list = NULL;
 	hit = intersection_bvh(data->bvh_root, &inter_list, ray);
-	if (!hit || find_closest_inter(&closest_found, inter_list))
+	if (!hit || !find_closest_inter(&closest_found, inter_list))
 	{
 		delete_inter_list(inter_list);
-		return ((t_color){0, 0, 0, 1});
+		return ((t_color){0, 0, 0, 0});
 	}
-	// color = process_intersection(data, &closest_found, &ray);
+	color = (t_color){1, 0, 0, 1};
+	color = process_intersection(data, &closest_found, &ray);
+	// if (closest_found.object)
 	// color = get_color(closest_found);
 	delete_inter_list(inter_list);
-	return ((t_color){1, 0, 0, 1});
+	return (color);
 }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
@@ -85,6 +112,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
 		}
+		// printf("\n");
 	}
 	printf("Rendering done\n");
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);

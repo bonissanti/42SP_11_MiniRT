@@ -38,10 +38,7 @@ bool	hit_sphere(const t_sphere *sphere, const t_ray *ray, double *closest_t)
 	else if (result.root2 > EPSILON && result.root2 < INFINITY)
 		*closest_t = result.root2;
 	else
-	// {	printf("false\n");
-	 	return (false);
-	// }
-	// printf("true\n");
+		return (false);
 	return (true);
 }
 

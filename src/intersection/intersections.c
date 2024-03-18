@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/15 17:36:34 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/18 18:46:45 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@ bool	check_inter_with_object(void *object, t_ray *ray)
 	//  hit = hit_cylinder(obj->object, ray, &t_temp);
 	if (hit && t_temp < ray->closest_t && t_temp > EPSILON)
 	{
-		// printf("hit\n");
 		ray->closest_t = t_temp;
 		ray->closest_object = obj;
 		return (true);
 	}
-	printf("miss\n");
 	return (false);
 }
 
@@ -61,20 +59,45 @@ _Bool	intersection_aabb(t_aabb *bbox, t_ray ray)
 	return (true);
 }
 
+t_vec3	get_intersection_point(t_ray ray, double t)
+{
+	t_vec3	intersection_point;
+
+	intersection_point = (t_vec3){ray.origin.x + t * ray.direction.x,
+		ray.origin.y + t * ray.direction.y,
+		ray.origin.z + t * ray.direction.z};
+	return (intersection_point);
+}
+
+t_vec3	get_normal(t_vec3 point, t_vec3 center)
+{
+	t_vec3	normal;
+
+	normal = subtract_vector(point, center);
+	normalize_vector(normal);
+	return (normal);
+}
+
 bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 {
 	bool	hit;
 	t_inter	temp_inter;
 
 	hit = false;
-	ft_memset(&temp_inter, 0, sizeof(t_inter)); 
+	ft_memset(&temp_inter, 0, sizeof(t_inter));
 	if (!intersection_aabb(&node->bbox, ray)) // se não atingir o bolding box, pula fora
 		return (false);
 	if (!node->left && !node->right && node->object)
 	{
 		if (check_inter_with_object(node->object, &ray))
 		{
-			// printf("object\n");
+			temp_inter.t = ray.closest_t;
+			temp_inter.object = node->object;
+			temp_inter.point = get_intersection_point(ray, temp_inter.t);
+			t_sphere* sphere = (t_sphere*)node->object;
+			temp_inter.normal = get_normal(temp_inter.point,
+					(t_vec3){sphere->position.x, sphere->position.y,
+					sphere->position.z});
 			add_inter_list_back(list, temp_inter);
 			hit = true;
 		}
