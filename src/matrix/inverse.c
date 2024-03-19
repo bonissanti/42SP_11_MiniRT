@@ -46,6 +46,25 @@ void	create_submatrix(t_matrix *original, t_matrix *submatrix, int row_ign, int 
 	}
 }
 
+double	determinant(t_matrix *original)
+{
+	int		j;
+	double	det;
+	double	cofactor;
+
+	if (original->rows == 1)
+		return (original->matrix[0][0]);
+	
+	j = -1;
+	det = 0;
+	while (++j < original->rows)
+	{
+		cofactor = calculate_cofactor(original, 0, 1);
+		det += original->matrix[0][j] * cofactor;
+	}
+	return (det);
+}
+
 double	calculate_minor(t_matrix *original, int row_ign, int col_ign)
 {
 	t_matrix	submatrix;
