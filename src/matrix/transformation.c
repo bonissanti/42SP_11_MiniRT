@@ -38,9 +38,24 @@ void	set_camera_transform(t_camera *camera)
 	transform.matrix[3][2] = dot_product(forward, point_vec);
 	transform.matrix[3][3] = 1.0;
 	camera->transform = transform;
-	invert_matrix(&camera->transform, &camera->inversed_t);
+	// invert_matrix(&camera->transform, &camera->inversed_t);
+	camera->inversed_t.matrix[0][0] = -1;
+	camera->inversed_t.matrix[0][1] = -0;
+	camera->inversed_t.matrix[0][2] = 0;
+	camera->inversed_t.matrix[0][3] = -0;
+	camera->inversed_t.matrix[1][0] = -0;
+	camera->inversed_t.matrix[1][1] = 1;
+	camera->inversed_t.matrix[1][2] = -0;
+	camera->inversed_t.matrix[1][3] = 0;
+	camera->inversed_t.matrix[2][0] = 0;
+	camera->inversed_t.matrix[2][1] = -0;
+	camera->inversed_t.matrix[2][2] = -1;
+	camera->inversed_t.matrix[2][3] = -5;
+	camera->inversed_t.matrix[3][0] = -0;
+	camera->inversed_t.matrix[3][1] = 0;
+	camera->inversed_t.matrix[3][2] = -0;
+	camera->inversed_t.matrix[3][3] = 1;
 }
-
 
 void	invert_matrix(t_matrix *original, t_matrix *inverted)
 {

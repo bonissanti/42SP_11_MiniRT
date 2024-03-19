@@ -1,39 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
+/*   Updated: 2024/03/19 19:33:55 by rseelaen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minirt.h"
-
-t_color	get_color(t_inter closest)
-{
-	t_color		color;
-	t_sphere	*sphere;
-
-	sphere = (t_sphere*)closest.object->object;
-	color.r = (sphere->color[0] / 255.0);
-	color.g = (sphere->color[1] / 255.0);
-	color.b = (sphere->color[2] / 255.0);
-	color.a = 1;
-	return (color);
-}
 
 t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 {
 	t_color		color;
 	t_sphere	*sphere;
-	t_vec3		normal;
-	t_vec3		eye;
-	t_vec3		light;
 	double		intensity;
+	t_vec3		normal;
+	t_vec3		light;
 
+	(void)ray;
 	sphere = (t_sphere*)closest->object->object;
-	normal = subtract_coords((t_coords){closest->point.x, closest->point.y, closest->point.z}, sphere->position);
-	normalize_vector(normal);
-	eye = (t_vec3){-ray->direction.x, -ray->direction.y, -ray->direction.z};
-	light = (t_vec3)subtract_coords(data->light.position, (t_coords){closest->point.x, closest->point.y, closest->point.z});
-	normalize_vector(light);
+	normal = normalize_vector(subtract_coords((t_coords){closest->point.x,
+				closest->point.y, closest->point.z}, sphere->position));
+	light = subtract_coords(data->light.position,
+			(t_coords){closest->point.x, closest->point.y, closest->point.z});
+	light = normalize_vector(light);
 	intensity = dot_product(normal, light);
 	if (intensity < 0)
-		intensity = 0;
-	color.r = (sphere->color[0] / 255.0) * intensity;
-	color.g = (sphere->color[1] / 255.0) * intensity;
-	color.b = (sphere->color[2] / 255.0) * intensity;
+		intensity = 0.01;
+	color.r = (sphere->color[0] / 255.0) * (intensity + data->amblight.ratio); //remove amblight.ratio
+	color.g = (sphere->color[1] / 255.0) * (intensity + data->amblight.ratio);
+	color.b = (sphere->color[2] / 255.0) * (intensity + data->amblight.ratio);
 	color.a = 1;
 	return (color);
 }
@@ -51,20 +50,17 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	if (!hit || !find_closest_inter(&closest_found, inter_list))
 	{
 		delete_inter_list(inter_list);
-		return ((t_color){0, 0, 0, 0});
+		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
-	color = (t_color){1, 0, 0, 1};
 	color = process_intersection(data, &closest_found, &ray);
-	// if (closest_found.object)
-	// color = get_color(closest_found);
 	delete_inter_list(inter_list);
 	return (color);
 }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 {
-	double	xoffset;
-	double	yoffset;
+	double		xoffset;
+	double		yoffset;
 	t_coords	world;
 	t_coords	pixel;
 	t_ray		ray;
@@ -112,8 +108,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
 		}
-		// printf("\n");
 	}
-	printf("Rendering done\n");
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
+	printf("Rendering done\n");
 }

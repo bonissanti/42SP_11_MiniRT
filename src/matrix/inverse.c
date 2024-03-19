@@ -17,13 +17,13 @@ void	transpose_matrix(t_matrix *original, t_matrix *transposed)
 
 double	determinant(t_matrix *original)
 {
-	int 	i;
+	int		i;
 	int		j;
 	int		k;
 	int		sub_col;
 	double	det;
 	double	submatrix[3][3];
-	double cofactor;
+	double	cofactor;
 
 	i = -1;
 	det = 0.0;

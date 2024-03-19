@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/18 12:01:20 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:05:58 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 /* config window */
 
-# define WIDTH 640
-# define HEIGHT 480
+# define WIDTH 800
+# define HEIGHT 600
 # define TITLE "miniRTARDOS"
 
 /* structs to mlx */
