@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/14 17:31:45 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/19 13:18:53 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct s_vec3
 
 typedef struct s_matrix
 {
+	int						rows;
+	int						cols;
 	double					matrix[4][4];
 }							t_matrix;
 

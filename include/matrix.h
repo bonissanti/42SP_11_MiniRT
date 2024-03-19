@@ -16,11 +16,15 @@ t_matrix	matrix_translate(double tx, double ty, double tz);
 
 // # Inverted
 
-double	det2x2(double a, double b, double c, double d);
-double	det3x3(double m[3][3]);
-void cofactor_matrix(t_matrix *matrix, t_matrix *cofactorMatrix);
+/* double		det2x2(double a, double b, double c, double d); */
+/* double		det3x3(double m[3][3]); */
+double		calculate_cofactor(t_matrix *original, int i, int j);
+t_matrix	cofactor_matrix(t_matrix *original);
+double		calculate_minor(t_matrix *original, int row_ign, int col_ign);
+void		submatrix(t_matrix *original, t_matrix *submatrix, int row_ign, int col_ign);
 void	invert_matrix(t_matrix *original, t_matrix *inverted);
+double	calculate_minor(t_matrix *original, int row_ign, int col_ign);
 double	determinant(t_matrix *original);
-void	transpose_matrix(t_matrix *original, t_matrix *transposed);
+t_matrix	transpose_matrix(t_matrix *original);
 
 #endif

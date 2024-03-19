@@ -22,7 +22,7 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	// }
 	// // color = process_intersection(data, &closest_found, &ray);
 	// delete_inter_list(inter_list);
-	return ((t_color){0, 0, 0, 0});
+	return ((t_color){0, 0, 0, 5});
 }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
@@ -51,7 +51,6 @@ void	render_scene(t_data *data, t_mlx *mlx)
 
 	y = -1;
 	(void)mlx;
-	(void)pixel_color;
 	while (++y < data->camera.height_v)
 	{
 		x = -1;
