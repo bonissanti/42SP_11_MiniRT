@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/18 18:46:45 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/19 13:37:01 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ _Bool	intersection_aabb(t_aabb *bbox, t_ray ray)
 
 	t[MIN] = -DBL_MAX;
 	t[MAX] = DBL_MAX;
-	min.x = (bbox->min.x - ray.origin.x) * ray.direction.x;
-	max.x = (bbox->max.x - ray.origin.x) * ray.direction.x;
-	min.y = (bbox->min.y - ray.origin.y) * ray.direction.y;
-	max.y = (bbox->max.y - ray.origin.y) * ray.direction.y;
-	min.z = (bbox->min.z - ray.origin.z) * ray.direction.z;
-	max.z = (bbox->max.z - ray.origin.z) * ray.direction.z;
+	min.x = (bbox->min.x - ray.origin.x) / ray.direction.x;
+	max.x = (bbox->max.x - ray.origin.x) / ray.direction.x;
+	min.y = (bbox->min.y - ray.origin.y) / ray.direction.y;
+	max.y = (bbox->max.y - ray.origin.y) / ray.direction.y;
+	min.z = (bbox->min.z - ray.origin.z) / ray.direction.z;
+	max.z = (bbox->max.z - ray.origin.z) / ray.direction.z;
 	t[MIN] = fmax(fmax(fmin(min.x, max.x), fmin(min.y, max.y)),
 			fmin(min.z, max.z));
 	t[MAX] = fmin(fmin(fmax(min.x, max.x), fmax(min.y, max.y)),
@@ -85,7 +85,7 @@ bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 
 	hit = false;
 	ft_memset(&temp_inter, 0, sizeof(t_inter));
-	if (!intersection_aabb(&node->bbox, ray)) // se não atingir o bolding box, pula fora
+	if (!intersection_aabb(&node->bbox, ray))
 		return (false);
 	if (!node->left && !node->right && node->object)
 	{
@@ -105,7 +105,7 @@ bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 	else
 	{
 		hit |= intersection_bvh(node->left, list, ray);
-		hit |= intersection_bvh(node->left, list, ray);
+		hit |= intersection_bvh(node->right, list, ray);
 	}
 	return (hit);
 }
