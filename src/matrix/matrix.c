@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:17 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:37:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:13:53 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	matrix_identity(t_matrix *mat)
 	int	x;
 
 	y = -1;
+	mat->rows = 4;
+	mat->cols = 4;
 	while (++y < 4)
 	{
 		x = -1;

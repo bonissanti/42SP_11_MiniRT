@@ -47,6 +47,7 @@ t_vec3		normalize_vector(t_vec3 value);
 t_vec3		cross_vector(t_vec3 a, t_vec3 b);
 t_vec3		subtract_vector(t_vec3 a, t_vec3 b);
 t_vec3		subtract_coords(t_coords a, t_coords b);
+void		print_matrix(t_matrix *to_test);
 t_coords	add_coords(t_coords a, t_coords b);
 
 // # Object lists ------------

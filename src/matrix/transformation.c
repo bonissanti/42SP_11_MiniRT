@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/18 19:19:07by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:12:47 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,67 +21,36 @@ void	set_camera_transform(t_camera *camera)
 	t_matrix	transform;
 
 	matrix_identity(&transform);
+	matrix_identity(&camera->inversed_t);
 	forward = normalize_vector(subtract_vector(camera->vector, point_vec));
 	up = normalize_vector(camera->up);
 	right = (normalize_vector(cross_vector(up, forward)));
+
+	// orientation
 	transform.matrix[0][0] = right.x;
 	transform.matrix[0][1] = right.y;
 	transform.matrix[0][2] = right.z;
 	transform.matrix[1][0] = up.x;
 	transform.matrix[1][1] = up.y;
 	transform.matrix[1][2] = up.z;
-	transform.matrix[2][0] = -forward.x;
-	transform.matrix[2][1] = -forward.y;
-	transform.matrix[2][2] = -forward.z;
-	transform.matrix[3][0] = -dot_product(right, point_vec);
-	transform.matrix[3][1] = -dot_product(up, point_vec);
-	transform.matrix[3][2] = dot_product(forward, point_vec);
-	transform.matrix[3][3] = 1.0;
+	transform.matrix[2][0] = forward.x;
+	transform.matrix[2][1] = forward.y;
+	transform.matrix[2][2] = forward.z;
+
+	// translation
+	transform.matrix[0][3] = dot_product(right, point_vec);
+	transform.matrix[1][3] = dot_product(up, point_vec);
+	transform.matrix[2][3] = dot_product(forward, point_vec);
 	camera->transform = transform;
-	// invert_matrix(&camera->transform, &camera->inversed_t);
-	camera->inversed_t.matrix[0][0] = -1;
-	camera->inversed_t.matrix[0][1] = -0;
-	camera->inversed_t.matrix[0][2] = 0;
-	camera->inversed_t.matrix[0][3] = -0;
-	camera->inversed_t.matrix[1][0] = -0;
-	camera->inversed_t.matrix[1][1] = 1;
-	camera->inversed_t.matrix[1][2] = -0;
-	camera->inversed_t.matrix[1][3] = 0;
-	camera->inversed_t.matrix[2][0] = 0;
-	camera->inversed_t.matrix[2][1] = -0;
-	camera->inversed_t.matrix[2][2] = -1;
-	camera->inversed_t.matrix[2][3] = -5;
-	camera->inversed_t.matrix[3][0] = -0;
-	camera->inversed_t.matrix[3][1] = 0;
-	camera->inversed_t.matrix[3][2] = -0;
-	camera->inversed_t.matrix[3][3] = 1;
+	printf("Matrix original\n");
+	print_matrix(&camera->transform);
+	printf("\n");
+	invert_matrix(&camera->transform, &camera->inversed_t);
+	printf("Inverted\n");
+	print_matrix(&camera->inversed_t);
+	printf("\n");
 }
 
-void	invert_matrix(t_matrix *original, t_matrix *inverted)
-{
-	int			i;
-	int			j;
-	double		det;
-	t_matrix	cofactor;
-	// t_matrix	transposed;
-
-	det = determinant(original);
-	if (fabs(det) < EPSILON)
-		return ;
-
-	cofactor_matrix(original, &cofactor);
-	
-	// transpose_matrix(&cofactor, &transposed);
-	i = -1;
-	while (++i < 4)
-	{
-		j = -1;
-		while (++j < 4)
-			inverted->matrix[i][j] = cofactor.matrix[i][j];
-		// inverted->matrix[i][j] = transposed.matrix[i][j] / det;			
-	}
-
-}
 
 void	basic_invert_matrix(const t_matrix *original, t_matrix *inverted)
 {
