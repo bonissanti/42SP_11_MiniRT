@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:21 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/19 19:11:56 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:47:28 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	fill_coordnates(char *cam_line, t_data *data)
 	data->camera.point.x = ft_atod(split_line[0]);
 	data->camera.point.y = ft_atod(split_line[1]);
 	data->camera.point.z = ft_atod(split_line[2]);
-	printf("x: %f, y: %f, z: %f", data->camera.point.x, data->camera.point.y, data->camera.point.z);
+	printf("x: %f, y: %f, z: %f\n", data->camera.point.x, data->camera.point.y, data->camera.point.z);
 	free_array(split_line);
 	return (OK);
 }

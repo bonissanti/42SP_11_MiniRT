@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:40:06 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/12 17:50:16 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:33:37 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ t_aabb	get_obj_bbox(t_object *obj)
 {
 	t_aabb	bbox;
 
-	bbox.min.x = bbox.min.y = bbox.min.z = FLT_MAX;
-	bbox.max.x = bbox.max.y = bbox.max.z = FLT_MIN;
+	bbox.min = (t_vec3){FLT_MAX, FLT_MAX, FLT_MAX};
+	bbox.max = (t_vec3){FLT_MIN, FLT_MIN, FLT_MIN};
 	if (obj->type == SPHERE)
 		bbox = get_bbox_sphere(obj->object);
 	else if (obj->type == CYLINDER)

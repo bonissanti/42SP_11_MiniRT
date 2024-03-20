@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/15 16:54:54 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/20 18:50:47 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ t_aabb	calculate_bbox(t_object *objects, int start, int end)
 	int			i;
 
 	obj = get_cur(objects, start);
-	bbox.min.x = bbox.min.y = bbox.min.z = INT_MAX;
-	bbox.max.x = bbox.max.y = bbox.max.z = INT_MIN;
+	bbox.min = (t_vec3){FLT_MAX, FLT_MAX, FLT_MAX};
+	bbox.max = (t_vec3){FLT_MIN, FLT_MIN, FLT_MIN};
 	i = start;
 	while (obj && i++ < end)
 	{
