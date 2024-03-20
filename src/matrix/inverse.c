@@ -1,5 +1,4 @@
 #include "../../include/minirt.h"
-#include <stdalign.h>
 
 
 
@@ -28,21 +27,34 @@ void	create_submatrix(t_matrix *original, t_matrix *submatrix, int row_ign, int 
 
 	i = -1;
 	k = 0;
-	submatrix->rows = original->rows - 1;
-	submatrix->cols = original->cols - 1;
 	while (++i < original->rows)
 	{
 		j = -1;
 		l = 0;
-		if (k == row_ign)
+		if (i == row_ign)
 			continue;
 		while (++j < original->cols)
 		{
-			if (l == col_ign)
+			if (j == col_ign)
 				continue;
 			submatrix->matrix[k][l++] = original->matrix[i][j];
 		}
 		k++;
+	}
+}
+
+void	print_matrix(t_matrix *to_test)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (++y < 4)
+	{
+		x = -1;
+		while (++x < 4)
+			printf("%f ", to_test->matrix[y][x]);
+		printf("\n");
 	}
 }
 
@@ -59,7 +71,7 @@ double	determinant(t_matrix *original)
 	det = 0;
 	while (++j < original->rows)
 	{
-		cofactor = calculate_cofactor(original, 0, 1);
+		cofactor = calculate_cofactor(original, 0, j);
 		det += original->matrix[0][j] * cofactor;
 	}
 	return (det);
