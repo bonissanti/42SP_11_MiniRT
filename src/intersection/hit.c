@@ -25,6 +25,7 @@ bool	hit_sphere(const t_sphere *sphere, const t_ray *ray, double *closest_t)
 	t_bhaskara bhask;
 	t_bhaskara result;
 
+	init_bhask(&bhask, &result);
 	sphere_to_ray = subtract_coords(ray->origin, sphere->position);
 	bhask.a = dot_product(ray->direction, ray->direction);
 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray->direction);

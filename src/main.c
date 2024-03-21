@@ -74,6 +74,7 @@ int	main(int argc, char **argv)
 		return (1);
 	// node = create_bvh(&data.objects);
 	// traverseBVH(node, 0);
+
 	render_scene(&data, &mlx);
 	mlx_image_to_window(mlx.win_ptr, mlx.img_ptr, 0, 0);
 	mlx_loop(mlx.win_ptr);

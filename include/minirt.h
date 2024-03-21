@@ -10,6 +10,7 @@
 # include "ray.h"
 # include "structs.h"
 # include "intersection.h"
+# include "test.h" // for tests
 # include <fcntl.h>
 # include <math.h>
 # include <float.h> // DBL_MAX, DBL_MIN
@@ -35,6 +36,7 @@
 // # Init --------------------
 
 void		init_structs(t_data *data);
+void		init_bhask(t_bhaskara *bhask, t_bhaskara *result);
 int			valid_file(char *file, t_data *data);
 int			parse_lines(t_data *data);
 
