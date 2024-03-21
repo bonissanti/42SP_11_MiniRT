@@ -74,6 +74,7 @@ int	main(int argc, char **argv)
 		return (1);
 	// node = create_bvh(&data.objects);
 	// traverseBVH(node, 0);
+
 	render_scene(&data, &mlx);
 	free_objects(data.objects);
 	return (0);

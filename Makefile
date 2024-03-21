@@ -14,6 +14,7 @@ RESET	= \033[0m
 ################################# Project ###################################
 
 NAME 	= miniRT
+TEST_N 	= miniTESTER
 HEADER 	= ./include
 LIBFT	= ./libft	
 MLX 	= ./MLX42/include/MLX42
@@ -51,16 +52,21 @@ OPERATIONS	= operations/vector.c \
 MATRIX		= matrix/matrix.c \
 			  matrix/inverse.c \
 			  matrix/transformation.c \
-			  matrix/operations.c \
+			  matrix/operations.c 
 
+TEST_DIR	= ./src/tests
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(RENDER) $(INTER) $(MATRIX)
-
+TEST_SRCS 	= $(shell find $(TEST_DIR) -name '*.c')
 SRC = $(addprefix ./src/, $(MAND_SRCS))
+
+SRCS_COMMON = $(filter-out main.c, $(MAND_SRCS))
+OBJS_COMMON = $(SRCS_COMMON:%.c=$(OBJS_DIR)/%.o)
 
 ################################# Objects ###################################
 
-OBJS = $(MAND_SRCS:.c=.o)
-OBJS_DIR = ./objs
+OBJS 		= $(MAND_SRCS:.c=.o)
+OBJS_DIR 	= ./objs
+TEST_OBJS	= $(TEST_SRCS:$(TEST_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 ################################# Flags #####################################
 
@@ -95,6 +101,12 @@ $(NAME): $(LIBFT_LIB) $(OBJS:%=$(OBJS_DIR)/%)
 	@echo ""
 	@echo "$(GREEN)$(NAME) created$(RESET)"
 
+test: CFLAGS += -D TEST
+test: $(LIBFT_LIB) $(OBJS_COMMON) $(TEST_OBJS)
+	@$(CC) $(CFLAGS) $(OBJS_COMMON) $(TEST_OBJS) -o $(TEST_N) $(LDFLAGS) -L$(LIBFT) -lft
+	@echo "$(GREEN)$(TEST_N) created$(RESET)"
+
+
 $(LIBFT_LIB):
 	@echo "$(YELLOW)Creating libft...$(RESET)"
 	@$(LIBFT_MAKE)
@@ -104,17 +116,29 @@ $(OBJS_DIR)/%.o: src/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	$(call print_progress, $(BLUE_B)Compiling:$(RESET) $<)
 
+$(OBJS_DIR)/%.o: $(TEST_DIR)/%.c
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
 	@$(LIBFT_MAKE) clean
 	@rm -rf $(OBJS_DIR) 
 	@echo "$(RED)$(NAME) objects deleted$(RESET)"
 
+clean_t:
+	@rm -f $(TEST_OBJS)
+	@echo "$(RED)Test objects deleted"
+
 fclean: clean
 	@$(LIBFT_MAKE) fclean
-	@rm -f $(NAME) $(TEST_EXEC)
+	@rm -f $(NAME) $(TEST_N)
 	@rm -rf $(OBJS_DIR)
 	@echo "$(RED)$(NAME) deleted$(RESET)"
 
+fclean_t: clean_test
+	@rm -f $(TEST_N)
+	@echo "$(RED)$(TEST_N) deleted$(RESET)"
+
 re: fclean all
 
-.PHONY: all clean fclean test clean_test re
+.PHONY: all clean fclean test clean_test fclean_test re

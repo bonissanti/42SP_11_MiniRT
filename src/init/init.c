@@ -22,3 +22,8 @@ void	init_structs(t_data *data)
 	// ft_memset(&data->light, 0, sizeof(data->light));
 }
 
+void	init_bhask(t_bhaskara *bhask, t_bhaskara *result)
+{
+	ft_memset(bhask, 0, sizeof(t_bhaskara));
+	ft_memset(result, 0, sizeof(t_bhaskara));
+}

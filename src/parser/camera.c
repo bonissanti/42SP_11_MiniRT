@@ -64,25 +64,15 @@ t_vec3	set_up(t_data *data)
 
 int	set_camera(char *fov_line, t_data *data)
 {
-	double	half_height;
-	double	half_width;
-
 	if (is_number(fov_line) || set_range(fov_line, 0.0, 180.0) == ERROR)
 		return (print_error("Fov is not a valid number, e.g[0 to 180]"));
 
 	data->camera.height_v = HEIGHT;
 	data->camera.width_v = WIDTH;
-	data->camera.fov = ft_atod(fov_line) * (M_PI / 180.0); //M_PI macro de PI da math.h 
-	data->camera.aspect_ratio = (double)data->camera.width_v / (double)data->camera.height_v; // 720x480
-
-	half_width = tan(data->camera.fov / 2.0); // metade da largura a partir da visão da camera, com /2 para simplificar
-	half_height = half_width * data->camera.aspect_ratio; // se der ruim, mudar para a implementação do livro
-
-	data->camera.half_width = half_width;
-	data->camera.half_height = half_height;
-
-	data->camera.pixel_size = (data->camera.half_width * 2 / data->camera.height_v); //se der ruim, mudar para a implementação do livro
-
+	data->camera.fov = ft_atod(fov_line) * (M_PI / 180.0);
+	data->camera.half_width = tan(data->camera.fov / 2.0);
+	data->camera.half_height = data->camera.half_width * (double)WIDTH / (double)HEIGHT;
+	data->camera.pixel_size = (data->camera.half_width * 2) / (double)HEIGHT;
 	data->camera.up = set_up(data);
 	set_camera_transform(&data->camera);
 	return (OK);
