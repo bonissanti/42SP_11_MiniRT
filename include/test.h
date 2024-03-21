@@ -11,6 +11,7 @@
 # define BOLD	"\x1b[1m"
 # define RESET	"\x1b[0m"
 
+void	test_validation(void);
 void	test_analyze_amblight(void);
 void	test_ray_for_pixel(void);
 

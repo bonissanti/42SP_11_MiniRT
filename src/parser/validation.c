@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
-#include <stdio.h>
 
 
 int	file_extension(char *file, char *ext)
@@ -44,10 +43,8 @@ int	valid_file(char *file, t_data *data)
     if (bytes_read <= -1)
     {
 		close(fd);
-		printf("%s\n", file);
         return (print_error("File is empty or could not be read\n"));
     }
-	printf("eu funfei\n");
 	data->buffer[bytes_read] = '\0';
 	if (file_extension(file, ".rt"))
 	{
