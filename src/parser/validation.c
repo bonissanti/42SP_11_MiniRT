@@ -40,7 +40,7 @@ int	valid_file(char *file, t_data *data)
 	if (fd < -1)
 		return (print_error("File not found\n"));
 	bytes_read = read(fd, data->buffer, 65535);
-    if (bytes_read <= -1)
+    if (bytes_read <= 0)
     {
 		close(fd);
         return (print_error("File is empty or could not be read\n"));
