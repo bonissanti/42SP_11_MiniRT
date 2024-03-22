@@ -1,5 +1,4 @@
 #include "../../include/test.h"
-#include <fenv.h>
 
 void	check_equal_coords(t_coords *result, t_coords *expected)
 {
@@ -48,26 +47,26 @@ void	test_ray_for_pixel(void)
 	camera = set_camera_2(M_PI / 2, 201, 101);
 	matrix_identity(&camera.transform);
 	matrix_identity(&camera.inversed_t);
-	camera.point = set_coords(0, 0, 0);
+	camera.origin = set_coords(0, 0, 0);
 	t_ray result = ray_for_pixel(&camera, 100, 50);
 
 	// Configura o a estrutura ray para obter o esperado
-	ray.origin = camera.point;
+	ray.origin = camera.origin;
 	ray.direction = set_vector(0, 0, -1);
 
 
 	// Compara os resultados das coordenadas - test #1 ray for pixel
-	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 1 - start\n\n"RESET);
+	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 1 - start\n"RESET);
 	check_equal_coords(&result.origin, &ray.origin);
 	check_equal_vector(&result.direction, &ray.direction);
-	printf(F_WHITE"\nTest #8 - "RESET BOLD"Render | Ray for pixel 1 - end\n\n"RESET);	
+	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 1 - end\n\n"RESET);	
 
 	// Test #2 ray for pixel
 	ray.direction = set_vector(0.66519, 0.33259, -0.66851);
 	result = ray_for_pixel(&camera, 0, 0);
-	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 2 - start\n\n"RESET);
+	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 2 - start\n"RESET);
 	check_equal_coords(&result.origin, &ray.origin);
 	check_equal_vector(&result.direction, &ray.direction);
-	printf(F_WHITE"\nTest #8 - "RESET BOLD"Render | Ray for pixel 2 - end\n\n"RESET);	
+	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 2 - end\n\n"RESET);	
 
 }

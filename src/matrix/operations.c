@@ -34,7 +34,7 @@
  * @return: A pointer to the next token found in the string, or NULL if no more.
  */
 
-t_matrix	matrix_multiply(const t_matrix *a, const t_matrix *b)
+t_matrix	matrix_multiply(t_matrix *a, t_matrix *b)
 {
 	int			y;
 	int			x;
@@ -53,10 +53,30 @@ t_matrix	matrix_multiply(const t_matrix *a, const t_matrix *b)
 				result.matrix[y][x] += a->matrix[y][i] * b->matrix[i][x];
 		}
 	}
+# ifndef TEST
+	printf("a\n");
+	print_matrix(*a);
+	printf("b\n");
+	print_matrix(*b);
+	printf("result\n");
+	print_matrix(result);
+	printf("\n");
+# endif
 	return (result);
 }
 
-t_matrix	matrix_translate(double	tx, double ty, double tz)
+t_matrix	scaling_matrix(double sx, double sy, double sz)
+{
+	t_matrix	scaling;
+
+	matrix_identity(&scaling);
+	scaling.matrix[0][0] = sx;
+	scaling.matrix[1][1] = sy;
+	scaling.matrix[2][2] = sz;
+	return (scaling);	
+}
+
+t_matrix	translation_matrix(double	tx, double ty, double tz)
 {
 	t_matrix	result;
 

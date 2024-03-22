@@ -31,6 +31,10 @@ void	matrix_identity(t_matrix *mat)
 			 	mat->matrix[y][x] = 0.0;
 		}
 	}
+# ifndef TEST
+	printf("identity matrix\n");
+	print_matrix(*mat);
+# endif
 }
 
 t_matrix	*create_matrix(void)

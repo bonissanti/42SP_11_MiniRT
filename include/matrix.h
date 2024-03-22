@@ -6,13 +6,18 @@
 // # Matrices
 
 void		matrix_identity(t_matrix *mat);
-t_matrix	*create_matrix(void);
-void		set_camera_transform(t_camera *camera);
+void		set_camera_transform(t_camera *camera, t_vec3 up);
 void		basic_invert_matrix(const t_matrix *original, t_matrix *inverted);
 void		matrix_free(t_matrix *matrix);
+t_matrix	*create_matrix(void);
 t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point);
-t_matrix	matrix_multiply(const t_matrix *a, const t_matrix *b);
-t_matrix	matrix_translate(double tx, double ty, double tz);
+t_matrix	matrix_multiply (t_matrix *a, t_matrix *b);
+t_matrix	translation_matrix(double tx, double ty, double tz);
+
+
+// # Operations
+
+t_matrix	scaling_matrix(double sx, double sy, double sz);
 
 // # Inverted
 

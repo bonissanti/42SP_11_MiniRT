@@ -56,8 +56,8 @@ typedef struct s_camera
 	double					half_height;
 	double					half_width;
 	double					aspect_ratio;
-	t_coords				point;
-	t_vec3					vector;
+	t_coords				origin;
+	t_vec3					orientation;
 	t_vec3					up;
 	t_matrix				transform;
 	t_matrix				inversed_t;

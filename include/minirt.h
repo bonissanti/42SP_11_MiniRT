@@ -42,14 +42,16 @@ int			parse_lines(t_data *data);
 
 // # Generic functions -------
 
+bool		check_equal_doubles(double a, double b);
 t_coords	set_coords(double x, double y, double z);
 t_vec3		set_vector(double x, double y, double z);
+t_vec3		set_coords_to_vector(double x, double y, double z);
 double		dot_product(t_vec3 a, t_vec3 b);
 t_vec3		normalize_vector(t_vec3 value);
 t_vec3		cross_vector(t_vec3 a, t_vec3 b);
 t_vec3		subtract_vector(t_vec3 a, t_vec3 b);
 t_vec3		subtract_coords(t_coords a, t_coords b);
-void		print_matrix(t_matrix *to_test);
+void		print_matrix(t_matrix to_test);
 
 // # Object lists ------------
 

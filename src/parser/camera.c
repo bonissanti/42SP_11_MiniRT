@@ -17,10 +17,10 @@ static int	fill_coordnates(char *cam_line, t_data *data)
 	char **split_line;
 
 	split_line = ft_split(cam_line, ',');
-	data->camera.point.x = ft_atod(split_line[0]);
-	data->camera.point.y = ft_atod(split_line[1]);
-	data->camera.point.z = ft_atod(split_line[2]);
-	printf("x: %f, y: %f, z: %f", data->camera.point.x, data->camera.point.y, data->camera.point.z);
+	data->camera.origin.x = ft_atod(split_line[0]);
+	data->camera.origin.y = ft_atod(split_line[1]);
+	data->camera.origin.z = ft_atod(split_line[2]);
+	printf("x: %f, y: %f, z: %f", data->camera.origin.x, data->camera.origin.y, data->camera.origin.z);
 	free_array(split_line);
 	return (OK);
 }
@@ -38,29 +38,27 @@ static int	fill_vector(char *line, t_data *data)
 	y = ft_atod(vector_str[1]);
 	z = ft_atod(vector_str[2]);
 	magnitude = sqrt(x * x + y * y + z * z);
-	data->camera.vector.x = x / magnitude;
-	data->camera.vector.y = y / magnitude;
-	data->camera.vector.z = z / magnitude;
+	data->camera.orientation.x = x / magnitude;
+	data->camera.orientation.y = y / magnitude;
+	data->camera.orientation.z = z / magnitude;
 	free_array(vector_str);
 	return (OK);
 }
 
-t_vec3	set_up(t_data *data)
+t_vec3	set_up(t_vec3 orientation)
 {
-	t_vec3	default_up = {0, 1, 0};
-	t_vec3	right;
-	t_vec3	up_adjusted;
-	t_vec3	forward = {
-		data->camera.vector.x - data->camera.point.x,
-		data->camera.vector.y - data->camera.point.y,
-		data->camera.vector.z - data->camera.point.z,
-	};
+	t_vec3	correct_up;
+	double	result;
 
-	forward = normalize_vector(forward);
-	right = normalize_vector(cross_vector(default_up, forward));
-	up_adjusted = cross_vector(forward, right);
-	return(up_adjusted);
+	correct_up = set_vector(0, 1, 0);
+	result = dot_product(orientation, set_vector(0, 1, 0));
+	if (check_equal_doubles(result, 1))
+		correct_up = set_vector(0, 0, 1);
+	else if (check_equal_doubles(result, -1))
+		correct_up = set_vector(0, 0, -1);
+	return (normalize_vector(correct_up));
 }
+		
 
 int	set_camera(char *fov_line, t_data *data)
 {
@@ -73,8 +71,7 @@ int	set_camera(char *fov_line, t_data *data)
 	data->camera.half_width = tan(data->camera.fov / 2.0);
 	data->camera.half_height = data->camera.half_width * (double)WIDTH / (double)HEIGHT;
 	data->camera.pixel_size = (data->camera.half_width * 2) / (double)HEIGHT;
-	data->camera.up = set_up(data);
-	set_camera_transform(&data->camera);
+	set_camera_transform(&data->camera, set_up(data->camera.orientation));
 	return (OK);
 }
 

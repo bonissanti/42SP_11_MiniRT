@@ -43,7 +43,7 @@ void	create_submatrix(t_matrix *original, t_matrix *submatrix, int row_ign, int 
 	}
 }
 
-void	print_matrix(t_matrix *to_test)
+void	print_matrix(t_matrix to_test)
 {
 	int	y;
 	int	x;
@@ -53,7 +53,7 @@ void	print_matrix(t_matrix *to_test)
 	{
 		x = -1;
 		while (++x < 4)
-			printf("%f ", to_test->matrix[y][x]);
+			printf("%f ", to_test.matrix[y][x]);
 		printf("\n");
 	}
 }

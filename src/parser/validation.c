@@ -43,7 +43,7 @@ int	valid_file(char *file, t_data *data)
     if (bytes_read <= 0)
     {
 		close(fd);
-        return (print_error("File is empty or could not be read\n"));
+        return (print_error("File is empty or could not be read"));
     }
 	data->buffer[bytes_read] = '\0';
 	if (file_extension(file, ".rt"))
