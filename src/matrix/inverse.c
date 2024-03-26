@@ -102,8 +102,6 @@ double	calculate_cofactor(t_matrix *original, int i, int j)
 	 	return ((-1) * minor);
 }
 
-
-
 t_matrix cofactor_matrix(t_matrix *original)
 {
 	int	i;
@@ -120,6 +118,7 @@ t_matrix cofactor_matrix(t_matrix *original)
 	return (cofactor);
 }
 
+//TODO: Testar cada função individualmente
 void	invert_matrix(t_matrix *original, t_matrix *inverted)
 {
 	int			i;
