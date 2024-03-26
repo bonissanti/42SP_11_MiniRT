@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/21 19:15:23 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:14:38 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,11 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	light = subtract_coords(data->light.position,
 			(t_coords){closest->point.x, closest->point.y, closest->point.z});
 	light = normalize_vector(light);
-	intensity = dot_product(normal, light);
-	if (intensity < 0)
-		intensity = 0.01;
-	color.r = (sphere->color[0] / 255.0) * (intensity + data->amblight.ratio); //remove amblight.ratio
-	color.g = (sphere->color[1] / 255.0) * (intensity + data->amblight.ratio);
-	color.b = (sphere->color[2] / 255.0) * (intensity + data->amblight.ratio);
+	intensity = fmin(fmax(dot_product(normal, light), 0.0)
+			+ data->amblight.ratio, 1.0);
+	color.r = (sphere->color[0] / 255.0) * intensity;
+	color.g = (sphere->color[1] / 255.0) * intensity;
+	color.b = (sphere->color[2] / 255.0) * intensity;
 	color.a = 1;
 	return (color);
 }
@@ -67,12 +66,14 @@ t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 
 	xoffset = (pos_x + 0.5) * camera->pixel_size;
 	yoffset = (pos_y + 0.5) * camera->pixel_size;
-	world = set_coords(camera->half_width - xoffset, camera->half_height - yoffset, -1);
+	world = set_coords(camera->half_width - xoffset, camera->half_height
+			- yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
-	#ifndef TEST
+	#ifdef TEST
 		print_matrix(&camera->inversed_t);	
 	#endif
-	ray.origin = matrix_multiply_point(&camera->inversed_t, &((t_coords){0, 0, 0}));
+	ray.origin = matrix_multiply_point(&camera->inversed_t,
+			&((t_coords){0, 0, 0}));
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	return (ray);
 }
