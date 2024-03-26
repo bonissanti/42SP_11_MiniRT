@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:21 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/26 17:11:39 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:50:42 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	fill_coordnates(char *cam_line, t_data *data)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(cam_line, ',');
 	data->camera.origin.x = ft_atod(split_line[0]);
@@ -58,18 +58,17 @@ t_vec3	set_up(t_vec3 orientation)
 		correct_up = set_vector(0, 0, -1);
 	return (normalize_vector(correct_up));
 }
-		
 
 int	set_camera(char *fov_line, t_data *data)
 {
 	if (is_number(fov_line) || set_range(fov_line, 0.0, 180.0) == ERROR)
 		return (print_error("Fov is not a valid number, e.g[0 to 180]"));
-
 	data->camera.height_v = HEIGHT;
 	data->camera.width_v = WIDTH;
 	data->camera.fov = ft_atod(fov_line) * (M_PI / 180.0);
 	data->camera.half_width = tan(data->camera.fov / 2.0);
-	data->camera.half_height = data->camera.half_width * (double)WIDTH / (double)HEIGHT;
+	data->camera.half_height = data->camera.half_width * (double)WIDTH
+		/ (double)HEIGHT;
 	data->camera.pixel_size = (data->camera.half_width * 2) / (double)HEIGHT;
 	set_camera_transform(&data->camera, set_up(data->camera.orientation));
 	return (OK);
@@ -77,7 +76,7 @@ int	set_camera(char *fov_line, t_data *data)
 
 int	analyze_camera(char *line, t_data *data)
 {
-	char **token;
+	char	**token;
 
 	token = ft_split_space(line);
 	if (count_token(token, 3, "Camera has wrong number of arguments\n"))
