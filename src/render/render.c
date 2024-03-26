@@ -38,7 +38,7 @@ t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y) {
 	world = set_coords(camera->half_width - xoffset, camera->half_height - yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
 #ifndef TEST
-	print_matrix(&camera->inversed_t);	
+	print_matrix(camera->inversed_t);	
 #endif
 	ray.origin = matrix_multiply_point(&camera->inversed_t, &((t_coords){0, 0, 0}));
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));

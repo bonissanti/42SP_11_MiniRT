@@ -1,4 +1,4 @@
-#include "../../include/test.h"
+#include "../../../include/test.h"
 
 void	check_equal_coords(t_coords *result, t_coords *expected)
 {
@@ -56,17 +56,17 @@ void	test_ray_for_pixel(void)
 
 
 	// Compara os resultados das coordenadas - test #1 ray for pixel
-	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 1 - start\n"RESET);
+	printf(F_WHITE"Test #9 - "RESET BOLD"Render | Ray for pixel 1 - start\n"RESET);
 	check_equal_coords(&result.origin, &ray.origin);
 	check_equal_vector(&result.direction, &ray.direction);
-	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 1 - end\n\n"RESET);	
+	printf(F_WHITE"Test #9 - "RESET BOLD"Render | Ray for pixel 1 - end\n\n"RESET);	
 
 	// Test #2 ray for pixel
 	ray.direction = set_vector(0.66519, 0.33259, -0.66851);
 	result = ray_for_pixel(&camera, 0, 0);
-	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 2 - start\n"RESET);
+	printf(F_WHITE"Test #9 - "RESET BOLD"Render | Ray for pixel 2 - start\n"RESET);
 	check_equal_coords(&result.origin, &ray.origin);
 	check_equal_vector(&result.direction, &ray.direction);
-	printf(F_WHITE"Test #8 - "RESET BOLD"Render | Ray for pixel 2 - end\n\n"RESET);	
+	printf(F_WHITE"Test #9 - "RESET BOLD"Render | Ray for pixel 2 - end\n\n"RESET);	
 
 }

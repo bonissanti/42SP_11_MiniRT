@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/20 16:55:15 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:51:53 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ void	set_camera_transform(t_camera *camera, t_vec3 up)
 	transform.matrix[2][0] = -forward.x;
 	transform.matrix[2][1] = -forward.y;
 	transform.matrix[2][2] = -forward.z;
-	transform.matrix[3][3] = 1;
+	transform.matrix[3][3] = 1.0;
+
+	//NOTE: Ainda são necessários mais testes, seguindo o esperado pelo livro
 	// translation + multiply_matrix
 	
 	translation = translation_matrix(-from_coords_to_vec.x, -from_coords_to_vec.y, -from_coords_to_vec.z);
@@ -52,23 +54,15 @@ void	set_camera_transform(t_camera *camera, t_vec3 up)
 # endif
 }
 
-// t_matrix	multiply_matrix(t_matrix a, t_matrix b)
-// {
-// 	int			y;
-// 	int			x;
-// 	int			i;
-// 	t_matrix	result;
-//
-// 	y = -1;
-// 	while (++y < 4)
-// 	{
-// 		x = -1;
-// 		while (++x < 4)
-// 		{
-// 			i = -1;
-// 			while (++i < 4)
-// 				result.matrix[y][x] += a.matrix[y][i] * b.matrix[i][x];
-// 		}
-// 	}
-// 	return (result);
-// }
+//TODO: Adicionar funções para configurar matrizes dos objetos, incluindo a inversão da matriz
+t_matrix	transform_sphere(t_coords coords, double radius)
+{
+	t_matrix	transform;
+	t_matrix	translation;
+	t_matrix	scaling;
+
+	scaling = scaling_matrix(radius, radius, radius);
+	translation = translation_matrix(coords.x, coords.y, coords.z);
+	transform = matrix_multiply(&translation, &scaling);
+	return (transform);
+}

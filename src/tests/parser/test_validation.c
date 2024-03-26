@@ -1,4 +1,4 @@
-#include "../../include/test.h"
+#include "../../../include/test.h"
 
 void	check_equal_ints(int result, int expected, const char *testName)
 {

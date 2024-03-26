@@ -1,4 +1,4 @@
-#include "../../include/test.h"
+#include "../../../include/test.h"
 
 void	test_matrix_transformation(void)
 {
@@ -24,9 +24,9 @@ void	test_matrix_transformation(void)
 	camera.origin = set_coords(0, 0, 0);
 	camera.orientation = normalize_vector(subtract_coords(to, camera.origin));
 	set_camera_transform(&camera, up);
-	printf(F_WHITE"Test #9 - "RESET BOLD"Matrix | Transformation + escala - start\n"RESET);
+	printf(F_WHITE"Test #8 - "RESET BOLD"Matrix | Transformation + escala - start\n"RESET);
 	// print_matrix(camera.transform);
 	check_equal_matrices(camera.transform, scaling_matrix(-1, 1, -1), "Comparação de transformação 2");
-	printf(F_WHITE"Test #9 - "RESET BOLD"Matrix | Transformation + escala - end\n\n"RESET);	
+	printf(F_WHITE"Test #8 - "RESET BOLD"Matrix | Transformation + escala - end\n\n"RESET);	
 }
 

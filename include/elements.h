@@ -25,7 +25,8 @@ int	set_brightness(char *bright_line, t_data *data);
 
 // # Sphere --------------
 
-int	analyze_sphere(char *line, t_data *data);
+int			analyze_sphere(char *line, t_data *data);
+t_matrix	transform_sphere(t_coords coords, double radius);
 
 // # Cylinder ------------
 

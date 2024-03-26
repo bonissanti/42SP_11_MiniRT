@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/19 13:18:53 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:38:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct s_sphere
 	double					diameter;
 	int						color[3];
 	t_coords				position;
+	t_matrix				transform;
+	t_matrix				inversed_t;
 }							t_sphere;
 
 typedef struct s_plane
