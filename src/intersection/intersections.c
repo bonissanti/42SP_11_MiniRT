@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/26 18:05:55 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:01:21 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,31 @@ t_vec3	get_normal(t_vec3 point, t_vec3 center)
 	return (normal);
 }
 
+t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
+{
+	t_vec3	result;
+
+	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
+	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
+	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
+	return (result);
+}
+
+t_ray	ray_transform(t_ray ray, t_matrix *matrix)
+{
+	t_ray	transformed_ray;
+
+	transformed_ray.origin = matrix_multiply_point(matrix, &ray.origin);
+	transformed_ray.direction = matrix_multiply_vector(matrix, &ray.direction);
+	return (transformed_ray);
+}
+
 bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 {
 	bool	hit;
 	t_inter	temp_inter;
+	t_ray	temp_ray;
+	t_sphere	*sphere;
 
 	hit = false;
 	ft_memset(&temp_inter, 0, sizeof(t_inter));
@@ -89,11 +110,13 @@ bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)
 		return (false);
 	if (!node->left && !node->right && node->object)
 	{
-		if (check_inter_with_object(node->object, &ray))
+		sphere = (t_sphere*)node->object;
+		temp_ray = ray_transform(ray, &sphere->inversed_t);
+		if (check_inter_with_object(node->object, &temp_ray))
 		{
 			temp_inter.t = ray.closest_t;
 			temp_inter.object = node->object;
-			temp_inter.point = get_intersection_point(ray, temp_inter.t);
+			temp_inter.point = get_intersection_point(temp_ray, temp_inter.t);
 			t_sphere* sphere = (t_sphere*)node->object;
 			temp_inter.normal = get_normal(temp_inter.point,
 					(t_vec3){sphere->position.x, sphere->position.y,

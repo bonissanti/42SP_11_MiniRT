@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/26 18:56:26 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:07:02 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void	set_camera_transform(t_camera *camera, t_vec3 up)
 	
 	translation = translation_matrix(-from_coords_to_vec.x, -from_coords_to_vec.y, -from_coords_to_vec.z);
 	camera->transform = matrix_multiply(&transform, &translation);
+	invert_matrix(&camera->transform, &camera->inversed_t);
 
 # ifndef TEST
 	printf("Matrix original\n");
 	print_matrix(camera->transform);
 	printf("\n");
-	// invert_matrix(&camera->transform, &camera->inversed_t);
 	// printf("Inverted\n");
 	// print_matrix(camera->inversed_t);
 	// printf("\n");
