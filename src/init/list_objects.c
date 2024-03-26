@@ -15,7 +15,6 @@
 int	add_objects(t_data *data, void *obj, t_object_type type)
 {
 	t_object *new_obj;
-
 	new_obj	= malloc(sizeof(t_object));
 	if (!new_obj)
 		return (-1);

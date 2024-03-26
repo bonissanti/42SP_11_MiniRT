@@ -11,7 +11,13 @@
 # define BOLD	"\x1b[1m"
 # define RESET	"\x1b[0m"
 
+void	test_validation(void);
 void	test_analyze_amblight(void);
 void	test_ray_for_pixel(void);
+void	test_identity_matrix(void);
+void	test_matrix_transformation(void);
+
+void	check_equal_coords(t_coords *result, t_coords *expected);
+void	check_equal_matrices(t_matrix result, t_matrix expected, const char *testName);
 
 # endif

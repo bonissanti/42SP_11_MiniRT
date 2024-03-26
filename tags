@@ -7642,7 +7642,7 @@ matrix_free	src/matrix/matrix.c	/^void	matrix_free(t_matrix *matrix)$/;"	f	typer
 matrix_identity	src/matrix/matrix.c	/^void	matrix_identity(t_matrix *mat)$/;"	f	typeref:typename:void
 matrix_multiply	src/matrix/operations.c	/^t_matrix	matrix_multiply(const t_matrix *a, const t_matrix *b)$/;"	f	typeref:typename:t_matrix
 matrix_multiply_point	src/matrix/operations.c	/^t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)$/;"	f	typeref:typename:t_coords
-matrix_translate	src/matrix/operations.c	/^t_matrix	matrix_translate(double	tx, double ty, double tz)$/;"	f	typeref:typename:t_matrix
+translation_matrix	src/matrix/operations.c	/^t_matrix	translation_matrix(double	tx, double ty, double tz)$/;"	f	typeref:typename:t_matrix
 max	include/structs.h	/^	double					max;$/;"	m	struct:s_cylinder	typeref:typename:double
 max	include/structs.h	/^	t_vec3					max;$/;"	m	struct:s_aabb	typeref:typename:t_vec3
 max_icc_size	MLX42/include/lodepng/lodepng.h	/^  size_t max_icc_size;$/;"	m	struct:LodePNGDecoderSettings	typeref:typename:size_t

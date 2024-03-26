@@ -47,7 +47,8 @@ INTER		= intersection/hit.c \
 			  intersection/list.c
 
 OPERATIONS	= operations/vector.c \
-			  operations/coords.c 
+			  operations/coords.c \
+			  operations/equal_values.c
 
 MATRIX		= matrix/matrix.c \
 			  matrix/inverse.c \
