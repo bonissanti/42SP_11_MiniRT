@@ -53,15 +53,15 @@ t_matrix	matrix_multiply(t_matrix *a, t_matrix *b)
 				result.matrix[y][x] += a->matrix[y][i] * b->matrix[i][x];
 		}
 	}
-# ifndef TEST
-	printf("a\n");
-	print_matrix(*a);
-	printf("b\n");
-	print_matrix(*b);
-	printf("result\n");
-	print_matrix(result);
-	printf("\n");
-# endif
+// # ifndef TEST
+// 	printf("a\n");
+// 	print_matrix(*a);
+// 	printf("b\n");
+// 	print_matrix(*b);
+// 	printf("result\n");
+// 	print_matrix(result);
+// 	printf("\n");
+// # endif
 	return (result);
 }
 
@@ -97,6 +97,7 @@ t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
 	return (result);
 }
 
+//WARNING: As duas funções abaixo não estão sendo usadas no momento
 double	det2x2(double a, double b, double c, double d)
 {
 	return (a * d - b * c);

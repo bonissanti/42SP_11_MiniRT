@@ -12,18 +12,17 @@
 
 #include "../../include/minirt.h"
 
-void	set_camera_transform(t_camera *camera, t_vec3 up)
+void	set_camera_transform(t_camera camera, t_coords from, t_vec3 forward, t_vec3 up)
 {
-	t_matrix	transform;
-	t_matrix	translation;
+	t_vec3	left;
+	t_vec3	true_up;
+	t_matrix transform;
+	t_matrix translation;
+	t_matrix orientation;
 
-	matrix_identity(&camera->inversed_t);
-	t_vec3	from_coords_to_vec = {camera->origin.x, camera->origin.y, camera->origin.z};
-	t_vec3	to = camera->orientation;
-
-	t_vec3	forward = normalize_vector(subtract_vector(to, from_coords_to_vec));
-	t_vec3	left = cross_vector(forward, normalize_vector(up));
-	t_vec3  true_up = cross_vector(left, forward);
+	matrix_identity(&orientation);
+	left = cross_vector(forward, normalize_vector(up));
+	true_up = cross_vector(left, forward);
 
 	// orientation
 	transform.matrix[0][0] = left.x;
@@ -40,19 +39,59 @@ void	set_camera_transform(t_camera *camera, t_vec3 up)
 	//NOTE: Ainda são necessários mais testes, seguindo o esperado pelo livro
 	// translation + multiply_matrix
 	
-	translation = translation_matrix(-from_coords_to_vec.x, -from_coords_to_vec.y, -from_coords_to_vec.z);
-	camera->transform = matrix_multiply(&transform, &translation);
 
-# ifndef TEST
-	printf("Matrix original\n");
-	print_matrix(camera->transform);
-	printf("\n");
-	// invert_matrix(&camera->transform, &camera->inversed_t);
-	// printf("Inverted\n");
-	// print_matrix(camera->inversed_t);
+	translation = translation_matrix(-from.x, -from.y, -from.z);
+	camera.transform = matrix_multiply(&transform, &translation);
+
+	matrix_identity(&camera.inversed_t);
+	invert_matrix(&camera.transform, &camera.inversed_t);
+
+	// printf("Inverted a\n");
 	// printf("\n");
-# endif
+	// print_matrix(inversed_t);
 }
+
+// void	set_camera_transform(t_camera *camera, t_vec3 up)
+// {
+// 	t_matrix	transform;
+// 	t_matrix	translation;
+//
+// 	matrix_identity(&camera->inversed_t);
+// 	t_vec3	from_coords_to_vec = {camera->origin.x, camera->origin.y, camera->origin.z};
+// 	t_vec3	to = camera->orientation;
+//
+// 	t_vec3	forward = normalize_vector(subtract_vector(to, from_coords_to_vec));
+// 	t_vec3	left = cross_vector(forward, normalize_vector(up));
+// 	t_vec3  true_up = cross_vector(left, forward);
+//
+// 	// orientation
+// 	transform.matrix[0][0] = left.x;
+// 	transform.matrix[0][1] = left.y;
+// 	transform.matrix[0][2] = left.z;
+// 	transform.matrix[1][0] = true_up.x;
+// 	transform.matrix[1][1] = true_up.y;
+// 	transform.matrix[1][2] = true_up.z;
+// 	transform.matrix[2][0] = -forward.x;
+// 	transform.matrix[2][1] = -forward.y;
+// 	transform.matrix[2][2] = -forward.z;
+// 	transform.matrix[3][3] = 1.0;
+//
+// 	//NOTE: Ainda são necessários mais testes, seguindo o esperado pelo livro
+// 	// translation + multiply_matrix
+//
+// 	translation = translation_matrix(-from_coords_to_vec.x, -from_coords_to_vec.y, -from_coords_to_vec.z);
+// 	camera->transform = matrix_multiply(&transform, &translation);
+//
+// # ifndef TEST
+// 	printf("Matrix original\n");
+// 	print_matrix(camera->transform);
+// 	printf("\n");
+// 	invert_matrix(&camera->transform, &camera->inversed_t);
+// 	printf("Inverted\n");
+// 	print_matrix(camera->inversed_t);
+// 	printf("\n");
+// # endif
+// }
 
 //TODO: Adicionar funções para configurar matrizes dos objetos, incluindo a inversão da matriz
 t_matrix	transform_sphere(t_coords coords, double radius)

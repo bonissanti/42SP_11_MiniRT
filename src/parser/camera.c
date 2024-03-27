@@ -20,7 +20,6 @@ static int	fill_coordnates(char *cam_line, t_data *data)
 	data->camera.origin.x = ft_atod(split_line[0]);
 	data->camera.origin.y = ft_atod(split_line[1]);
 	data->camera.origin.z = ft_atod(split_line[2]);
-	printf("x: %f, y: %f, z: %f", data->camera.origin.x, data->camera.origin.y, data->camera.origin.z);
 	free_array(split_line);
 	return (OK);
 }
@@ -71,7 +70,7 @@ int	set_camera(char *fov_line, t_data *data)
 	data->camera.half_width = tan(data->camera.fov / 2.0);
 	data->camera.half_height = data->camera.half_width * (double)WIDTH / (double)HEIGHT;
 	data->camera.pixel_size = (data->camera.half_width * 2) / (double)HEIGHT;
-	set_camera_transform(&data->camera, set_up(data->camera.orientation));
+	set_camera_transform(data->camera, data->camera.origin, data->camera.orientation, set_up(data->camera.orientation));
 	return (OK);
 }
 
