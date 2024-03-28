@@ -21,6 +21,7 @@ void	test_identity_matrix(void);
 void	test_determinant(void);
 void	test_cofactor_matrix(void);
 void 	test_calculate_minor(void);
+void	test_cylinder(void);
 
 void	check_equal_coords(t_coords *result, t_coords *expected);
 void	check_equal_matrices(t_matrix result, t_matrix expected, const char *testName);

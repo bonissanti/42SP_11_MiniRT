@@ -94,3 +94,20 @@ t_matrix	transform_sphere(t_coords coords, double radius)
 	transform = matrix_multiply(&translation, &scaling);
 	return (transform);
 }
+
+t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation) {
+	t_matrix	transform;
+	t_matrix	translation;
+	t_matrix	scaling;
+	t_matrix	rotation;
+	t_matrix	temp_rot;
+
+	
+	rotation = get_rotation_matrix(orientation);
+	scaling = scaling_matrix(radius, 1, radius);
+	translation = translation_matrix(coords.x, coords.y, coords.z);
+	temp_rot = matrix_multiply(&rotation, &scaling);
+	transform = matrix_multiply(&translation, &temp_rot);
+	print_matrix(transform);
+	return (transform);
+}

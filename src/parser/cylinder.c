@@ -105,7 +105,8 @@ int	analyze_cylinder(char *line, t_data *data)
 	new_cylinder->diameter = ft_atod(token[2]);
 	new_cylinder->height = ft_atod(token[3]);
 	new_cylinder->max = new_cylinder->height / 2;
-	new_cylinder->min = new_cylinder->height / 2;
+	new_cylinder->min = -new_cylinder->height / 2;
+	new_cylinder->transform = transform_cylinder(new_cylinder->position, new_cylinder->diameter / 2, new_cylinder->vector);
 	fill_colors(token[4], new_cylinder);
 	
 	if (add_objects(data, new_cylinder, CYLINDER) == ERROR)

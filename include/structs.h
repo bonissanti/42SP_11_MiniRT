@@ -110,6 +110,8 @@ typedef struct s_cylinder
 	int						color[3];
 	t_coords				position;
 	t_vec3					vector;
+	t_matrix				transform;
+	t_matrix				inversed_t;
 }							t_cylinder;
 
 /* Ray and color */
