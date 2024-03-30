@@ -6,11 +6,21 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:40:06 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/20 18:33:37 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/30 19:38:01 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+t_coords	mat4_mul_vec3(const t_matrix *m, const t_coords *point)
+{
+	t_coords	result;
+
+	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
+	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
+	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
+	return (result);
+}
 
 t_aabb	get_bbox_sphere(t_sphere *sphere)
 {
@@ -58,7 +68,11 @@ t_aabb	get_obj_bbox(t_object *obj)
 	bbox.min = (t_vec3){FLT_MAX, FLT_MAX, FLT_MAX};
 	bbox.max = (t_vec3){FLT_MIN, FLT_MIN, FLT_MIN};
 	if (obj->type == SPHERE)
-		bbox = get_bbox_sphere(obj->object);
+	{
+		t_sphere *sphere = obj->object;
+		sphere->position = mat4_mul_vec3(&sphere->transform, &sphere->position);
+		bbox = get_bbox_sphere(sphere);
+	}
 	else if (obj->type == CYLINDER)
 		bbox = get_bbox_cylinder(obj->object);
 	else if (obj->type == PLANE)
