@@ -6,24 +6,59 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/26 19:07:02 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/30 17:03:05 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-void	set_camera_transform(t_camera *camera, t_vec3 up)
+/**
+ * Function: Set_camera_transform
+ * --------------------
+ * Sets up the camera transformation matrices in a ray tracing system context.
+ * This function defines both the transformation matrix and its inverse, which
+ * are critical for calculating the viewing rays from the camera to objects
+ * in the 3D scene. The camera's transformation is established based on the
+ * orientation provided by the 'from' parameter (the camera's origin),
+ * 'forward' (the direction the camera is pointing towards), and 'up' (the
+ * camera's up direction), allowing for the creation of an orthogonal basis
+ * for viewing.
+ *
+ * @param camera: A strucute representing the camera. This will be modified by
+ * the function to include the calculated matrices.
+ * @param from: The position in 3D space from where the camera views the scene.
+ * @param forward: The direction towards which the camera is pointed.
+ * @param up: The approximate "up" direction for the camera, used to stabilize
+ * the orientation.
+ *
+ * Process:
+ * 1. Calculates the 'left' vector as the cross product between 'forward' and
+ * 		the normalization of 'up', establishing an axis orthogonal to the viewing
+ * 		direction and the up vector.
+ * 2. Recalculates 'up' (true_up) as the cross product between 'left' and
+ * 		'forward' to ensure orthogonality and correctness of the basis.
+ * 3. Constructs the camer's orientation matrix based on the 'left', 'true_up'
+ * 		and 'forward' vectors.
+ * 4. Calculates the translation matrix to position the camera at the origin ('from')
+ * 		of the view.
+ * 5. Calculates and stores the inverse of the transformation matrix, essential for
+ * 		ray transformations during the ray tracing process.
+ *
+ * @return: This function does not return a value. Instead, it directly modifies the
+ * 'camera' structure passed as a parameter.
+ */
+
+void	set_camera_transform(t_camera camera, t_coords from, t_vec3 forward, t_vec3 up)
 {
-	t_matrix	transform;
-	t_matrix	translation;
+	t_vec3	left;
+	t_vec3	true_up;
+	t_matrix transform;
+	t_matrix translation;
+	t_matrix orientation;
 
-	matrix_identity(&camera->inversed_t);
-	t_vec3	from_coords_to_vec = {camera->origin.x, camera->origin.y, camera->origin.z};
-	t_vec3	to = camera->orientation;
-
-	t_vec3	forward = normalize_vector(subtract_vector(to, from_coords_to_vec));
-	t_vec3	left = cross_vector(forward, normalize_vector(up));
-	t_vec3  true_up = cross_vector(left, forward);
+	matrix_identity(&orientation);
+	left = cross_vector(forward, normalize_vector(up));
+	true_up = cross_vector(left, forward);
 
 	// orientation
 	transform.matrix[0][0] = left.x;
@@ -37,22 +72,15 @@ void	set_camera_transform(t_camera *camera, t_vec3 up)
 	transform.matrix[2][2] = -forward.z;
 	transform.matrix[3][3] = 1.0;
 
-	//NOTE: Ainda são necessários mais testes, seguindo o esperado pelo livro
-	// translation + multiply_matrix
-	
-	translation = translation_matrix(-from_coords_to_vec.x, -from_coords_to_vec.y, -from_coords_to_vec.z);
-	camera->transform = matrix_multiply(&transform, &translation);
-	invert_matrix(&camera->transform, &camera->inversed_t);
 
-# ifndef TEST
-	printf("Matrix original\n");
-	print_matrix(camera->transform);
-	printf("\n");
-	// printf("Inverted\n");
-	// print_matrix(camera->inversed_t);
-	// printf("\n");
-# endif
+	//translation + multiply_matrix
+	translation = translation_matrix(-from.x, -from.y, -from.z);
+	camera.transform = matrix_multiply(&transform, &translation);
+
+	matrix_identity(&camera.inversed_t);
+	invert_matrix(&camera.transform, &camera.inversed_t);
 }
+
 
 //TODO: Adicionar funções para configurar matrizes dos objetos, incluindo a inversão da matriz
 t_matrix	transform_sphere(t_coords coords, double radius)
@@ -64,5 +92,22 @@ t_matrix	transform_sphere(t_coords coords, double radius)
 	scaling = scaling_matrix(radius, radius, radius);
 	translation = translation_matrix(coords.x, coords.y, coords.z);
 	transform = matrix_multiply(&translation, &scaling);
+	return (transform);
+}
+
+t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation) {
+	t_matrix	transform;
+	t_matrix	translation;
+	t_matrix	scaling;
+	t_matrix	rotation;
+	t_matrix	temp_rot;
+
+	
+	rotation = get_rotation_matrix(orientation);
+	scaling = scaling_matrix(radius, 1, radius);
+	translation = translation_matrix(coords.x, coords.y, coords.z);
+	temp_rot = matrix_multiply(&rotation, &scaling);
+	transform = matrix_multiply(&translation, &temp_rot);
+	print_matrix(transform);
 	return (transform);
 }
