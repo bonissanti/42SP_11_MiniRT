@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/26 22:30:11 by renato           ###   ########.fr       */
+/*   Updated: 2024/03/30 22:33:04 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	t_color			color;
 	bool			hit;
 
+	if (!data->bvh_root)
+		return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
 	ray.closest_t = INFINITY;
 	inter_list = NULL;
 	hit = intersection_bvh(data->bvh_root, &inter_list, ray);
