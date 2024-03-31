@@ -97,15 +97,78 @@ t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
 	return (result);
 }
 
-//WARNING: As duas funções abaixo não estão sendo usadas no momento
-double	det2x2(double a, double b, double c, double d)
+t_matrix	rotation_matrix_x(double angle)
 {
-	return (a * d - b * c);
+	t_matrix	rotation;
+	double		rad;
+
+	matrix_identity(&rotation);
+	rad = angle * M_PI / 180.0;
+
+	rotation.matrix[1][1] = cos(rad);
+	rotation.matrix[1][2] = -sin(rad);
+	rotation.matrix[2][1] = sin(rad);
+	rotation.matrix[2][2] = cos(rad);
+	return (rotation);
 }
 
-double	det3x3(double m[3][3])
+t_matrix	rotation_matrix_y(double angle)
 {
-	return (m[0][0] * det2x2(m[1][1], m[1][2], m[2][1], m[2][2]) - 
-			m[0][1] * det2x2(m[1][0], m[1][2], m[2][0], m[2][2]) +
-			m[0][2] * det2x2(m[1][0], m[1][1], m[2][0], m[2][1]));
+	t_matrix	rotation;
+	double		rad;
+
+	matrix_identity(&rotation);
+	rad = angle * M_PI / 180.0;
+
+	rotation.matrix[0][0] = cos(rad);
+	rotation.matrix[0][2] = sin(rad);
+	rotation.matrix[2][0] = -sin(rad);
+	rotation.matrix[2][2] = cos(rad);
+	return (rotation);
 }
+
+t_matrix rotation_matrix_z(double angle)
+{
+	t_matrix	rotation;
+	double		rad;
+
+	matrix_identity(&rotation);
+	rad = angle * M_PI / 180.0;
+
+	rotation.matrix[0][0] = cos(rad);
+	rotation.matrix[0][1] = -sin(rad);
+	rotation.matrix[1][0] = sin(rad);
+	rotation.matrix[1][1] = cos(rad);
+	return (rotation);
+}
+
+
+
+//BUG: Essa versão de baixo não funciona com orientação 0,0,1. Na fórmula de Euler
+// isso seria o Roll. Tem que testar pra ver como ele aparece
+t_matrix	get_rotation_matrix(t_vec3 orientation)
+{
+	double		pitch;
+	double		yaw;
+	t_matrix	pitch_matrix;
+	t_matrix	yaw_matrix;
+
+	pitch = atan2(-orientation.y, sqrt(orientation.x * orientation.x + orientation.z * orientation.z));
+	yaw = atan2(orientation.x, orientation.z);
+	pitch_matrix = rotation_matrix_x(pitch);
+	yaw_matrix = rotation_matrix_y(yaw);
+	return (matrix_multiply(&yaw_matrix, &pitch_matrix));
+}
+
+//WARNING: As duas funções abaixo não estão sendo usadas no momento
+// double	det2x2(double a, double b, double c, double d)
+// {
+// 	return (a * d - b * c);
+// }
+//
+// double	det3x3(double m[3][3])
+// {
+// 	return (m[0][0] * det2x2(m[1][1], m[1][2], m[2][1], m[2][2]) - 
+// 			m[0][1] * det2x2(m[1][0], m[1][2], m[2][0], m[2][2]) +
+// 			m[0][2] * det2x2(m[1][0], m[1][1], m[2][0], m[2][1]));
+// }
