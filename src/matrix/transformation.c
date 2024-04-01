@@ -105,11 +105,11 @@ t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation) 
 	t_matrix	temp_rot;
 
 	
-	rotation = get_rotation_matrix(orientation);
+	rotation = quatern_to_matrix(orientation, M_PI / 2);
 	scaling = scaling_matrix(radius, 1, radius);
 	translation = translation_matrix(coords.x, coords.y, coords.z);
 	temp_rot = matrix_multiply(&rotation, &scaling);
 	transform = matrix_multiply(&translation, &temp_rot);
-	print_matrix(transform);
+	print_matrix(rotation);
 	return (transform);
 }

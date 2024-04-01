@@ -5,12 +5,15 @@ int	main(void)
 	test_validation();
 	test_analyze_amblight();
 	test_identity_matrix();
+	test_cylinder();
 	// test_matrix_transformation();
 	test_ray_for_pixel();
 	test_transform_sphere();
 	test_determinant();
 	test_cofactor_matrix();
 	test_calculate_minor();
-	test_cylinder();
+	test_set_ray();
+	test_ray_hits_sphere();
+	test_ray_position();
 	return (0);
 }
