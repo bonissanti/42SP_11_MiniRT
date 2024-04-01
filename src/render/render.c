@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/31 23:59:25 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/01 15:32:30 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	t_vec3		light;
 
 	(void)ray;
-	sphere = (t_sphere*)closest->object->object;
+	sphere = (t_sphere *)closest->object->object;
 	normal = normalize_vector(subtract_coords((t_coords){closest->point.x,
 				closest->point.y, closest->point.z}, sphere->position));
 	light = subtract_coords(data->light.position,
@@ -36,28 +36,98 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	return (color);
 }
 
+t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
+{
+	t_vec3	result;
+
+	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
+	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
+	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
+	return (result);
+}
+
+t_ray	ray_transform(t_ray ray, t_matrix *matrix)
+{
+	t_ray	transformed_ray;
+
+	transformed_ray.origin = matrix_multiply_point(matrix, &ray.origin);
+	transformed_ray.direction = matrix_multiply_vector(matrix, &ray.direction);
+	return (transformed_ray);
+}
+
+t_vec3	get_intersection_point(t_ray ray, double t)
+{
+	t_vec3	intersection_point;
+
+	intersection_point = (t_vec3){ray.origin.x + t * ray.direction.x,
+		ray.origin.y + t * ray.direction.y,
+		ray.origin.z + t * ray.direction.z};
+	return (intersection_point);
+}
+
+bool intersection_obj(t_object *object, t_ray *ray)
+{
+	t_object	*cur;
+	bool		hit;
+	double		t_temp;
+	// t_ray		temp_ray;
+	t_sphere	*sphere;
+
+	t_temp = 0.0;
+	hit = false;
+	cur = object;
+	while (cur)
+	{
+		// temp_ray = *ray;
+		sphere = (t_sphere*)cur->object;
+		// print_matrix(sphere->transform);
+		*ray = ray_transform(*ray, &sphere->transform);
+		if (cur->type == SPHERE)
+			hit = hit_sphere(cur->object, ray, &t_temp);
+		// printf("t_temp: %f\n", t_temp);
+		// printf("ray->closest_t: %f\n", ray->closest_t);
+		// printf("hit: %d\n", hit);
+		if (hit && t_temp < ray->closest_t && t_temp > EPSILON)
+		{
+			ray->closest_t = t_temp;
+			ray->closest_object = cur;
+			hit = true;
+		}
+		cur = cur->next;
+	}
+	return (hit);
+}
+
 t_color	trace_ray(t_data *data, t_ray ray)
 {
-	t_inter			closest_found;
+	// t_inter			closest_found;
 	t_inter_list	*inter_list;
-	t_color			color;
+	// t_inter_list	*temp;
+	// t_color			color;
 	bool			hit;
 
-	if (!data->bvh_root)
-		return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
 	ray.closest_t = INFINITY;
 	inter_list = NULL;
-	hit = intersection_bvh(data->bvh_root, &inter_list, ray);
-	if (!hit || !find_closest_inter(&closest_found, inter_list))
+	// hit = intersection_bvh(data->bvh_root, &inter_list, ray);
+	hit = intersection_obj(data->objects, &ray);
+		// printf("%d ", hit);
+	// temp = inter_list;
+	// while (temp)
+	// {
+	// 	printf("t: %f\n", temp->inter.t);
+	// 	temp = temp->next;
+	// }
+	if (!hit)
 	{
 		delete_inter_list(inter_list);
 		// printf("x ");
 		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
 	// printf("o ");
-	color = process_intersection(data, &closest_found, &ray);
+	// color = process_intersection(data, &closest_found, &ray);
 	delete_inter_list(inter_list);
-	return (color);
+	// return (color);
+	return((t_color){1, 0, 0, 1});
 }
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
@@ -105,7 +175,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
 	data->bvh_root = create_bvh(&data->objects);
-	traverseBVH(data->bvh_root, 0);
+	// traverseBVH(data->bvh_root, 0);
 	y = -1;
 	while (++y < data->camera.height_v)
 	{
@@ -116,7 +186,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
 		}
-		// printf("\n");
+		printf("\n");
 	}
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
