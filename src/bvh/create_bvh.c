@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_bvh.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:29:22 by renato            #+#    #+#             */
-/*   Updated: 2024/03/20 18:50:47 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:57:53 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_aabb	calculate_bbox(t_object *objects, int start, int end)
 t_bvh_node	*construct_bvh(t_object **objects, int start, int end)
 {
 	t_bvh_node	*node;
+	t_geo_u	geo;
 	int			count;
 	int			mid;
 
@@ -68,6 +69,9 @@ t_bvh_node	*construct_bvh(t_object **objects, int start, int end)
 		node->right = NULL;
 		node->object = get_cur(*objects, start);
 		node->type = (*objects)->type;
+		geo.sphere = (t_sphere *)(node->object);
+		node->transform = geo.sphere->transform;
+		node->inversed_t = geo.sphere->inversed_t;
 	}
 	else
 	{
@@ -85,6 +89,8 @@ t_bvh_node	*create_bvh(t_object **objects)
 	t_object	*cur;
 	t_bvh_node	*root;
 
+	if (!*objects) //in case there are no objects in the scene
+		return (NULL);
 	count = 0;
 	cur = *objects;
 	while (cur)
@@ -96,20 +102,3 @@ t_bvh_node	*create_bvh(t_object **objects)
 	root = construct_bvh(objects, 0, count);
 	return (root);
 }
-
-// bool	intersect_bvh_node(t_bvh_node *node, Ray ray, float *tNear,
-// 	float *tFar)
-// {
-// 	if (!intersectAABB(node->bbox, ray, tNear, tFar)) {
-// 		return false;
-// 	}
-// 	if (node->object != NULL) {
-// 		// Leaf node: Check intersection with the object
-// 		return (intersectObject(node->object, ray, tNear, tFar));
-// 	} else {
-// 		// Internal node: Recursively check intersections with child nodes
-// 		bool hitLeft = intersect_bvh_node(node->left, ray, tNear, tFar);
-// 		bool hitRight = intersect_bvh_node(node->right, ray, tNear, tFar);
-// 		return (hitLeft || hitRight);
-// 	}
-// }

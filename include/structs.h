@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/26 18:57:25 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:57:53 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ typedef struct s_coords
 	double					x;
 	double					y;
 	double					z;
-}							t_coords;
+}							t_coords, t_vec3;
 
-typedef struct s_vec3
-{
-	double					x;
-	double					y;
-	double					z;
-}							t_vec3;
+// typedef struct s_vec3
+// {
+// 	double					x;
+// 	double					y;
+// 	double					z;
+// }							t_vec3;
 
 typedef struct s_matrix
 {
@@ -114,6 +114,18 @@ typedef struct s_cylinder
 	t_matrix				inversed_t;
 }							t_cylinder;
 
+// typedef struct s_obj_union
+// {
+// 	t_object_type			type;
+// }							t_geo_u;
+
+typedef union u_obj
+{
+	t_sphere				*sphere;
+	t_plane					*plane;
+	t_cylinder				*cylinder;
+} t_geo_u;
+
 /* Ray and color */
 typedef struct s_bhaskara
 {
@@ -153,6 +165,8 @@ typedef struct s_bvh_node
 {
 	void					*object;
 	t_object_type			type;
+	t_matrix				transform;
+	t_matrix				inversed_t;
 	struct s_bvh_node		*left;
 	struct s_bvh_node		*right;
 	t_aabb					bbox;

@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/30 22:36:08 by renato           ###   ########.fr       */
+/*   Updated: 2024/03/31 23:59:25 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	if (!hit || !find_closest_inter(&closest_found, inter_list))
 	{
 		delete_inter_list(inter_list);
+		// printf("x ");
 		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
+	// printf("o ");
 	color = process_intersection(data, &closest_found, &ray);
 	delete_inter_list(inter_list);
 	return (color);
@@ -114,6 +116,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
 		}
+		// printf("\n");
 	}
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");

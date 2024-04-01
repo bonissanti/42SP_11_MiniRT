@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_object_bbox.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:40:06 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/30 19:38:01 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:57:53 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,15 @@ t_aabb	get_bbox_plane(t_plane *plane)
 t_aabb	get_obj_bbox(t_object *obj)
 {
 	t_aabb	bbox;
+	t_geo_u	geo;
 
 	bbox.min = (t_vec3){FLT_MAX, FLT_MAX, FLT_MAX};
 	bbox.max = (t_vec3){FLT_MIN, FLT_MIN, FLT_MIN};
 	if (obj->type == SPHERE)
 	{
-		t_sphere *sphere = obj->object;
-		sphere->position = mat4_mul_vec3(&sphere->transform, &sphere->position);
-		bbox = get_bbox_sphere(sphere);
+		geo.sphere = (t_sphere *)obj->object;
+		geo.sphere->position = mat4_mul_vec3(&geo.sphere->transform, &geo.sphere->position);
+		bbox = get_bbox_sphere(geo.sphere);
 	}
 	else if (obj->type == CYLINDER)
 		bbox = get_bbox_cylinder(obj->object);

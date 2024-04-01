@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/15 16:32:38 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/03/31 02:19:12 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,6 @@ int	main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
-	// node = create_bvh(&data.objects);
-	// traverseBVH(node, 0);
-
 	render_scene(&data, &mlx);
 	mlx_image_to_window(mlx.win_ptr, mlx.img_ptr, 0, 0);
 	mlx_loop(mlx.win_ptr);
