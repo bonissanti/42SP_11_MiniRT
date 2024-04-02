@@ -43,6 +43,7 @@ int			parse_lines(t_data *data);
 
 // # Generic functions -------
 
+bool		compare_vectors(t_vec3 result, t_vec3 expected);
 bool		check_equal_doubles(double a, double b);
 t_coords	set_coords(double x, double y, double z);
 t_vec3		set_vector(double x, double y, double z);

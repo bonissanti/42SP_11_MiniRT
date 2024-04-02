@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/19 16:09:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/02 17:03:33 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,48 +100,40 @@ t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
 t_matrix	rotation_matrix_x(double angle)
 {
 	t_matrix	rotation;
-	double		rad;
 
 	matrix_identity(&rotation);
-	rad = angle * M_PI / 180.0;
-
-	rotation.matrix[1][1] = cos(rad);
-	rotation.matrix[1][2] = -sin(rad);
-	rotation.matrix[2][1] = sin(rad);
-	rotation.matrix[2][2] = cos(rad);
+	rotation.matrix[1][1] = cos(angle);
+	rotation.matrix[1][2] = -sin(angle);
+	rotation.matrix[2][1] = sin(angle);
+	rotation.matrix[2][2] = cos(angle);
 	return (rotation);
 }
 
 t_matrix	rotation_matrix_y(double angle)
 {
 	t_matrix	rotation;
-	double		rad;
 
 	matrix_identity(&rotation);
-	rad = angle * M_PI / 180.0;
-
-	rotation.matrix[0][0] = cos(rad);
-	rotation.matrix[0][2] = sin(rad);
-	rotation.matrix[2][0] = -sin(rad);
-	rotation.matrix[2][2] = cos(rad);
+	rotation.matrix[0][0] = cos(angle);
+	rotation.matrix[0][2] = sin(angle);
+	rotation.matrix[2][0] = -sin(angle);
+	rotation.matrix[2][2] = cos(angle);
 	return (rotation);
 }
 
 t_matrix rotation_matrix_z(double angle)
 {
 	t_matrix	rotation;
-	double		rad;
 
 	matrix_identity(&rotation);
-	rad = angle * M_PI / 180.0;
-
-	rotation.matrix[0][0] = cos(rad);
-	rotation.matrix[0][1] = -sin(rad);
-	rotation.matrix[1][0] = sin(rad);
-	rotation.matrix[1][1] = cos(rad);
+	rotation.matrix[0][0] = cos(angle);
+	rotation.matrix[0][1] = -sin(angle);
+	rotation.matrix[1][0] = sin(angle);
+	rotation.matrix[1][1] = cos(angle);
 	return (rotation);
 }
 
+//WARNING: função não utilizada
 t_quatern	create_rotation_quatern(t_vec3 orientation, double radians)
 {
 	t_quatern	quat;
@@ -157,55 +149,52 @@ t_quatern	create_rotation_quatern(t_vec3 orientation, double radians)
 	return (quat);
 }
 
-t_matrix	quatern_to_matrix(t_vec3 orientation, double radians)
+t_matrix	rotation_xy(double x_angle, double y_angle)
 {
-	t_matrix	rotation;
-	t_quatern	quat;
+	t_matrix	result;
+	t_matrix	rotation_x;
+	t_matrix	rotation_y;
 
-	quat = create_rotation_quatern(orientation, radians);
-	double xx = quat.x * quat.x;
-	double yy = quat.y * quat.y;
-	double zz = quat.z * quat.z;
-	double xy = quat.x * quat.y;
-	double xz = quat.x * quat.z;
-	double yz = quat.y * quat.z;
-	double wx = quat.w * quat.x;
-	double wy = quat.w * quat.y;
-	double wz = quat.w * quat.z;
-
-	rotation.matrix[0][0] = 1.0 - 2.0 * (yy + zz);
-	rotation.matrix[0][1] = 2.0 * (xy - wz);
-	rotation.matrix[0][2] = 2.0 * (xz + wy);
-	rotation.matrix[0][3] = 0.0;
-
-	rotation.matrix[1][0] = 2.0 * (xy + wz);
-	rotation.matrix[1][1] = 1.0 - 2.0 * (xx + zz);
-	rotation.matrix[1][2] = 2.0 * (yz - wx);
-	rotation.matrix[1][3] = 0.0;
-
-	rotation.matrix[2][0] = 2.0 * (xz - wy);
-	rotation.matrix[2][1] = 2.0 * (yz + wx);
-	rotation.matrix[2][2] = 1.0 - 2.0 * (xx + yy);
-	rotation.matrix[2][3] = 0.0;
-
-	rotation.matrix[3][0] = 0.0;
-	rotation.matrix[3][1] = 0.0;
-	rotation.matrix[3][2] = 0.0;
-	rotation.matrix[3][3] = 1.0;
-	return (rotation);
+	rotation_x = rotation_matrix_x(x_angle);
+	rotation_y = rotation_matrix_y(y_angle);
+	result = matrix_multiply(&rotation_x, &rotation_y);
+	return (result);
 }
 
-//BUG: Essa versão de baixo não funciona com orientação 0,0,1. Na fórmula de Euler
-// isso seria o Roll. Tem que testar pra ver como ele aparece
-// t_matrix	get_rotation_matrix(t_matrix original)
-// {
-// 	t_matrix	rotation;
-// 	double		w = original.matrix[0][0]
-// 	double		x = original.matrix
-// 	double		scale_factor = 2.0/ (ma)
-//
-//
-// }
+t_matrix	rotation_zx(double z_angle, double x_angle)
+{
+	t_matrix	result;
+	t_matrix	rotation_z;
+	t_matrix	rotation_x;
+
+	rotation_z = rotation_matrix_z(z_angle);
+	rotation_x = rotation_matrix_x(x_angle);
+	result = matrix_multiply(&rotation_z, &rotation_x);
+	return (result);
+}
+
+t_matrix	verify_orientation(t_vec3 orientation)
+{
+	t_matrix	rotation;
+
+	matrix_identity(&rotation);
+	if (compare_vectors(orientation, set_vector(0, 1, 0)))
+		return (rotation);
+	else if (compare_vectors(orientation, set_vector(0, -1, 0)))
+		return (rotation_matrix_x(M_PI));
+	else if (compare_vectors(orientation, set_vector(1, 0, 0)))
+		return (rotation_matrix_z(-M_PI / 2));
+	else if (compare_vectors(orientation, set_vector(-1, 0, 0)))
+		return (rotation_matrix_z(M_PI / 2));
+	else if (compare_vectors(orientation, set_vector(0, 0, 1)))
+		return (rotation_matrix_x(M_PI / 2));
+	else if (compare_vectors(orientation, set_vector(0, 0, -1)))
+		return (rotation_matrix_x(-M_PI / 2));
+	if (check_equal_doubles(orientation.y, 0))
+		return (rotation_xy(M_PI / 2, atan2(orientation.x, orientation.z)));
+	else
+	 	return (rotation_zx(atan2(orientation.z, orientation.y), atan2(-orientation.x, orientation.y)));
+}
 
 //WARNING: As duas funções abaixo não estão sendo usadas no momento
 // double	det2x2(double a, double b, double c, double d)

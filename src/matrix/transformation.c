@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/30 22:35:32 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/02 16:10:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,27 @@ t_matrix	transform_sphere(t_coords coords, double radius)
 	return (transform);
 }
 
-t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation) {
+t_matrix	transform_plane(t_coords coords, t_vec3 orientation)
+{
+	t_matrix	transform;
+	t_matrix	translation;
+	t_matrix	rotation;
+
+	rotation = verify_orientation(orientation);
+	translation = translation_matrix(coords.x, coords.y, coords.z);
+	transform = matrix_multiply(&translation, &rotation);
+	return (transform);
+}
+
+t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation) 
+{
 	t_matrix	transform;
 	t_matrix	translation;
 	t_matrix	scaling;
 	t_matrix	rotation;
 	t_matrix	temp_rot;
-
 	
-	rotation = quatern_to_matrix(orientation, M_PI / 2);
+	rotation = verify_orientation(orientation);
 	scaling = scaling_matrix(radius, 1, radius);
 	translation = translation_matrix(coords.x, coords.y, coords.z);
 	temp_rot = matrix_multiply(&rotation, &scaling);
