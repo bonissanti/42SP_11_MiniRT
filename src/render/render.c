@@ -143,9 +143,9 @@ t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 	world = set_coords(camera->half_width - xoffset, camera->half_height
 			- yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
-	#ifdef TEST
-		print_matrix(&camera->inversed_t);	
-	#endif
+	// #ifdef TEST
+	// 	print_matrix(&camera->inversed_t);	
+	// #endif
 	ray.origin = matrix_multiply_point(&camera->inversed_t,
 			&((t_coords){0, 0, 0}));
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
@@ -172,22 +172,24 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	int		y;
 	t_ray	ray;
 
-	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
-	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
+	// mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
+	// mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
 	data->bvh_root = create_bvh(&data->objects);
 	// traverseBVH(data->bvh_root, 0);
 	y = -1;
+	(void)mlx;
 	while (++y < data->camera.height_v)
 	{
 		x = -1;
 		while (++x < data->camera.width_v)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
-			mlx_put_pixel(mlx->img_ptr, x, y,
-				t_color_to_int(trace_ray(data, ray)));
+			// mlx_put_pixel(mlx->img_ptr, x, y,
+				// t_color_to_int(trace_ray(data, ray)));
 		}
 		printf("\n");
 	}
-	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
+	(void)ray;
+	// mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }

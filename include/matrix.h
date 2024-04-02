@@ -14,6 +14,8 @@ t_matrix	matrix_multiply (t_matrix *a, t_matrix *b);
 t_matrix	translation_matrix(double tx, double ty, double tz);
 
 // # Operations
+t_quatern	create_rotation_quatern(t_vec3 orientation, double radians);
+t_matrix	quatern_to_matrix(t_vec3 orientation, double radians);
 t_matrix	get_rotation_matrix(t_vec3 orientation);
 t_matrix	scaling_matrix(double sx, double sy, double sz);
 t_matrix	rotation_matrix_y(double angle);

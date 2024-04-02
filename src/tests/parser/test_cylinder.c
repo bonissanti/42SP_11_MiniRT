@@ -8,7 +8,7 @@ void	test_cylinder(void)
 	char *test_line = "cy 50.0,0.0,20.6 0.0,0.0,1.0 14.2 21.42 10,0,255";
 	int	result = analyze_cylinder(test_line + 2, &data);
 
-	printf("Test #7 - Parser | Cylinder 1 - start\n");
+	printf("Test #8 - Parser | Cylinder 1 - start\n");
 	if (result == ERROR)
 		printf(RED "Falha no teste: Análise do cilindro falhou\n"RESET);
 
@@ -31,4 +31,5 @@ void	test_cylinder(void)
 	check_equal_doubles_p(cylinder->color[2], 255, "Cor b do cilindro");
 	check_equal_doubles_p(cylinder->max, 21.42 / 2, "Max do cilindro");
 	check_equal_doubles_p(cylinder->min, -21.42 / 2, "Min do cilindro");
+	printf("Test #8 - Parser | Cylinder 1 - end\n\n");
 }

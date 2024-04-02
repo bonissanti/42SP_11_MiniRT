@@ -142,23 +142,70 @@ t_matrix rotation_matrix_z(double angle)
 	return (rotation);
 }
 
+t_quatern	create_rotation_quatern(t_vec3 orientation, double radians)
+{
+	t_quatern	quat;
+	// orientation = normalize_vector(orientation);
+	double	half_angle = -M_PI / 4.0;
+	
+	(void)orientation;
+	(void)radians;
+	quat.w = cos(half_angle);
+	quat.x = sin(half_angle);
+	quat.y = 0.0;
+	quat.z = 0.0;
+	return (quat);
+}
 
+t_matrix	quatern_to_matrix(t_vec3 orientation, double radians)
+{
+	t_matrix	rotation;
+	t_quatern	quat;
+
+	quat = create_rotation_quatern(orientation, radians);
+	double xx = quat.x * quat.x;
+	double yy = quat.y * quat.y;
+	double zz = quat.z * quat.z;
+	double xy = quat.x * quat.y;
+	double xz = quat.x * quat.z;
+	double yz = quat.y * quat.z;
+	double wx = quat.w * quat.x;
+	double wy = quat.w * quat.y;
+	double wz = quat.w * quat.z;
+
+	rotation.matrix[0][0] = 1.0 - 2.0 * (yy + zz);
+	rotation.matrix[0][1] = 2.0 * (xy - wz);
+	rotation.matrix[0][2] = 2.0 * (xz + wy);
+	rotation.matrix[0][3] = 0.0;
+
+	rotation.matrix[1][0] = 2.0 * (xy + wz);
+	rotation.matrix[1][1] = 1.0 - 2.0 * (xx + zz);
+	rotation.matrix[1][2] = 2.0 * (yz - wx);
+	rotation.matrix[1][3] = 0.0;
+
+	rotation.matrix[2][0] = 2.0 * (xz - wy);
+	rotation.matrix[2][1] = 2.0 * (yz + wx);
+	rotation.matrix[2][2] = 1.0 - 2.0 * (xx + yy);
+	rotation.matrix[2][3] = 0.0;
+
+	rotation.matrix[3][0] = 0.0;
+	rotation.matrix[3][1] = 0.0;
+	rotation.matrix[3][2] = 0.0;
+	rotation.matrix[3][3] = 1.0;
+	return (rotation);
+}
 
 //BUG: Essa versão de baixo não funciona com orientação 0,0,1. Na fórmula de Euler
 // isso seria o Roll. Tem que testar pra ver como ele aparece
-t_matrix	get_rotation_matrix(t_vec3 orientation)
-{
-	double		pitch;
-	double		yaw;
-	t_matrix	pitch_matrix;
-	t_matrix	yaw_matrix;
-
-	pitch = atan2(-orientation.y, sqrt(orientation.x * orientation.x + orientation.z * orientation.z));
-	yaw = atan2(orientation.x, orientation.z);
-	pitch_matrix = rotation_matrix_x(pitch);
-	yaw_matrix = rotation_matrix_y(yaw);
-	return (matrix_multiply(&yaw_matrix, &pitch_matrix));
-}
+// t_matrix	get_rotation_matrix(t_matrix original)
+// {
+// 	t_matrix	rotation;
+// 	double		w = original.matrix[0][0]
+// 	double		x = original.matrix
+// 	double		scale_factor = 2.0/ (ma)
+//
+//
+// }
 
 //WARNING: As duas funções abaixo não estão sendo usadas no momento
 // double	det2x2(double a, double b, double c, double d)

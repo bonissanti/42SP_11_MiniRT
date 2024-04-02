@@ -22,9 +22,14 @@ void	test_determinant(void);
 void	test_cofactor_matrix(void);
 void 	test_calculate_minor(void);
 void	test_cylinder(void);
+void	test_ray_hits_sphere(void);
+void	test_set_ray(void);
+void	test_ray_position(void);
+
 
 void	check_equal_coords(t_coords *result, t_coords *expected);
 void	check_equal_matrices(t_matrix result, t_matrix expected, const char *testName);
+void	compare_double(double actual, double expected, const char *testName);
 void	check_equal_doubles_p(double a, double b, const char *testName);
 
 # endif

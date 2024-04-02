@@ -42,12 +42,12 @@ void	test_cofactor_matrix(void)
 	t_matrix mat = {.rows = 2, .cols = 2, .matrix = {{4, 7, 0, 0}, {2, 6, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 	t_matrix cofactor = cofactor_matrix(&mat);
 
-	printf(F_WHITE"Test #12 - "RESET BOLD"Inverse | Determinante == 0 - start\n"RESET);
+	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Determinante == 0 - start\n"RESET);
 	check_equal_doubles_p(cofactor.matrix[0][0], 6.0, "Teste cofactor #1");
 	check_equal_doubles_p(cofactor.matrix[0][1], -2.0, "Teste cofactor #2");
 	check_equal_doubles_p(cofactor.matrix[1][0], -7.0, "Teste cofactor #3");
 	check_equal_doubles_p(cofactor.matrix[1][1], 4.0, "Teste cofactor #4");
-	printf(F_WHITE"Test #12 - "RESET BOLD"Inverse | Determinante == 0 - end\n\n"RESET);
+	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Determinante == 0 - end\n\n"RESET);
 }
 
 void test_calculate_minor(void)
@@ -55,15 +55,15 @@ void test_calculate_minor(void)
 	t_matrix mat = {.rows = 3, .cols = 3, .matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}};
 	double minor00 = calculate_minor(&mat, 0, 0);
 	
-	printf(F_WHITE"Test #13 - "RESET BOLD"Inverse | Minor - start\n"RESET);
+	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Minor - start\n"RESET);
 	check_equal_doubles_p(minor00, -3, "Retorno do menor número");
-	printf(F_WHITE"Test #13 - "RESET BOLD"Inverse | Minor - end\n\n"RESET);
+	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Minor - end\n\n"RESET);
 
 	t_matrix mat2 = {.rows = 3, .cols = 3, .matrix = {{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}};
 	double minor01 = calculate_minor(&mat, 0, 0);
-	printf(F_WHITE"Test #13 - "RESET BOLD"Inverse | Minor - start\n"RESET);
+	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Minor - start\n"RESET);
 	printf("%f\n", minor01);
 	(void)mat2;
 	check_equal_doubles_p(minor00, -3, "Retorno do menor número");
-	printf(F_WHITE"Test #13 - "RESET BOLD"Inverse | Minor - end\n\n"RESET);
+	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Minor - end\n\n"RESET);
 }

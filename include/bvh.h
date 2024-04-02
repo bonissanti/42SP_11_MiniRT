@@ -24,5 +24,9 @@ t_bvh_node	*create_bvh(t_object **objects);
 t_object	*get_cur(t_object *objects, int start);
 
 int			get_quadrant(t_object *obj);
+bool 		intersection_aabb(t_aabb *bbox, t_ray ray, t_matrix *matrix);
+//WARNING: Função traverrseBVH temporária:
+void	traverseBVH(t_bvh_node *node, int depth);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/01 14:33:54 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/01 20:31:47 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 // 	return (transformed_ray);
 // }
 
+//BUG: O hit_sphere guarda a distancia mais proxima, mas num ray.origin (0,0,0) e ray.direction(0,0,1), o ponto do primeiro contato deverá ser negativo (-1)
+// e o segundo é positivo (1), só que na lógica do closest_t, ele acaba guardando o segundo ponto (1). Talvez, devessemos guardar ambas interseções
 // bool	check_inter_with_object(void *object, t_ray *ray)
 // {
 // 	double		t_temp;	
@@ -59,7 +61,7 @@
 // 	return (false);
 // }
 
-// _Bool intersection_aabb(t_aabb *bbox, t_ray ray, t_matrix *matrix)
+// bool intersection_aabb(t_aabb *bbox, t_ray ray, t_matrix *matrix)
 // {
 // 	t_vec3 max;
 // 	t_vec3 min;
@@ -97,8 +99,7 @@
 // 	t_vec3	normal;
 
 // 	normal = subtract_vector(point, center);
-// 	normalize_vector(normal);
-// 	return (normal);
+// 	return (normalize_vector(normal));
 // }
 
 // bool	intersection_bvh(t_bvh_node *node, t_inter_list **list, t_ray ray)

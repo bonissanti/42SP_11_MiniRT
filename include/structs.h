@@ -31,6 +31,14 @@ typedef struct s_coords
 	double					z;
 }							t_coords, t_vec3;
 
+typedef	struct s_quatern
+{
+	double					w;
+	double					x;
+	double					y;
+	double					z;
+}							t_quatern;
+
 // typedef struct s_vec3
 // {
 // 	double					x;
