@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/03 00:59:58 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/03 18:50:40 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,14 @@
  * 'camera' structure passed as a parameter.
  */
 
-void	set_camera_transform(t_camera camera, t_coords from, t_vec3 forward, t_vec3 up)
+void	set_camera_transform(t_camera *camera, t_coords from, t_vec3 forward, t_vec3 up)
 {
 	t_vec3	left;
 	t_vec3	true_up;
 	t_matrix transform;
 	t_matrix translation;
-	t_matrix orientation;
 
-	matrix_identity(&orientation);
+	matrix_identity(&transform);
 	left = cross_vector(forward, normalize_vector(up));
 	true_up = cross_vector(left, forward);
 
@@ -77,10 +76,10 @@ void	set_camera_transform(t_camera camera, t_coords from, t_vec3 forward, t_vec3
 	
 
 	translation = translation_matrix(-from.x, -from.y, -from.z);
-	camera.transform = matrix_multiply(&transform, &translation);
+	camera->transform = matrix_multiply(&transform, &translation);
 
-	matrix_identity(&camera.inversed_t);
-	invert_matrix(&camera.transform, &camera.inversed_t);
+	matrix_identity(&camera->inversed_t);
+	invert_matrix(&camera->transform, &camera->inversed_t);
 }
 
 

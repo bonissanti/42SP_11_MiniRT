@@ -140,5 +140,4 @@ void	invert_matrix(t_matrix *original, t_matrix *inverted)
 		while (++j < 4)
 			inverted->matrix[i][j] = transposed.matrix[i][j] / det;
 	}
-
 }

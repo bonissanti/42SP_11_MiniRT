@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:17 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 15:06:13 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:42:12 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	matrix_identity(t_matrix *mat)
 			if (y == x)
 				mat->matrix[y][x] = 1.0;
 			else
-			 	mat->matrix[y][x] = 0.0;
+				mat->matrix[y][x] = 0.0;
 		}
 	}
 // # ifdef TEST
