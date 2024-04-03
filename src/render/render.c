@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/03 00:34:01 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/03 14:15:05 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	while (cur)
 	{
 		geo = get_geo(cur);	
-		temp_ray = *ray;
+		// temp_ray = *ray;
 		if (cur->type == SPHERE)
 		{
 			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
@@ -176,9 +176,9 @@ t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 	world = set_coords(camera->half_width - xoffset, camera->half_height
 			- yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
-	// ray.origin = matrix_multiply_point(&camera->inversed_t,
-	// 		&((t_coords){0, 0, 0}));
-	ray.origin = camera->origin;
+	ray.origin = matrix_multiply_point(&camera->inversed_t,
+			&((t_coords){0, 0, 0}));
+	// ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	ray.closest_t = INFINITY;
 	ray.front_t = 0;
