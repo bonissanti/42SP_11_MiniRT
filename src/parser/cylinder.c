@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:42:04 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:26:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,10 @@ int	analyze_cylinder(char *line, t_data *data)
 		return (ERROR);
 	}
 
-	if (is_number(token[2]) == ERROR)
+	if (is_number(token[2]) == ERROR && is_number(token[3]) == ERROR)
 	{
 		free_array(token);
-		return (print_error("[cy] Invalid diameter"));
-	}
-	if (is_number(token[3]) == ERROR)
-	{
-		free_array(token);
-		return (print_error("[cy] Invalid height"));
+		return (print_error("[cy] Invalid number"));
 	}
 	if (set_colors(token[4]) == ERROR)
 	{

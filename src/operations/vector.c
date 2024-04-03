@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 17:15:20 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/02 12:38:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ t_vec3	subtract_vector(t_vec3 a, t_vec3 b)
 	result.y = a.y - b.y;
 	result.z = a.z - b.z;
 	return (result);
+}
+
+bool	compare_vectors(t_vec3 result, t_vec3 expected)
+{
+	if (check_equal_doubles(result.x, expected.x) && check_equal_doubles(result.y, expected.y) && check_equal_doubles(result.z, expected.z))
+		return (true);
+	return (false);
 }
 
 t_vec3	cross_vector(t_vec3 a, t_vec3 b)

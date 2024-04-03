@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/01 21:47:26 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/03 00:59:45 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ typedef struct s_plane
 	double					radius;
 	t_coords				position;
 	t_vec3					vector;
+	t_matrix				transform;
+	t_matrix				inversed_t;
 }							t_plane;
 
 typedef struct s_cylinder

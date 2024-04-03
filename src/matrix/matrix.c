@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:17 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/26 11:55:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:06:13 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	matrix_identity(t_matrix *mat)
 // # endif
 }
 
-//TODO: Talvez essa função esteja inútil aqui, já que armazeno na stack.
+//WARNING: Talvez essa função esteja inútil aqui, já que armazeno na stack.
 t_matrix	*create_matrix(void)
 {
 	t_matrix	*transform;

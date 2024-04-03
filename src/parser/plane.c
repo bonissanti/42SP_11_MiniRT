@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:40 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:26:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,7 @@ int	analyze_plane(char *line, t_data *data)
 	//verifica valores
 	if (count_token(token, 3, "Plane has wrong number of arguments"))
 		return (ERROR);
-	if (set_coordinates(token[0]) == ERROR)
-	{
-		free_array(token);
-		return (ERROR);
-	}
-	if (set_vector_3d(token[1]) == ERROR)
-	{
-		free_array(token);
-		return (ERROR);
-	}
-	if (set_colors(token[2]) == ERROR)
+	if (set_coordinates(token[0]) == ERROR && set_vector_3d(token[1]) == ERROR && set_colors(token[2]) == ERROR)
 	{
 		free_array(token);
 		return (ERROR);
@@ -92,7 +82,8 @@ int	analyze_plane(char *line, t_data *data)
 	fill_coordinates(token[0], new_plane);
 	fill_vector(token[1], new_plane);
 	fill_colors(token[2], new_plane);
-
+	new_plane->transform = transform_plane(new_plane->position, new_plane->vector);
+	invert_matrix(&new_plane->transform, &new_plane->inversed_t);
 	if (add_objects(data, new_plane, PLANE) == ERROR)
 	{
 		free(new_plane);

@@ -17,7 +17,12 @@ t_matrix	translation_matrix(double tx, double ty, double tz);
 t_quatern	create_rotation_quatern(t_vec3 orientation, double radians);
 t_matrix	quatern_to_matrix(t_vec3 orientation, double radians);
 t_matrix	get_rotation_matrix(t_vec3 orientation);
+
+//WARNING: As três funções acima não estão sendo utilizadas 
+t_matrix	verify_orientation(t_vec3 orientation);
 t_matrix	scaling_matrix(double sx, double sy, double sz);
+t_matrix	rotation_xy(double x_angle, double y_angle);
+t_matrix	rotation_zx(double z_angle, double x_angle);
 t_matrix	rotation_matrix_y(double angle);
 t_matrix	rotation_matrix_x(double angle);
 t_matrix	rotation_matrix_z(double angle);
