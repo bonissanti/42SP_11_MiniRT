@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/01 20:31:47 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/02 23:51:08 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,7 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 		}
 		current = current->next;
 	}
+	// if (found == false)
+	// 	printf("found: %d\n", found);
 	return (found);
 }
