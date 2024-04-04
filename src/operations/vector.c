@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 12:38:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:17:15 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ t_vec3	normalize_vector(t_vec3 value)
 		normalized.z = value.z / magnitude;
 	}
 	return (normalized);
+}
+
+t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
+{
+	t_vec3	result;
+
+	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
+	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
+	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
+	return (result);
 }
 
 t_vec3	subtract_vector(t_vec3 a, t_vec3 b)

@@ -44,7 +44,8 @@ RENDER		= render/render.c \
 
 INTER		= intersection/hit.c \
 			  intersection/intersections.c \
-			  intersection/list.c
+			  intersection/list.c \
+			  intersection/ray.c
 
 OPERATIONS	= operations/vector.c \
 			  operations/coords.c \
@@ -73,7 +74,7 @@ TEST_OBJS	= $(TEST_SRCS:$(TEST_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 CC = gcc
 CCPFLAGS = ./include/
-CFLAGS = -Wall -Wextra -Werror -g -I$(HEADER) -I$(MLX)
+CFLAGS = -Wall -Wextra -Werror -g3 -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 

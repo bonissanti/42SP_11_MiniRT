@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 17:03:33 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:54:30 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_matrix	matrix_multiply(t_matrix *a, t_matrix *b)
 	t_matrix	result;
 
 	y = -1;
+	matrix_identity(&result);
 	while (++y < 4)
 	{
 		x = -1;
@@ -97,7 +98,25 @@ t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
 	return (result);
 }
 
-t_matrix	rotation_matrix_x(double angle)
+// t_coords matrix_multiply_point(const t_matrix *m, const t_coords *point) {
+//     t_coords result;
+//     double w;
+//
+//     result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
+//     result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
+//     result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
+//     w = m->matrix[3][0] * point->x + m->matrix[3][1] * point->y + m->matrix[3][2] * point->z + m->matrix[3][3];
+//
+//     // Normalização se w não é 1 (para transformações projetivas, w pode ser diferente de 1)
+//     if (w != 1.0 && w != 0.0) {
+//         result.x /= w;
+//         result.y /= w;
+//         result.z /= w;
+//     }
+//
+//     return result;
+// }
+t_matrix	simple_rotation_x(double angle)
 {
 	t_matrix	rotation;
 
@@ -109,7 +128,7 @@ t_matrix	rotation_matrix_x(double angle)
 	return (rotation);
 }
 
-t_matrix	rotation_matrix_y(double angle)
+t_matrix	simple_rotation_y(double angle)
 {
 	t_matrix	rotation;
 
@@ -121,7 +140,7 @@ t_matrix	rotation_matrix_y(double angle)
 	return (rotation);
 }
 
-t_matrix rotation_matrix_z(double angle)
+t_matrix simple_rotation_z(double angle)
 {
 	t_matrix	rotation;
 
@@ -133,45 +152,46 @@ t_matrix rotation_matrix_z(double angle)
 	return (rotation);
 }
 
-//WARNING: função não utilizada
-t_quatern	create_rotation_quatern(t_vec3 orientation, double radians)
-{
-	t_quatern	quat;
-	// orientation = normalize_vector(orientation);
-	double	half_angle = -M_PI / 4.0;
-	
-	(void)orientation;
-	(void)radians;
-	quat.w = cos(half_angle);
-	quat.x = sin(half_angle);
-	quat.y = 0.0;
-	quat.z = 0.0;
-	return (quat);
-}
-
-t_matrix	rotation_xy(double x_angle, double y_angle)
+t_matrix	arbitrary_rotation_xy(double x_angle, double y_angle)
 {
 	t_matrix	result;
 	t_matrix	rotation_x;
 	t_matrix	rotation_y;
 
-	rotation_x = rotation_matrix_x(x_angle);
-	rotation_y = rotation_matrix_y(y_angle);
+	rotation_x = simple_rotation_x(x_angle);
+	rotation_y = simple_rotation_y(y_angle);
 	result = matrix_multiply(&rotation_x, &rotation_y);
 	return (result);
 }
 
-t_matrix	rotation_zx(double z_angle, double x_angle)
+t_matrix	arbitrary_rotation_zx(double z_angle, double x_angle)
 {
 	t_matrix	result;
 	t_matrix	rotation_z;
 	t_matrix	rotation_x;
 
-	rotation_z = rotation_matrix_z(z_angle);
-	rotation_x = rotation_matrix_x(x_angle);
+	rotation_z = simple_rotation_z(z_angle);
+	rotation_x = simple_rotation_x(x_angle);
 	result = matrix_multiply(&rotation_z, &rotation_x);
 	return (result);
 }
+
+/**
+ * Function: verify_orientation
+ * --------------------
+ * This funtion verify the orientation of a vector 3D and returns a rotation matrix.
+ * If orientation corresponds to a mainly axis (or opposites), this function will return
+ * a simple rotation in this specific axis. 
+ * 
+ * @param str: The input string to be searched.
+ * @param set: The set of characters to be used for comparison, 
+ * depending on the mode.
+ * @param mode: Determines the function mode; 0 for strspn mode, 1 for 
+ * strcspn mode.
+ *
+ * @return: The length of the initial segment of 'str' based on the selected 
+ * mode.
+ */
 
 t_matrix	verify_orientation(t_vec3 orientation)
 {
@@ -181,19 +201,19 @@ t_matrix	verify_orientation(t_vec3 orientation)
 	if (compare_vectors(orientation, set_vector(0, 1, 0)))
 		return (rotation);
 	else if (compare_vectors(orientation, set_vector(0, -1, 0)))
-		return (rotation_matrix_x(M_PI));
+		return (simple_rotation_x(M_PI)); // 180 
 	else if (compare_vectors(orientation, set_vector(1, 0, 0)))
-		return (rotation_matrix_z(-M_PI / 2));
+		return (simple_rotation_z(-M_PI / 2)); // 90
 	else if (compare_vectors(orientation, set_vector(-1, 0, 0)))
-		return (rotation_matrix_z(M_PI / 2));
+		return (simple_rotation_z(M_PI / 2));
 	else if (compare_vectors(orientation, set_vector(0, 0, 1)))
-		return (rotation_matrix_x(M_PI / 2));
+		return (simple_rotation_x(M_PI / 2));
 	else if (compare_vectors(orientation, set_vector(0, 0, -1)))
-		return (rotation_matrix_x(-M_PI / 2));
+		return (simple_rotation_x(-M_PI / 2));
 	if (check_equal_doubles(orientation.y, 0))
-		return (rotation_xy(M_PI / 2, atan2(orientation.x, orientation.z)));
+		return (arbitrary_rotation_xy(M_PI / 2, atan2(orientation.x, orientation.z)));
 	else
-	 	return (rotation_zx(atan2(orientation.z, orientation.y), atan2(-orientation.x, orientation.y)));
+	 	return (arbitrary_rotation_zx(atan2(orientation.z, orientation.y), atan2(-orientation.x, orientation.y)));
 }
 
 //WARNING: As duas funções abaixo não estão sendo usadas no momento

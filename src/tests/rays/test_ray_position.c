@@ -29,7 +29,7 @@ void	test_ray_position_x_direction(void)
 	printf(F_WHITE"Test #12 - "RESET BOLD"Raio | Teste do ponto de interseção - x #1 - start\n"RESET);
 	ray.origin = set_coords(2, 3, 4);
 	ray.direction = set_vector(1, 0, 0);
-	position = get_intersection_point(ray, 0);
+	position = ray_position(ray, 0);
 	expected = set_coords(2, 3, 4);
 	check_equal_doubles_p(position.x, expected.x, "Posição x do raio");
 	check_equal_doubles_p(position.y, expected.y, "Posição y do raio");
@@ -38,7 +38,7 @@ void	test_ray_position_x_direction(void)
 
 	printf(F_WHITE"Test #12 - "RESET BOLD"Raio | Teste do ponto de interseção #2 - start\n"RESET);
 	ray.direction = set_vector(1, 0, 0);
-	position = get_intersection_point(ray, 1);
+	position = ray_position(ray, 1);
 	expected = set_coords(3, 3, 4);
 	check_equal_doubles_p(position.x, expected.x, "Posição x do raio");
 	check_equal_doubles_p(position.y, expected.y, "Posição y do raio");
@@ -47,7 +47,7 @@ void	test_ray_position_x_direction(void)
 
 	printf(F_WHITE"Test #12 - "RESET BOLD"Raio | Teste do ponto de interseção - x #3 - start\n"RESET);
 	ray.direction = set_vector(1, 0, 0);
-	position = get_intersection_point(ray, -1);
+	position = ray_position(ray, -1);
 	expected = set_coords(1, 3, 4);
 	check_equal_doubles_p(position.x, expected.x, "Posição x do raio");
 	check_equal_doubles_p(position.y, expected.y, "Posição y do raio");

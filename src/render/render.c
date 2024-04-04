@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/31 23:59:25 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/03 18:25:49 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,18 @@ t_color	trace_ray(t_data *data, t_ray ray)
 
 	if (!data->bvh_root)
 		return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
-	ray.closest_t = INFINITY;
 	inter_list = NULL;
 	hit = intersection_bvh(data->bvh_root, &inter_list, ray);
 	if (!hit || !find_closest_inter(&closest_found, inter_list))
 	{
 		delete_inter_list(inter_list);
-		// printf("x ");
 		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
-	// printf("o ");
 	color = process_intersection(data, &closest_found, &ray);
 	delete_inter_list(inter_list);
 	return (color);
 }
+
 
 t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 {
@@ -70,14 +68,14 @@ t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
 
 	xoffset = (pos_x + 0.5) * camera->pixel_size;
 	yoffset = (pos_y + 0.5) * camera->pixel_size;
-	world = set_coords(camera->half_width - xoffset, camera->half_height
-			- yoffset, -1);
+	world = set_coords(camera->half_width - xoffset, camera->half_height - yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
+	printf("pixel.y: %f\n", pixel.y);
 	// #ifdef TEST
 	// 	print_matrix(&camera->inversed_t);	
 	// #endif
-	ray.origin = matrix_multiply_point(&camera->inversed_t,
-			&((t_coords){0, 0, 0}));
+	ray.closest_t = INFINITY;
+	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	return (ray);
 }
@@ -114,6 +112,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		while (++x < data->camera.width_v)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
+			printf("direction - y = %f\n", ray.direction.y);
 			// mlx_put_pixel(mlx->img_ptr, x, y,
 				// t_color_to_int(trace_ray(data, ray)));
 		}
@@ -123,3 +122,16 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	// mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }
+
+//PERF: trace_ray v2:
+
+
+// t_color	trace_ray2(t_data *data, t_ray ray)
+// {
+// 	t_inter_list	*list;
+// 	bool			hit;
+//
+// 	if (!data->bvh_root)
+// 		return ((t_color){0.0, 0.0, 0.0, 0.0}); //in case bvh is null
+//
+// }

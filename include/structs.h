@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 15:21:38 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:08:08 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,33 @@ typedef struct s_ray
 	t_object				*closest_object;
 }							t_ray;
 
+//PERF: intersec para refatormaneto, irá armazenar o número de raios que bateram num objeto + os 2 valores de bhaskara
+typedef struct s_inter_data
+{
+	int		count;
+	double	xs[2];
+}							t_inter_data;
+
+//PERF: intersections uma lista linkada com todas as interseções, armazenando a ponto mais proximo (da interseção) e o objeto, da lista linkada de objetos
+typedef struct s_intersections
+{
+	double					t;
+	t_object				*object;
+	struct s_intersections	*next;	
+}							t_intersections;
+
+//PERF: 0
+typedef struct s_comps
+{
+	double					t;
+	int						inside;
+	t_coords				point;
+	t_coords				over_point;
+	t_vec3					eyev;
+	t_vec3					normalv;
+	t_object				*object;
+}							t_comps;
+
 typedef struct s_inter
 {
 	double					t;
@@ -209,19 +236,13 @@ typedef struct s_inter
 
 typedef struct s_inter_list
 {
+	double					t;
 	t_inter					inter;
+	t_bvh_node				bvh;
+	t_object				*object;
 	struct s_inter_list		*next;
 }							t_inter_list;
 
-typedef struct s_comps
-{
-	double					t;
-	int						inside;
-	t_coords				point;
-	t_coords				over_point;
-	t_vec3					eyev;
-	t_vec3					normalv;
-}							t_comps;
 
 /*	Struct masters */
 

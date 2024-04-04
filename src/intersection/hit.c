@@ -43,29 +43,8 @@ bool	hit_sphere(const t_sphere *sphere, const t_ray *ray, double *closest_t)
 	return (true);
 }
 
-// bool hit_sphere(const t_sphere *sphere, const t_ray *ray, double *t_temp) {
-//     // t_sphere *sphere = (t_sphere *)object;
-//     t_vec3 oc = subtract_vector(ray->origin, sphere->position);
-//     double a = dot_product(ray->direction, ray->direction);
-//     double b = 2.0 * dot_product(oc, ray->direction);
-//     double c = dot_product(oc, oc) - sphere->diameter * sphere->diameter;
-//     double discriminant = b * b - 4 * a * c;
+
+// int		intersect_sphere(const t_sphere *sphere, const t_ray ray)
+// {
 //
-//     if (discriminant < 0) {
-//         return false;
-//     } else {
-//         // Find the nearest intersection point
-//         double temp = (-b - sqrt(discriminant)) / (2.0 * a);
-//         if (temp < ray->closest_t && temp > EPSILON) {
-//             *t_temp = temp;
-//             return true;
-//         }
-//         temp = (-b + sqrt(discriminant)) / (2.0 * a);
-//         if (temp < ray->closest_t && temp > EPSILON) {
-//             *t_temp = temp;
-//             return true;
-//         }
-//     }
-//     return false;
 // }
-//

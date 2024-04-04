@@ -6,30 +6,12 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/01 00:01:45 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/04 11:25:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
-
-t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
-{
-	t_vec3	result;
-
-	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
-	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
-	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
-	return (result);
-}
-
-t_ray	ray_transform(t_ray ray, t_matrix *matrix)
-{
-	t_ray	transformed_ray;
-
-	transformed_ray.origin = matrix_multiply_point(matrix, &ray.origin);
-	transformed_ray.direction = matrix_multiply_vector(matrix, &ray.direction);
-	return (transformed_ray);
-}
+#include <math.h>
 
 //BUG: O hit_sphere guarda a distancia mais proxima, mas num ray.origin (0,0,0) e ray.direction(0,0,1), o ponto do primeiro contato deverá ser negativo (-1)
 // e o segundo é positivo (1), só que na lógica do closest_t, ele acaba guardando o segundo ponto (1). Talvez, devessemos guardar ambas interseções
@@ -45,8 +27,10 @@ bool	check_inter_with_object(void *object, t_ray *ray)
 	obj = (t_object*)object;
 	sphere = (t_sphere*)obj->object;
 	t_ray temp_ray = ray_transform(*ray, &sphere->transform);
+	
 	if (obj->type == SPHERE)
 		hit = hit_sphere(obj->object, &temp_ray, &t_temp);
+
 	// else if (obj->type == PLANE)
 	// 	hit = hit_plane(obj->object, ray, &t_temp);
 	// else
@@ -158,3 +142,43 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 	}
 	return (found);
 }
+
+
+// //PERF: Analise das versões simples + refatoramento:
+//
+// bool	find_closest_inter(t_inter *closest_inter, t_inter_list *head)
+// {
+// 	bool			found;
+// 	double			closest_t;
+// 	t_inter_list	*current;
+//
+// 	current = head;
+// 	closest_t = INFINITY;
+// 	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};
+//
+// 	while (current)
+// 	{
+// 		if (current->inter.t < closest_t && current->inter.t > EPSILON)
+// 		{
+// 			closest_t = current->inter.t;
+// 			*closest_inter = current->inter;
+// 			found = true;
+// 		}
+// 		current = current->next;
+// 	}
+// 	return (found);
+// }
+//
+
+// t_inter_list	*calculate_intersections(t_ray ray, t_object *objects)
+// {
+// 	int				num_intersections;
+// 	t_inter_list	*intersections;
+//
+// 	intersections = NULL;
+// 	while (objects)
+// 	{
+// 		if (objects->type == SPHERE)
+// 			num_intersections = hit_sphere(objects, ray);
+// 	}
+// }

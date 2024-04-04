@@ -68,5 +68,20 @@ void	test_ray_for_pixel(void)
 	check_equal_coords(&result.origin, &ray.origin);
 	check_equal_vector(&result.direction, &ray.direction);
 	printf(F_WHITE"Test #9 - "RESET BOLD"Render | Ray for pixel 2 - end\n\n"RESET);	
+	
+	// Test #3 ray for pixel
+	t_matrix translation = translation_matrix(0, -2, 5);
+	t_matrix rotation = simple_rotation_y(M_PI / 4);
+	camera.transform = matrix_multiply(&rotation, &translation);
+	camera.origin = set_coords(0, 2, -5);
+	invert_matrix(&camera.transform, &camera.inversed_t);
+	ray.origin = camera.origin;
+	ray.direction = set_vector(sqrt(2) / 2, 0, -sqrt(2) / 2);
+
+	result = ray_for_pixel(&camera, 100, 50);
+	printf(F_WHITE"Test #9 - "RESET BOLD"Render | Ray for pixel 3 - start\n"RESET);
+	check_equal_coords(&result.origin, &ray.origin);
+	check_equal_vector(&result.direction, &ray.direction);
+	printf(F_WHITE"Test #9 - "RESET BOLD"Render | Ray for pixel 3 - end\n\n"RESET);	
 
 }

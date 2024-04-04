@@ -14,18 +14,13 @@ t_matrix	matrix_multiply (t_matrix *a, t_matrix *b);
 t_matrix	translation_matrix(double tx, double ty, double tz);
 
 // # Operations
-t_quatern	create_rotation_quatern(t_vec3 orientation, double radians);
-t_matrix	quatern_to_matrix(t_vec3 orientation, double radians);
-t_matrix	get_rotation_matrix(t_vec3 orientation);
-
-//WARNING: As três funções acima não estão sendo utilizadas 
 t_matrix	verify_orientation(t_vec3 orientation);
 t_matrix	scaling_matrix(double sx, double sy, double sz);
-t_matrix	rotation_xy(double x_angle, double y_angle);
-t_matrix	rotation_zx(double z_angle, double x_angle);
-t_matrix	rotation_matrix_y(double angle);
-t_matrix	rotation_matrix_x(double angle);
-t_matrix	rotation_matrix_z(double angle);
+t_matrix	arbitrary_rotation_xy(double x_angle, double y_angle);
+t_matrix	arbitrary_rotation_zx(double z_angle, double x_angle);
+t_matrix	simple_rotation_y(double angle);
+t_matrix	simple_rotation_x(double angle);
+t_matrix	simple_rotation_z(double angle);
 
 // # Inverted
 void		submatrix(t_matrix *original, t_matrix *submatrix, int row_ign, int col_ign);

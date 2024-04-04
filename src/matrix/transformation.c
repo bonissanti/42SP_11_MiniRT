@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 16:10:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/03 16:08:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ void	set_camera_transform(t_camera camera, t_coords from, t_vec3 forward, t_vec3
 	t_vec3	true_up;
 	t_matrix transform;
 	t_matrix translation;
-	t_matrix orientation;
 
-	matrix_identity(&orientation);
+	matrix_identity(&transform);
 	left = cross_vector(forward, normalize_vector(up));
 	true_up = cross_vector(left, forward);
 
@@ -122,6 +121,5 @@ t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation)
 	translation = translation_matrix(coords.x, coords.y, coords.z);
 	temp_rot = matrix_multiply(&rotation, &scaling);
 	transform = matrix_multiply(&translation, &temp_rot);
-	print_matrix(rotation);
 	return (transform);
 }
