@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 23:51:08 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/04 17:24:31 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,15 +138,15 @@
 // 	return (hit);
 // }
 
-bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
+bool	find_closest_inter(t_inter *closest_inter, t_inter_list **list)
 {
 	bool			found;
 	double			closest_t;
 	t_inter_list	*current;
 
-	current = list;
+	current = *list;
 	closest_t = INFINITY;
-	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};
+	found = false;
 	while (current)
 	{
 		if (current->inter.t < closest_t && current->inter.t > EPSILON)
@@ -157,7 +157,5 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 		}
 		current = current->next;
 	}
-	// if (found == false)
-	// 	printf("found: %d\n", found);
 	return (found);
 }

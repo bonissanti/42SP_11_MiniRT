@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/03 19:06:22 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:27:55 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int	fill_coordinates(char *line, t_sphere *new_sphere)
 	char **split;
 
 	split = ft_split(line, ',');
-	new_sphere->position.x = ft_atod(split[0]);
-	new_sphere->position.y = ft_atod(split[1]);
-	new_sphere->position.z = ft_atod(split[2]);
+	new_sphere->position.x = ft_atod(split[0]) / 10;
+	new_sphere->position.y = ft_atod(split[1]) / 10;
+	new_sphere->position.z = ft_atod(split[2]) / 10;
 	free_array(split);
 	return (OK);
 }
@@ -60,11 +60,10 @@ int	analyze_sphere(char *line, t_data *data)
 		return (ERROR);
 	}
 	new_sphere->diameter = ft_atod(token[1]);
-	new_sphere->diameter = 1;
+	// new_sphere->diameter = 1;
 	fill_coordinates(token[0], new_sphere);
-	new_sphere->transform = transform_sphere(new_sphere->position, new_sphere->diameter);
+	new_sphere->transform = transform_sphere(new_sphere->position, new_sphere->diameter / 2);
 	invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);	
-	print_matrix(new_sphere->inversed_t);
 	fill_colors(token[2], new_sphere);
 
 	if (add_objects(data, new_sphere, SPHERE) == ERROR)

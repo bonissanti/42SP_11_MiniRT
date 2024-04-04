@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/03 19:37:10 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:25:37 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ t_vec3	get_intersection_point(t_ray ray, double t)
 	return (intersection_point);
 }
 
-t_vec3	get_normal(t_vec3 point, t_vec3 center)
+t_vec3	get_normal(t_vec3 vec, t_vec3 center)
 {
 	t_vec3	normal;
 
-	normal = subtract_vector(point, center);
+	normal = subtract_vector(vec, center);
 	return (normalize_vector(normal));
 }
 
@@ -105,19 +105,10 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 		if (cur->type == SPHERE)
 		{
 			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
-			// printf("ray: %f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
-			// printf("temp_ray: %f %f %f\n", temp_ray.direction.x, temp_ray.direction.y, temp_ray.direction.z);
-			hit = hit_sphere(cur->object, &temp_ray, &t_temp);
+			hit |= hit_sphere(cur->object, &temp_ray, &t_temp);
 		}
-		// if (hit && t_temp < ray->closest_t && t_temp > EPSILON)
-		// {
-		// 	ray->closest_t = t_temp;
-		// 	ray->closest_object = cur;
-		// 	hit = true;
-		// }
-		if (hit)
+		if (hit == true)
 		{
-			ray->closest_object = cur;
 			t_vec3 point = get_intersection_point(temp_ray, t_temp);
 			add_inter_list_back(inter_list, (t_inter){t_temp, point,
 				get_normal(point, (t_vec3){geo.sphere->position.x,
@@ -147,24 +138,22 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 t_color	trace_ray(t_data *data, t_ray ray)
 {
 	t_inter			closest_found;
-	t_inter_list	*inter_list;
-	// t_inter_list	*temp;
-	// t_color			color;
+	t_inter_list	*inter_list;	
+	t_color			color;
 	bool			hit;
 
 	ray.closest_t = INFINITY;
 	inter_list = NULL;
 	// hit = intersection_bvh(data->bvh_root, &inter_list, ray);
 	hit = intersection_obj(data->objects, &ray, &inter_list);
-	if (!hit || !find_closest_inter(&closest_found, inter_list))
+	if (!hit || !find_closest_inter(&closest_found, &inter_list))
 	{
 		delete_inter_list(inter_list);
 		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
-	// color = process_intersection(data, &closest_found, &ray);
+	color = process_intersection(data, &closest_found, &ray);
 	delete_inter_list(inter_list);
-	// return (color);
-	return((t_color){1, 0, 0, 1});
+	return (color);
 }
 
 t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
@@ -210,15 +199,11 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	int		y;
 	t_ray	ray;
 
-	(void)data;
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
-	printf("height: %d\n", data->camera.height_v);
-	printf("width: %d\n", data->camera.width_v);
 	// data->bvh_root = create_bvh(&data->objects);
 	// traverseBVH(data->bvh_root, 0);
 	y = -1;
-	// teste_inter_point((t_coords){2, 3, 4}, (t_vec3){1, 0, 0});
 	while (++y < data->camera.height_v)
 	{
 		x = -1;
@@ -228,9 +213,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
 		}
-		// printf("\n");
 	}
-	// mlx_put_pixel(mlx->img_ptr, WIDTH/2, HEIGHT/2, t_color_to_int((t_color){1, 0, 0, 1}));
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }
