@@ -16,7 +16,7 @@ void	test_analyze_amblight(void)
 	char *test_line = "A 0.2 255,255,255";
 	int	result = analyze_amblight(test_line + 1, &data);
 
-	printf(F_WHITE"Test #1 - "RESET BOLD"Parser | Amblight 1 - start\n\n"RESET);
+	printf(F_WHITE"Test #1 - "RESET BOLD"Parser | Amblight 1 - start\n"RESET);
 	
 	compare_double(result, OK, "Retorno do analyze_amblight");
 	compare_double(data.amblight.ratio, 0.2, "Comparação do ratio");

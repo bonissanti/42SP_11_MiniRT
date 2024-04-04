@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/04/03 12:08:08 by brunrodr         ###   ########.fr       */
-=======
-/*   Updated: 2024/04/03 00:59:45 by renato           ###   ########.fr       */
->>>>>>> origin/restart-render
+/*   Updated: 2024/04/04 12:47:02 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +38,6 @@ typedef	struct s_quatern
 	double					y;
 	double					z;
 }							t_quatern;
-
-// typedef struct s_vec3
-// {
-// 	double					x;
-// 	double					y;
-// 	double					z;
-// }							t_vec3;
 
 typedef struct s_matrix
 {

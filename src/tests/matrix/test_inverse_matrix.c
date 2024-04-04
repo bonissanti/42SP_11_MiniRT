@@ -32,9 +32,8 @@ void	test_determinant(void)
 	// teste com determinante igual a 0, deve falhar
 	t_matrix mat3x3 = {.rows = 3, .cols = 3, .matrix = {{1, 2, 3, 0}, {4, 5, 6, 0}, {7, 8, 9, 0}, {0, 0, 0, 0}}};
 	det = determinant(&mat3x3);
-	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Determinante == 0 - start\n"RESET);
-	fabs_nonzero(det, "Retorno do determinante == 0");
-	printf(F_WHITE"Test #11 - "RESET BOLD"Inverse | Determinante == 0 - end\n\n"RESET);
+	if (det == 0.0)
+		printf(GREEN "Sucesso no teste: " RESET L_GRAY "Retorno do determinante. Valor é 0\n" RESET);
 }
 
 void	test_cofactor_matrix(void)

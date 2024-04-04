@@ -4,6 +4,9 @@ int	main(void)
 {
 	test_validation();
 	test_analyze_amblight();
+	test_camera();
+	test_light();
+	test_sphere();
 	test_identity_matrix();
 	test_cylinder();
 	// test_matrix_transformation();

@@ -25,6 +25,9 @@ void	test_cylinder(void);
 void	test_ray_hits_sphere(void);
 void	test_set_ray(void);
 void	test_ray_position(void);
+void	test_camera(void);
+void	test_light(void);
+void	test_sphere(void);
 
 
 void	check_equal_coords(t_coords *result, t_coords *expected);

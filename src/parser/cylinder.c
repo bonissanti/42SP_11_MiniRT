@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 16:26:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:58:57 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,17 @@ int	analyze_cylinder(char *line, t_data *data)
 	new_cylinder->max = new_cylinder->height / 2;
 	new_cylinder->min = -new_cylinder->height / 2;
 	new_cylinder->transform = transform_cylinder(new_cylinder->position, new_cylinder->diameter / 2, new_cylinder->vector);
+	invert_matrix(&new_cylinder->transform, &new_cylinder->inversed_t);
+	
+	#ifndef TEST_H
+	printf("fucker test");
+	print_matrix(new_cylinder->transform);
+	printf("\n");
+	print_matrix(new_cylinder->inversed_t);
+	
+	#endif /* ifdef TEST_H
+		print_matrix(new_cylinder->inversed_t); */
+
 	fill_colors(token[4], new_cylinder);
 	
 	if (add_objects(data, new_cylinder, CYLINDER) == ERROR)

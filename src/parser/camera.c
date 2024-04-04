@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:21 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 11:42:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:50:37 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ int	set_camera(char *fov_line, t_data *data)
 	data->camera.height_v = HEIGHT;
 	data->camera.width_v = WIDTH;
 	data->camera.fov = (ft_atoi(fov_line) * M_PI) / 180;
-	printf("fov: %f\n", data->camera.fov);
+	// printf("fov: %f\n", data->camera.fov);
 	data->camera.half_width = tan(data->camera.fov / 2.0);
 	data->camera.half_height = data->camera.half_width * (double)HEIGHT
 		/ (double)WIDTH;
-	printf("half_width: %f\n", data->camera.half_width);
-	printf("half_height: %f\n", data->camera.half_height);
+	// printf("half_width: %f\n", data->camera.half_width);
+	// printf("half_height: %f\n", data->camera.half_height);
 	data->camera.pixel_size = (data->camera.half_width * 2) / (double)WIDTH;
 	set_camera_transform(&data->camera, data->camera.origin, data->camera.orientation, set_up(data->camera.orientation));
 	return (OK);

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/04 11:43:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,6 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	return (color);
 }
 
-t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
-{
-	t_vec3	result;
-
-	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
-	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
-	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
-	return (result);
-}
-
-t_ray	ray_transform(t_ray ray, t_matrix *matrix)
-{
-	t_ray	transformed_ray;
-
-	transformed_ray.origin = matrix_multiply_point(matrix, &ray.origin);
-	transformed_ray.direction = matrix_multiply_vector(matrix, &ray.direction);
-	return (transformed_ray);
-}
 
 t_vec3	get_intersection_point(t_ray ray, double t)
 {
@@ -152,12 +134,8 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	// t_color			color;
 	bool			hit;
 
-<<<<<<< HEAD
 	if (!data->bvh_root)
 		return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
-=======
-	ray.closest_t = INFINITY;
->>>>>>> origin/restart-render
 	inter_list = NULL;
 	// hit = intersection_bvh(data->bvh_root, &inter_list, ray);
 	hit = intersection_obj(data->objects, &ray, &inter_list);
@@ -166,22 +144,13 @@ t_color	trace_ray(t_data *data, t_ray ray)
 		delete_inter_list(inter_list);
 		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
-<<<<<<< HEAD
-	color = process_intersection(data, &closest_found, &ray);
-=======
 	// color = process_intersection(data, &closest_found, &ray);
->>>>>>> origin/restart-render
 	delete_inter_list(inter_list);
 	// return (color);
 	return((t_color){1, 0, 0, 1});
 }
 
-<<<<<<< HEAD
-
-t_ray	ray_for_pixel(t_camera *camera, int pos_x, int pos_y)
-=======
 t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
->>>>>>> origin/restart-render
 {
 	double		xoffset;
 	double		yoffset;
@@ -193,16 +162,8 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	yoffset = (pos_y + 0.5) * camera->pixel_size;
 	world = set_coords(camera->half_width - xoffset, camera->half_height - yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
-<<<<<<< HEAD
-	printf("pixel.y: %f\n", pixel.y);
-	// #ifdef TEST
-	// 	print_matrix(&camera->inversed_t);	
-	// #endif
-	ray.closest_t = INFINITY;
-=======
 	// ray.origin = matrix_multiply_point(&camera->inversed_t,
 	// 		&((t_coords){0, 0, 0}));
->>>>>>> origin/restart-render
 	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	ray.closest_t = INFINITY;
@@ -246,14 +207,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		while (++x < data->camera.width_v)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
-<<<<<<< HEAD
-			printf("direction - y = %f\n", ray.direction.y);
-			// mlx_put_pixel(mlx->img_ptr, x, y,
-				// t_color_to_int(trace_ray(data, ray)));
-=======
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray(data, ray)));
->>>>>>> origin/restart-render
 		}
 		// printf("\n");
 	}
