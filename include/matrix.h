@@ -5,7 +5,7 @@
 
 // # Matrices
 void		matrix_identity(t_matrix *mat);
-void		set_camera_transform(t_camera camera, t_coords from, t_vec3 forward, t_vec3 up);
+void		set_camera_transform(t_camera *camera, t_coords from, t_vec3 forward, t_vec3 up);
 void		basic_invert_matrix(const t_matrix *original, t_matrix *inverted);
 void		matrix_free(t_matrix *matrix);
 t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point);

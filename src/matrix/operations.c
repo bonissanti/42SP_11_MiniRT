@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/03 18:54:30 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/04 11:41:58 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_matrix	matrix_multiply(t_matrix *a, t_matrix *b)
 	int			i;
 	t_matrix	result;
 
+	matrix_identity(&result);
 	y = -1;
 	matrix_identity(&result);
 	while (++y < 4)
@@ -92,9 +93,9 @@ t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
 {
 	t_coords	result;
 
-	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
-	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
-	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
+	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z;
+	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z;
+	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z;
 	return (result);
 }
 
@@ -215,16 +216,3 @@ t_matrix	verify_orientation(t_vec3 orientation)
 	else
 	 	return (arbitrary_rotation_zx(atan2(orientation.z, orientation.y), atan2(-orientation.x, orientation.y)));
 }
-
-//WARNING: As duas funções abaixo não estão sendo usadas no momento
-// double	det2x2(double a, double b, double c, double d)
-// {
-// 	return (a * d - b * c);
-// }
-//
-// double	det3x3(double m[3][3])
-// {
-// 	return (m[0][0] * det2x2(m[1][1], m[1][2], m[2][1], m[2][2]) - 
-// 			m[0][1] * det2x2(m[1][0], m[1][2], m[2][0], m[2][2]) +
-// 			m[0][2] * det2x2(m[1][0], m[1][1], m[2][0], m[2][1]));
-// }

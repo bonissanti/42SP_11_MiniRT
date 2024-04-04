@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/03 15:58:28 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/04 11:43:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,12 @@ int	analyze_sphere(char *line, t_data *data)
 		free_array(token);
 		return (ERROR);
 	}
-	fill_coordinates(token[0], new_sphere);
 	new_sphere->diameter = ft_atod(token[1]);
+	new_sphere->diameter = 1;
+	fill_coordinates(token[0], new_sphere);
 	new_sphere->transform = transform_sphere(new_sphere->position, new_sphere->diameter);
-	// invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);	
+	invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);	
+	print_matrix(new_sphere->inversed_t);
 	fill_colors(token[2], new_sphere);
 
 	if (add_objects(data, new_sphere, SPHERE) == ERROR)

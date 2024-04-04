@@ -6,7 +6,11 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/03 12:08:08 by brunrodr         ###   ########.fr       */
+=======
+/*   Updated: 2024/04/03 00:59:45 by renato           ###   ########.fr       */
+>>>>>>> origin/restart-render
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,17 +128,12 @@ typedef struct s_cylinder
 	t_matrix				inversed_t;
 }							t_cylinder;
 
-// typedef struct s_obj_union
-// {
-// 	t_object_type			type;
-// }							t_geo_u;
-
-typedef union u_obj
+typedef union u_geo
 {
 	t_sphere				*sphere;
 	t_plane					*plane;
 	t_cylinder				*cylinder;
-} t_geo_u;
+}							t_geo_u;
 
 /* Ray and color */
 typedef struct s_bhaskara
@@ -194,6 +193,8 @@ typedef struct s_object
 typedef struct s_ray
 {
 	double					closest_t;
+	double					front_t;
+	double					back_t;
 	t_coords				origin;
 	t_vec3					direction;
 	t_object				*closest_object;

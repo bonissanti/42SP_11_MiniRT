@@ -1,7 +1,8 @@
 #include "../../include/minirt.h"
 
-static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
+static t_bhaskara	solve_bhaskara(t_bhaskara bhask, t_ray *ray)
 {
+	(void)ray;
 	bhask.delta = bhask.b * bhask.b - 4 * bhask.a * bhask.c;
 	if (bhask.delta > 0)
 	{
@@ -19,7 +20,7 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
 	return (bhask);
 }
 
-bool	hit_sphere(const t_sphere *sphere, const t_ray *ray, double *closest_t)
+bool	hit_sphere(const t_sphere *sphere, t_ray *ray, double *closest_t)
 {
 	t_vec3	sphere_to_ray;
 	t_bhaskara bhask;
@@ -29,9 +30,12 @@ bool	hit_sphere(const t_sphere *sphere, const t_ray *ray, double *closest_t)
 	sphere_to_ray = subtract_coords(ray->origin, sphere->position);
 	bhask.a = dot_product(ray->direction, ray->direction);
 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray->direction);
-	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - sphere->diameter * sphere->diameter / 4.0;
-	
-	result = solve_bhaskara(bhask);
+	// bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - sphere->diameter * sphere->diameter / 4.0;
+	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - 1;
+
+	result = solve_bhaskara(bhask, ray);
+	// printf("result.root1: %f\n", result.root1);
+	// printf("result.root2: %f\n", result.root2);
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
 	if (result.root1 > EPSILON && result.root1 < INFINITY)
