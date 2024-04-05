@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 15:27:55 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/05 19:52:58 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 static int	fill_coordinates(char *line, t_sphere *new_sphere)
 {
-	char **split;
+	char	**split;
 
 	split = ft_split(line, ',');
-	new_sphere->position.x = ft_atod(split[0]) / 10;
-	new_sphere->position.y = ft_atod(split[1]) / 10;
-	new_sphere->position.z = ft_atod(split[2]) / 10;
+	new_sphere->position.x = ft_atod(split[0]);
+	new_sphere->position.y = ft_atod(split[1]);
+	new_sphere->position.z = ft_atod(split[2]);
 	free_array(split);
 	return (OK);
 }
 
 static int	fill_colors(char *line, t_sphere *new_sphere)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(line, ',');
 	new_sphere->color[0] = ft_atod(split_line[0]);
@@ -38,8 +38,8 @@ static int	fill_colors(char *line, t_sphere *new_sphere)
 
 int	analyze_sphere(char *line, t_data *data)
 {
-	char **token;
-	t_sphere *new_sphere;
+	char		**token;
+	t_sphere	*new_sphere;
 
 	token = ft_split_space(line);
 
@@ -63,7 +63,7 @@ int	analyze_sphere(char *line, t_data *data)
 	// new_sphere->diameter = 1;
 	fill_coordinates(token[0], new_sphere);
 	new_sphere->transform = transform_sphere(new_sphere->position, new_sphere->diameter / 2);
-	invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);	
+	invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);
 	fill_colors(token[2], new_sphere);
 
 	if (add_objects(data, new_sphere, SPHERE) == ERROR)

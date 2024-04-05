@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 14:05:02 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/05 19:47:07 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ typedef struct s_coords
 	double					x;
 	double					y;
 	double					z;
-}							t_coords, t_vec3;
+}							t_coords;
 
-typedef	struct s_quatern
+typedef t_coords			t_vec3;
+
+typedef struct s_quatern
 {
 	double					w;
 	double					x;
