@@ -3,14 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/05 19:49:10 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/08 13:45:20 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+
+t_vec3	subtract_tuple(t_coords a, t_coords b)
+{
+	t_vec3	result;
+
+	result.x = a.x - b.x;
+	result.y = a.y - b.y;
+	result.z = a.z - b.z;
+	return (result);
+}
+
+double length_vector(t_vec3 v)
+{
+    return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+double intersect_sphere(t_ray ray, t_sphere sphere)
+{
+    t_vec3 oc = subtract_tuple(ray.origin, sphere.position);
+    double a = dot_product(ray.direction, ray.direction);
+    double b = 2.0 * dot_product(oc, ray.direction);
+    double c = dot_product(oc, oc) - pow(sphere.diameter / 2, 2);
+    double discriminant = b * b - 4 * a * c;
+
+    if (discriminant < 0)
+    {
+        return -1.0;
+    }
+    else
+    {
+        return (-b - sqrt(discriminant)) / (2.0 * a);
+    }
+}
+
+double intersect_object(t_ray ray, t_object *object)
+{
+    if (object->type == SPHERE)
+        return intersect_sphere(ray, *(t_sphere *)object->object);
+    // Add other object types here...
+
+    return -1.0;
+}
+
+bool is_in_shadow(t_coords point, t_light light, t_object *objects)
+{
+    t_ray shadow_ray;
+
+    shadow_ray.origin = point;
+    shadow_ray.direction = normalize_vector(subtract_tuple(light.position, point));
+
+    double light_distance = length_vector(subtract_tuple(light.position, point));
+
+    for (t_object *obj = objects; obj != NULL; obj = obj->next)
+    {
+        double t = intersect_object(shadow_ray, obj);
+        if (t >= EPSILON && t <= light_distance)
+            return (true);
+    }
+    return (false);
+}
 
 t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 {
@@ -27,8 +87,14 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	light = subtract_coords(data->light.position,
 			(t_coords){closest->point.x, closest->point.y, closest->point.z});
 	light = normalize_vector(light);
-	intensity = fmin(fmax(dot_product(normal, light), 0.0)
-			+ data->amblight.ratio, 1.0);
+	// intensity = fmin(fmax(dot_product(normal, light), 0.0)
+	// 		+ data->amblight.ratio, 1.0);
+	if (is_in_shadow(closest->point, data->light, data->objects)) {
+        intensity = data->amblight.ratio; // only ambient light if in shadow
+    } else {
+        intensity = fmin(fmax(dot_product(normal, light), 0.0)
+                + data->amblight.ratio, 1.0); // diffuse + ambient light if not in shadow
+	}
 	color.r = (sphere->color[0] / 255.0) * intensity;
 	color.g = (sphere->color[1] / 255.0) * intensity;
 	color.b = (sphere->color[2] / 255.0) * intensity;
@@ -93,7 +159,7 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	t_object	*cur;
 	bool		hit;
 	double		t_temp;
-	t_geo_u		geo;
+	// t_geo_u		geo;
 	t_ray		temp_ray;
 
 	t_temp = 0.0;
@@ -101,18 +167,18 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	cur = object;
 	while (cur)
 	{
-		geo = get_geo(cur);
+		// geo = 
 		if (cur->type == SPHERE)
 		{
-			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
+			temp_ray = ray_transform(*ray, &get_geo(cur).sphere->inversed_t);
 			hit |= hit_sphere(cur->object, &temp_ray, &t_temp);
 		}
 		if (hit == true)
 		{
 			t_vec3 point = get_intersection_point(temp_ray, t_temp);
 			add_inter_list_back(inter_list, (t_inter){t_temp, point,
-				get_normal(point, (t_vec3){geo.sphere->position.x,
-				geo.sphere->position.y,	geo.sphere->position.z}), cur});
+				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
+				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
 			hit = true;
 		}
 		cur = cur->next;
@@ -169,8 +235,6 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	world = set_coords(camera->half_width - xoffset, camera->half_height
 			- yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
-	// ray.origin = matrix_multiply_point(&camera->inversed_t,
-	// 		&((t_coords){0, 0, 0}));
 	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	ray.closest_t = INFINITY;
