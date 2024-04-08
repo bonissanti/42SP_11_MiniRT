@@ -42,5 +42,27 @@ void	test_ray_hits_cylinder(void)
 	no_intersection(cylinder, ray, closest_t);
 	printf(F_WHITE"Test #13 - "RESET BOLD"Raio | Teste origem/direção #3 - end\n\n"RESET);	
 	
+	// test #4 - Ray hits cylinder
+	//FIX: Nessa versão precisa criar uma função que vai verificar a interseção e bater o resultado
+	// das duas raĩzes de bhaskara
+	printf(F_WHITE"Test #13 - "RESET BOLD"Raio Cilindro | Teste origem/direção #4 - start\n"RESET);
+	ray.origin = set_coords(1, 0, -5);
+	ray.direction = set_vector(0, 0, 1);
+	no_intersection(cylinder, ray, closest_t);
+	printf(F_WHITE"Test #13 - "RESET BOLD"Raio | Teste origem/direção #4 - end\n\n"RESET);	
+
+	// test #5 - Ray hits cylinder
+	printf(F_WHITE"Test #13 - "RESET BOLD"Raio Cilindro | Teste origem/direção #5 - start\n"RESET);
+	ray.origin = set_coords(0, 0, -5);
+	ray.direction = set_vector(0, 0, 1);
+	no_intersection(cylinder, ray, closest_t);
+	printf(F_WHITE"Test #13 - "RESET BOLD"Raio | Teste origem/direção #5 - end\n\n"RESET);	
+	
+	// test #6 - Ray hits cylinder
+	printf(F_WHITE"Test #13 - "RESET BOLD"Raio Cilindro | Teste origem/direção #6 - start\n"RESET);
+	ray.origin = set_coords(0.5, 0, -5);
+	ray.direction = set_vector(0.1, 1, 1);
+	no_intersection(cylinder, ray, closest_t);
+	printf(F_WHITE"Test #13 - "RESET BOLD"Raio | Teste origem/direção #6 - end\n\n"RESET);	
 }
 
