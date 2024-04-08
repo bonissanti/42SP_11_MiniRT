@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+// #include <cmath>
 
 // t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
 // {
@@ -146,12 +147,12 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 
 	current = list;
 	closest_t = INFINITY;
-	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};
+	*closest_inter = (t_inter){.t[0] = INFINITY, .t[1] = INFINITY, .object = NULL};
 	while (current)
 	{
-		if (current->inter.t < closest_t && current->inter.t > EPSILON)
+		if (current->inter.t[0] < closest_t && current->inter.t[0] > EPSILON)
 		{
-			closest_t = current->inter.t;
+			closest_t = current->inter.t[0];
 			*closest_inter = current->inter;
 			found = true;
 		}
@@ -163,41 +164,3 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 }
 
 
-// //PERF: Analise das versões simples + refatoramento:
-//
-// bool	find_closest_inter(t_inter *closest_inter, t_inter_list *head)
-// {
-// 	bool			found;
-// 	double			closest_t;
-// 	t_inter_list	*current;
-//
-// 	current = head;
-// 	closest_t = INFINITY;
-// 	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};
-//
-// 	while (current)
-// 	{
-// 		if (current->inter.t < closest_t && current->inter.t > EPSILON)
-// 		{
-// 			closest_t = current->inter.t;
-// 			*closest_inter = current->inter;
-// 			found = true;
-// 		}
-// 		current = current->next;
-// 	}
-// 	return (found);
-// }
-//
-
-// t_inter_list	*calculate_intersections(t_ray ray, t_object *objects)
-// {
-// 	int				num_intersections;
-// 	t_inter_list	*intersections;
-//
-// 	intersections = NULL;
-// 	while (objects)
-// 	{
-// 		if (objects->type == SPHERE)
-// 			num_intersections = hit_sphere(objects, ray);
-// 	}
-// }

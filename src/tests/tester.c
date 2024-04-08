@@ -18,5 +18,6 @@ int	main(void)
 	test_set_ray();
 	test_ray_hits_sphere();
 	test_ray_position();
+	test_ray_hits_cylinder();
 	return (0);
 }

@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+// #include <cmath>
+#include <math.h>
 
 t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 {
@@ -74,11 +76,10 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 {
 	t_object	*cur;
 	bool		hit;
-	double		t_temp;
+	double		t_temp[2] = {INFINITY, INFINITY};
 	t_geo_u		geo;
 	t_ray		temp_ray;
 
-	t_temp = 0.0;
 	hit = false;
 	cur = object;
 	while (cur)
@@ -87,31 +88,25 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 		if (cur->type == SPHERE)
 		{
 			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
-			// printf("ray: %f %f %f\n", ray->direction.x, ray->direction.y, ray->direction.z);
-			// printf("temp_ray: %f %f %f\n", temp_ray.direction.x, temp_ray.direction.y, temp_ray.direction.z);
-			hit = hit_sphere(cur->object, &temp_ray, &t_temp);
+			hit |= hit_sphere(cur->object, temp_ray, t_temp);
 		}
-		// if (hit && t_temp < ray->closest_t && t_temp > EPSILON)
-		// {
-		// 	ray->closest_t = t_temp;
-		// 	ray->closest_object = cur;
-		// 	hit = true;
-		// }
-		if (hit)
+		if (cur->type == CYLINDER)
 		{
-			ray->closest_object = cur;
-			t_vec3 point = get_intersection_point(temp_ray, t_temp);
-			add_inter_list_back(inter_list, (t_inter){t_temp, point,
-				get_normal(point, (t_vec3){geo.sphere->position.x,
-				geo.sphere->position.y,	geo.sphere->position.z}), cur});
+			temp_ray = ray_transform(*ray, &geo.cylinder->inversed_t);
+			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
+
+		}
+		if (hit == true)
+		{
+			t_vec3 point = get_intersection_point(temp_ray, t_temp[0]);
+			t_inter config = config_inter(&geo, point, cur, t_temp);
+			add_inter_list_back(inter_list, config);
 			hit = true;
 		}
 		cur = cur->next;
 	}
 	return (hit);
-}
-
-//-------------------TESTE-----------------------------------------------
+}//-------------------TESTE-----------------------------------------------
 // void teste_inter_point(t_coords point, t_vec3 dir)
 // {
 // 	t_vec3		result;
@@ -162,8 +157,6 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	yoffset = (pos_y + 0.5) * camera->pixel_size;
 	world = set_coords(camera->half_width - xoffset, camera->half_height - yoffset, -1);
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
-	// ray.origin = matrix_multiply_point(&camera->inversed_t,
-	// 		&((t_coords){0, 0, 0}));
 	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	ray.closest_t = INFINITY;

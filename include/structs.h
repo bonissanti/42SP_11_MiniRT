@@ -189,20 +189,6 @@ typedef struct s_ray
 	t_object				*closest_object;
 }							t_ray;
 
-//PERF: intersec para refatormaneto, irá armazenar o número de raios que bateram num objeto + os 2 valores de bhaskara
-typedef struct s_inter_data
-{
-	int		count;
-	double	xs[2];
-}							t_inter_data;
-
-//PERF: intersections uma lista linkada com todas as interseções, armazenando a ponto mais proximo (da interseção) e o objeto, da lista linkada de objetos
-typedef struct s_intersections
-{
-	double					t;
-	t_object				*object;
-	struct s_intersections	*next;	
-}							t_intersections;
 
 //PERF: 0
 typedef struct s_comps
@@ -218,7 +204,7 @@ typedef struct s_comps
 
 typedef struct s_inter
 {
-	double					t;
+	double					t[2];
 	t_vec3					point;
 	t_vec3					normal;
 	t_object				*object;
