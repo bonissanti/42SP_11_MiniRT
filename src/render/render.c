@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/08 13:45:20 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/08 20:21:43 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,34 @@ t_vec3	subtract_tuple(t_coords a, t_coords b)
 	return (result);
 }
 
-double length_vector(t_vec3 v)
+t_vec3	add_tuple(t_coords a, t_coords b)
 {
-    return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	t_vec3	result;
+
+	result.x = a.x + b.x;
+	result.y = a.y + b.y;
+	result.z = a.z + b.z;
+	return (result);
 }
 
-double intersect_sphere(t_ray ray, t_sphere sphere)
+double	length_vector(t_vec3 v)
 {
-    t_vec3 oc = subtract_tuple(ray.origin, sphere.position);
-    double a = dot_product(ray.direction, ray.direction);
-    double b = 2.0 * dot_product(oc, ray.direction);
-    double c = dot_product(oc, oc) - pow(sphere.diameter / 2, 2);
-    double discriminant = b * b - 4 * a * c;
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+}
 
-    if (discriminant < 0)
-    {
-        return -1.0;
-    }
-    else
-    {
-        return (-b - sqrt(discriminant)) / (2.0 * a);
-    }
+double	intersect_sphere(t_ray ray, t_sphere sphere)
+{
+	t_vec3	oc = subtract_tuple(ray.origin, sphere.position);
+	double	a = dot_product(ray.direction, ray.direction);
+	double	b = 2.0 * dot_product(oc, ray.direction);
+	double	c = dot_product(oc, oc) - pow(sphere.diameter / 2, 2);
+	// double	c = dot_product(oc, oc) - 1;
+	double	discriminant = b * b - 4 * a * c;
+
+	if (discriminant < 0)
+		return (-1.0);
+	else
+		return ((-b - sqrt(discriminant)) / (2.0 * a));
 }
 
 double intersect_object(t_ray ray, t_object *object)
@@ -54,19 +61,29 @@ double intersect_object(t_ray ray, t_object *object)
     return -1.0;
 }
 
+t_coords	scale_c(t_coords a, double b)
+{
+	t_coords	result;
+
+	result.x = a.x * b;
+	result.y = a.y * b;
+	result.z = a.z * b;
+	return (result);
+}
+
 bool is_in_shadow(t_coords point, t_light light, t_object *objects)
 {
     t_ray shadow_ray;
 
     shadow_ray.origin = point;
-    shadow_ray.direction = normalize_vector(subtract_tuple(light.position, point));
+    shadow_ray.direction = normalize_vector(subtract_tuple(light.position, scale_c(point, 0.999)));
 
     double light_distance = length_vector(subtract_tuple(light.position, point));
 
     for (t_object *obj = objects; obj != NULL; obj = obj->next)
     {
         double t = intersect_object(shadow_ray, obj);
-        if (t >= EPSILON && t <= light_distance)
+        if (t > EPSILON && t < light_distance)
             return (true);
     }
     return (false);
@@ -89,12 +106,11 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	light = normalize_vector(light);
 	// intensity = fmin(fmax(dot_product(normal, light), 0.0)
 	// 		+ data->amblight.ratio, 1.0);
-	if (is_in_shadow(closest->point, data->light, data->objects)) {
-        intensity = data->amblight.ratio; // only ambient light if in shadow
-    } else {
-        intensity = fmin(fmax(dot_product(normal, light), 0.0)
-                + data->amblight.ratio, 1.0); // diffuse + ambient light if not in shadow
-	}
+	if (is_in_shadow(closest->point, data->light, data->objects))
+		intensity = data->amblight.ratio; // only ambient light if in shadow 
+	else
+		intensity = fmin(fmax(dot_product(normal, light), 0.0)
+				+ data->amblight.ratio, 1.0); // diffuse + ambient light if not in shadow
 	color.r = (sphere->color[0] / 255.0) * intensity;
 	color.g = (sphere->color[1] / 255.0) * intensity;
 	color.b = (sphere->color[2] / 255.0) * intensity;

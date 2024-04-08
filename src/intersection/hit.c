@@ -13,7 +13,7 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask, t_ray *ray)
 	else if (bhask.delta == 0)
 	{
 		bhask.status = ONE_REAL_ROOTS;
-		bhask.root1 = bhask.root2 = - bhask.b / (2 * bhask.a);
+		bhask.root1 = bhask.root2 = -bhask.b / (2 * bhask.a);
 	}
 	else
 		bhask.status = NO_REAL_ROOTS;
@@ -22,9 +22,9 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask, t_ray *ray)
 
 bool	hit_sphere(const t_sphere *sphere, t_ray *ray, double *closest_t)
 {
-	t_vec3	sphere_to_ray;
-	t_bhaskara bhask;
-	t_bhaskara result;
+	t_vec3		sphere_to_ray;
+	t_bhaskara	bhask;
+	t_bhaskara	result;
 
 	init_bhask(&bhask, &result);
 	sphere_to_ray = subtract_coords(ray->origin, sphere->position);
@@ -32,7 +32,6 @@ bool	hit_sphere(const t_sphere *sphere, t_ray *ray, double *closest_t)
 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray->direction);
 	// bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - sphere->diameter * sphere->diameter / 4.0;
 	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - 1;
-
 	result = solve_bhaskara(bhask, ray);
 	// printf("result.root1: %f\n", result.root1);
 	// printf("result.root2: %f\n", result.root2);
