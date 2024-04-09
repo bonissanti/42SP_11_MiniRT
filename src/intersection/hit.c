@@ -55,7 +55,7 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 		return (false);
  
 	bhask.b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
-	bhask.c = pow(ray.direction.x, 2) + pow(ray.origin.z, 2) - 1;
+	bhask.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - 1;
 	result = solve_bhaskara(bhask);
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
@@ -65,15 +65,16 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	double	y2 = ray.origin.y + bhask.root2 * ray.direction.y;
 
 	bool	within_limits_t1 = y1 >= cyl->min && y1 <= cyl->max;
-	bool	within_limits_t2 = y2 >- cyl->min && y2 <= cyl->max;
+	bool	within_limits_t2 = y2 >= cyl->min && y2 <= cyl->max;
 
 	// define as interseções
 	bool	found_intersection = false;
+
 	if (result.status == TWO_REAL_ROOTS || result.status == ONE_REAL_ROOTS)
 	{
 		if (result.root1 > 0 && within_limits_t1)
 		{
-			t[0] = result.root1;
+			t[0] = t[1] = result.root1;
 			found_intersection = true;
 		}
 		if (result.root2 > 0 && within_limits_t2)
