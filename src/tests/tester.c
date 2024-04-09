@@ -19,5 +19,6 @@ int	main(void)
 	test_ray_hits_sphere();
 	test_ray_position();
 	test_ray_hits_cylinder();
+	test_ray_hits_plane();
 	return (0);
 }

@@ -6,12 +6,11 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/04 12:23:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:38:52 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
-// #include <cmath>
 #include <math.h>
 
 t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
@@ -96,17 +95,23 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
 
 		}
+		if (cur->type == PLANE)
+		{
+			temp_ray = ray_transform(*ray, &geo.plane->inversed_t);
+			hit |= hit_plane(temp_ray, t_temp);
+		}
 		if (hit == true)
 		{
 			t_vec3 point = get_intersection_point(temp_ray, t_temp[0]);
 			t_inter config = config_inter(&geo, point, cur, t_temp);
 			add_inter_list_back(inter_list, config);
-			hit = true;
 		}
 		cur = cur->next;
 	}
 	return (hit);
-}//-------------------TESTE-----------------------------------------------
+}
+
+//-------------------TESTE-----------------------------------------------
 // void teste_inter_point(t_coords point, t_vec3 dir)
 // {
 // 	t_vec3		result;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hit.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/09 18:20:33 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minirt.h"
 
 static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
@@ -12,7 +24,7 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
 	else if (bhask.delta == 0)
 	{
 		bhask.status = ONE_REAL_ROOTS;
-		bhask.root1 = bhask.root2 = - bhask.b / (2 * bhask.a);
+		bhask.root1 = bhask.root2 = -bhask.b / (2 * bhask.a);
 	}
 	else
 		bhask.status = NO_REAL_ROOTS;
@@ -92,3 +104,12 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	return (found_intersection);
 }
 
+
+bool	hit_plane(t_ray ray, double t[2])
+{
+	if (fabs(ray.direction.y) < EPSILON)
+		return (false);
+	else
+		t[0] = -ray.origin.y / ray.direction.y;
+	return (true);
+}
