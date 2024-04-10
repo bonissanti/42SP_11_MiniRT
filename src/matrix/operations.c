@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 11:41:58 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:07:43 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,6 @@ t_matrix	matrix_multiply(t_matrix *a, t_matrix *b)
 				result.matrix[y][x] += a->matrix[y][i] * b->matrix[i][x];
 		}
 	}
-// # ifndef TEST
-// 	printf("a\n");
-// 	print_matrix(*a);
-// 	printf("b\n");
-// 	print_matrix(*b);
-// 	printf("result\n");
-// 	print_matrix(result);
-// 	printf("\n");
-// # endif
 	return (result);
 }
 
@@ -89,34 +80,25 @@ t_matrix	translation_matrix(double	tx, double ty, double tz)
 	return (result);
 }
 
-t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
+t_coords	matrix_multiply_coords(t_matrix original, const t_coords coords)
 {
+	t_matrix	coord_mat;
+	t_matrix	result_mat;
 	t_coords	result;
 
-	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z;
-	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z;
-	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z;
+	matrix_identity(&coord_mat);
+	coord_mat.matrix[0][0] = coords.x;
+	coord_mat.matrix[1][0] = coords.y;
+	coord_mat.matrix[2][0] = coords.z;
+	coord_mat.matrix[3][0] = 1.0;
+
+	result_mat = matrix_multiply(&original, &coord_mat);
+	result.x = result_mat.matrix[0][0];
+	result.y = result_mat.matrix[1][0];
+	result.z = result_mat.matrix[2][0];
 	return (result);
 }
 
-// t_coords matrix_multiply_point(const t_matrix *m, const t_coords *point) {
-//     t_coords result;
-//     double w;
-//
-//     result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z + m->matrix[0][3];
-//     result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z + m->matrix[1][3];
-//     result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z + m->matrix[2][3];
-//     w = m->matrix[3][0] * point->x + m->matrix[3][1] * point->y + m->matrix[3][2] * point->z + m->matrix[3][3];
-//
-//     // Normalização se w não é 1 (para transformações projetivas, w pode ser diferente de 1)
-//     if (w != 1.0 && w != 0.0) {
-//         result.x /= w;
-//         result.y /= w;
-//         result.z /= w;
-//     }
-//
-//     return result;
-// }
 t_matrix	simple_rotation_x(double angle)
 {
 	t_matrix	rotation;

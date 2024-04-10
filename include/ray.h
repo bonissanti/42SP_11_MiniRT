@@ -9,7 +9,7 @@ bool		hit_sphere(const t_sphere *sphere, t_ray ray, double t[2]);
 bool		hit_plane(t_ray ray, double t[2]);
 t_color		trace_ray2(t_data *data, t_ray ray);
 t_color		trace_ray(t_data *data, t_ray ray);
-t_ray		ray_transform(t_ray ray, t_matrix *matrix);
+t_ray		ray_transform(t_ray ray, t_matrix matrix);
 t_vec3		get_intersection_point(t_ray ray, double t);
 t_coords	ray_position(t_ray ray, double distance);
 

@@ -6,17 +6,17 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:14:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/03 12:29:45 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:11:36 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-t_ray	ray_transform(t_ray ray, t_matrix *matrix)
+t_ray	ray_transform(t_ray ray, t_matrix matrix)
 {
 	t_ray	transformed_ray;
 
-	transformed_ray.origin = matrix_multiply_point(matrix, &ray.origin);
+	transformed_ray.origin = matrix_multiply_coords(matrix, ray.origin);
 	transformed_ray.direction = matrix_multiply_vector(matrix, &ray.direction);
 	return (transformed_ray);
 }

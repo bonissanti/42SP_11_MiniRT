@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/01 14:00:41 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/10 15:47:04 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 /* config window */
 
-# define WIDTH 800
-# define HEIGHT 600
+# define HEIGHT 700
+# define WIDTH 1000
 # define TITLE "miniRTARDOS"
 
 /* structs to mlx */

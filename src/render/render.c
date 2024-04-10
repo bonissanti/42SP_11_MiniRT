@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/10 12:31:12 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:09:01 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,18 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 		geo = get_geo(cur);
 		if (cur->type == SPHERE)
 		{
-			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
+			temp_ray = ray_transform(*ray, geo.sphere->inversed_t);
 			hit |= hit_sphere(cur->object, temp_ray, t_temp);
 		}
 		else if (cur->type == CYLINDER)
 		{
-			temp_ray = ray_transform(*ray, &geo.cylinder->inversed_t);
+			temp_ray = ray_transform(*ray, geo.cylinder->inversed_t);
 			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
 
 		}
 		else if (cur->type == PLANE)
 		{
-			temp_ray = ray_transform(*ray, &geo.plane->inversed_t);
+			temp_ray = ray_transform(*ray, geo.plane->inversed_t);
 			hit |= hit_plane(temp_ray, t_temp);
 		}
 		if (hit == true)
@@ -112,7 +112,7 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	return (hit);
 }
 
-bool intersection_obj2(t_object *object, t_ray *ray, t_inter_list **inter_list)
+bool intersection_obj2(t_object *object, t_ray ray, t_inter_list **inter_list)
 {
 	t_object	*cur;
 	bool		hit;
@@ -127,22 +127,22 @@ bool intersection_obj2(t_object *object, t_ray *ray, t_inter_list **inter_list)
 		geo = get_geo(cur);
 		if (cur->type == SPHERE)
 		{
-			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
+			temp_ray = ray_transform(ray, get_geo(cur).sphere->inversed_t);
 			hit |= hit_sphere(cur->object, temp_ray, t_temp);
 		}
 		else if (cur->type == CYLINDER)
 		{
-			temp_ray = ray_transform(*ray, &geo.cylinder->inversed_t);
+			temp_ray = ray_transform(ray, geo.cylinder->inversed_t);
 			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
 
 		}
 		else if (cur->type == PLANE)
 		{
-			temp_ray = ray_transform(*ray, &geo.plane->inversed_t);
+			temp_ray = ray_transform(ray, geo.plane->inversed_t);
 			hit |= hit_plane(temp_ray, t_temp);
 		}
 		if (hit == true)
-		{
+		{	
 			t_vec3 point = get_intersection_point(temp_ray, t_temp[0]);
 			t_inter config = config_inter(&geo, point, cur, t_temp);
 			add_inter_list_back(inter_list, config);
@@ -201,15 +201,14 @@ t_color	trace_ray2(t_data *data, t_ray ray)
 	if (!data->objects)
 		return ((t_color){0, 0, 0, 1});
 
-	hit = intersection_obj2(data->objects, &ray, &inter_list);
-	(void)hit;
-	// if (!hit || !find_closest_inter2(inter_list))
-	// {
-	// 	delete_inter_list(inter_list);
-	// 	return ((t_color){0, 0, 0, 1});
-	// }
+	hit = intersection_obj2(data->objects, ray, &inter_list);
+	if (!hit || !find_closest_inter2(inter_list))
+	{
+		delete_inter_list(inter_list);
+		return ((t_color){0, 0, 0, 1});
+	}
 	// computations = process_computations()
-	return ((t_color){1, 0, 0, 1});
+	return ((t_color){0, 0, 0, 1});
 }
 
 
@@ -224,7 +223,7 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	xoffset = (pos_x + 0.5) * camera->pixel_size;
 	yoffset = (pos_y + 0.5) * camera->pixel_size;
 	world = set_coords(camera->half_width - xoffset, camera->half_height - yoffset, -1);
-	pixel = matrix_multiply_point(&camera->inversed_t, &world);
+	pixel = matrix_multiply_coords(camera->inversed_t, world);
 	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	return (ray);
