@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 12:47:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/10 12:26:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ typedef struct s_bvh_node
 
 typedef struct s_object
 {
+	double					t[2];
 	t_object_type			type;
 	void					*object;
 	struct s_object			*next;
@@ -181,12 +182,12 @@ typedef struct s_object
 
 typedef struct s_ray
 {
-	double					closest_t;
-	double					front_t;
-	double					back_t;
+	/* double					closest_t; */
+	/* double					front_t; */
+	/* double					back_t; */
 	t_coords				origin;
 	t_vec3					direction;
-	t_object				*closest_object;
+	/* t_object				*closest_object; */
 }							t_ray;
 
 

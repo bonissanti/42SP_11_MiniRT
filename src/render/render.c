@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/09 17:38:52 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/10 12:31:12 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	return (color);
 }
 
+// t_comps	process_intersection()
 
 t_vec3	get_intersection_point(t_ray ray, double t)
 {
@@ -89,13 +90,13 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
 			hit |= hit_sphere(cur->object, temp_ray, t_temp);
 		}
-		if (cur->type == CYLINDER)
+		else if (cur->type == CYLINDER)
 		{
 			temp_ray = ray_transform(*ray, &geo.cylinder->inversed_t);
 			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
 
 		}
-		if (cur->type == PLANE)
+		else if (cur->type == PLANE)
 		{
 			temp_ray = ray_transform(*ray, &geo.plane->inversed_t);
 			hit |= hit_plane(temp_ray, t_temp);
@@ -110,6 +111,47 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	}
 	return (hit);
 }
+
+bool intersection_obj2(t_object *object, t_ray *ray, t_inter_list **inter_list)
+{
+	t_object	*cur;
+	bool		hit;
+	double		t_temp[2] = {INFINITY, INFINITY};
+	t_geo_u		geo;
+	t_ray		temp_ray;
+
+	hit = false;
+	cur = object;
+	while (cur)
+	{
+		geo = get_geo(cur);
+		if (cur->type == SPHERE)
+		{
+			temp_ray = ray_transform(*ray, &geo.sphere->inversed_t);
+			hit |= hit_sphere(cur->object, temp_ray, t_temp);
+		}
+		else if (cur->type == CYLINDER)
+		{
+			temp_ray = ray_transform(*ray, &geo.cylinder->inversed_t);
+			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
+
+		}
+		else if (cur->type == PLANE)
+		{
+			temp_ray = ray_transform(*ray, &geo.plane->inversed_t);
+			hit |= hit_plane(temp_ray, t_temp);
+		}
+		if (hit == true)
+		{
+			t_vec3 point = get_intersection_point(temp_ray, t_temp[0]);
+			t_inter config = config_inter(&geo, point, cur, t_temp);
+			add_inter_list_back(inter_list, config);
+		}
+		cur = cur->next;
+	}
+	return (hit);
+}
+
 
 //-------------------TESTE-----------------------------------------------
 // void teste_inter_point(t_coords point, t_vec3 dir)
@@ -126,29 +168,50 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 // 	printf("result: %f %f %f\n", result.x, result.y, result.z);	
 // }
 
-t_color	trace_ray(t_data *data, t_ray ray)
+// t_color	trace_ray(t_data *data, t_ray ray)
+// {
+// 	t_inter			closest_found;
+// 	t_inter_list	*inter_list;
+// 	bool			hit;
+//
+// 	// if (!data->bvh_root)
+// 	// 	return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
+// 	inter_list = NULL;
+// 	hit = intersection_obj(data->objects, &ray, &inter_list);
+//
+// 	if (!hit || !find_closest_inter(&closest_found, inter_list))
+// 	{
+// 		delete_inter_list(inter_list);
+// 		return ((t_color){0.68, 0.85, 0.9, 1});
+// 	}
+//
+// 	// t_color color = process_intersection(data, &closest_found, &ray);
+// 	// delete_inter_list(inter_list);
+// 	return((t_color){1, 0, 0, 1});
+// }
+
+
+t_color	trace_ray2(t_data *data, t_ray ray)
 {
-	t_inter			closest_found;
 	t_inter_list	*inter_list;
-	// t_inter_list	*temp;
-	// t_color			color;
+	// t_comps			computations;
 	bool			hit;
 
-	if (!data->bvh_root)
-		return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
 	inter_list = NULL;
-	// hit = intersection_bvh(data->bvh_root, &inter_list, ray);
-	hit = intersection_obj(data->objects, &ray, &inter_list);
-	if (!hit || !find_closest_inter(&closest_found, inter_list))
-	{
-		delete_inter_list(inter_list);
-		return ((t_color){0.68, 0.85, 0.9, 1});
-	}
-	// color = process_intersection(data, &closest_found, &ray);
-	delete_inter_list(inter_list);
-	// return (color);
-	return((t_color){1, 0, 0, 1});
+	if (!data->objects)
+		return ((t_color){0, 0, 0, 1});
+
+	hit = intersection_obj2(data->objects, &ray, &inter_list);
+	(void)hit;
+	// if (!hit || !find_closest_inter2(inter_list))
+	// {
+	// 	delete_inter_list(inter_list);
+	// 	return ((t_color){0, 0, 0, 1});
+	// }
+	// computations = process_computations()
+	return ((t_color){1, 0, 0, 1});
 }
+
 
 t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 {
@@ -164,9 +227,6 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	pixel = matrix_multiply_point(&camera->inversed_t, &world);
 	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
-	ray.closest_t = INFINITY;
-	ray.front_t = 0;
-	ray.back_t = 0;
 	return (ray);
 }
 
@@ -190,11 +250,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	int		y;
 	t_ray	ray;
 
-	(void)data;
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
-	printf("height: %d\n", data->camera.height_v);
-	printf("width: %d\n", data->camera.width_v);
 	// data->bvh_root = create_bvh(&data->objects);
 	// traverseBVH(data->bvh_root, 0);
 	y = -1;
@@ -206,24 +263,9 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
 			mlx_put_pixel(mlx->img_ptr, x, y,
-				t_color_to_int(trace_ray(data, ray)));
+				t_color_to_int(trace_ray2(data, ray)));
 		}
-		// printf("\n");
 	}
-	// mlx_put_pixel(mlx->img_ptr, WIDTH/2, HEIGHT/2, t_color_to_int((t_color){1, 0, 0, 1}));
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }
-
-//PERF: trace_ray v2:
-
-
-// t_color	trace_ray2(t_data *data, t_ray ray)
-// {
-// 	t_inter_list	*list;
-// 	bool			hit;
-//
-// 	if (!data->bvh_root)
-// 		return ((t_color){0.0, 0.0, 0.0, 0.0}); //in case bvh is null
-//
-// }
