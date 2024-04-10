@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/10 16:09:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:13:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,85 +72,123 @@ t_geo_u get_geo(t_object *object)
 	return (geo);
 }
 
+t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
+{
+	t_vec3	normal;
+	t_geo_u	geo;
+
+	geo = get_geo(obj);
+	if (geo.sphere)
+		normal = subtract_vector(point, geo.sphere->position);
+	else if (geo.cylinder)
+		normal = subtract_vector(point, geo.cylinder->position);
+	else
+	 	normal = subtract_vector(point, geo.plane->position);
+	return (normal);
+}
+
+
+// bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
+// {
+// 	t_object	*cur;
+// 	bool		hit;
+// 	t_inter		xs;
+// 	// t_geo_u		geo;
+// 	t_ray		temp_ray;
+//
+// 	xs.t[0] = 0.0;
+// 	xs.t[1] = 0.0;
+// 	hit = false;
+// 	cur = object;
+// 	while (cur)
+// 	{
+// 		// geo = 
+// 		if (cur->type == SPHERE)
+// 		{
+// 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
+// 			hit |= hit_sphere(cur->object, temp_ray, &xs);
+// 		}
+// 		if (hit == true)
+// 		{
+// 			t_vec3 point = get_intersection_point(temp_ray, xs.t[0]);
+// 			add_inter_list_back(inter_list, (t_inter){xs.t[0], point,
+// 				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
+// 				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+// 			hit = true;
+// 		}
+// 		cur = cur->next;
+// 	}
+// 	return (hit);
+// }
+
+
+void	add_intersection_if_valid(t_object *obj, t_ray ray, double t, t_inter_list **inter_list)
+{
+	t_vec3	point;
+	t_vec3	normal;
+
+	if (t > EPSILON && t < INFINITY)
+	{
+		point = get_intersection_point(ray, t);
+		normal = get_normal_generic(obj, point);
+		add_inter_list_back(inter_list, (t_inter){{t, 0}, point, normal, obj});
+	}
+}
+
 bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 {
-	t_object	*cur;
 	bool		hit;
-	double		t_temp[2] = {INFINITY, INFINITY};
-	t_geo_u		geo;
-	t_ray		temp_ray;
+	t_object	*cur;
+	t_inter		xs;
 
 	hit = false;
 	cur = object;
 	while (cur)
 	{
-		geo = get_geo(cur);
-		if (cur->type == SPHERE)
+		if (cur->type == SPHERE && hit_sphere(cur->object, *ray, &xs))
 		{
-			temp_ray = ray_transform(*ray, geo.sphere->inversed_t);
-			hit |= hit_sphere(cur->object, temp_ray, t_temp);
-		}
-		else if (cur->type == CYLINDER)
-		{
-			temp_ray = ray_transform(*ray, geo.cylinder->inversed_t);
-			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
-
-		}
-		else if (cur->type == PLANE)
-		{
-			temp_ray = ray_transform(*ray, geo.plane->inversed_t);
-			hit |= hit_plane(temp_ray, t_temp);
-		}
-		if (hit == true)
-		{
-			t_vec3 point = get_intersection_point(temp_ray, t_temp[0]);
-			t_inter config = config_inter(&geo, point, cur, t_temp);
-			add_inter_list_back(inter_list, config);
+			add_intersection_if_valid(cur, *ray, xs.t[0], inter_list);
+			add_intersection_if_valid(cur, *ray, xs.t[1], inter_list);
+			hit = true;
 		}
 		cur = cur->next;
 	}
 	return (hit);
 }
 
-bool intersection_obj2(t_object *object, t_ray ray, t_inter_list **inter_list)
-{
-	t_object	*cur;
-	bool		hit;
-	double		t_temp[2] = {INFINITY, INFINITY};
-	t_geo_u		geo;
-	t_ray		temp_ray;
+// bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
+// {
+// 	t_object	*cur;
+// 	bool		hit;
+// 	t_inter		xs;
+// 	// t_geo_u		geo;
+// 	t_ray		temp_ray;
+//
+// 	xs.t = 0.0;
+// 	hit = false;
+// 	cur = object;
+// 	while (cur)
+// 	{
+// 		// geo = 
+// 		if (cur->type == SPHERE)
+// 		{
+// 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
+// 			hit |= hit_sphere(cur->object, temp_ray, &xs);
+// 		}
+// 		if (hit == true)
+// 		{
+// 			t_vec3 point = get_intersection_point(temp_ray, xs.t);
+// 			add_inter_list_back(inter_list, (t_inter){xs.t, point,
+// 				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
+// 				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+// 			hit = true;
+// 		}
+// 		cur = cur->next;
+// 	}
+// 	return (hit);
+// }
 
-	hit = false;
-	cur = object;
-	while (cur)
-	{
-		geo = get_geo(cur);
-		if (cur->type == SPHERE)
-		{
-			temp_ray = ray_transform(ray, get_geo(cur).sphere->inversed_t);
-			hit |= hit_sphere(cur->object, temp_ray, t_temp);
-		}
-		else if (cur->type == CYLINDER)
-		{
-			temp_ray = ray_transform(ray, geo.cylinder->inversed_t);
-			hit |= hit_cylinder(cur->object, temp_ray, t_temp);
 
-		}
-		else if (cur->type == PLANE)
-		{
-			temp_ray = ray_transform(ray, geo.plane->inversed_t);
-			hit |= hit_plane(temp_ray, t_temp);
-		}
-		if (hit == true)
-		{	
-			t_vec3 point = get_intersection_point(temp_ray, t_temp[0]);
-			t_inter config = config_inter(&geo, point, cur, t_temp);
-			add_inter_list_back(inter_list, config);
-		}
-		cur = cur->next;
-	}
-	return (hit);
-}
 
 
 //-------------------TESTE-----------------------------------------------
@@ -168,48 +206,48 @@ bool intersection_obj2(t_object *object, t_ray ray, t_inter_list **inter_list)
 // 	printf("result: %f %f %f\n", result.x, result.y, result.z);	
 // }
 
-// t_color	trace_ray(t_data *data, t_ray ray)
-// {
-// 	t_inter			closest_found;
-// 	t_inter_list	*inter_list;
-// 	bool			hit;
-//
-// 	// if (!data->bvh_root)
-// 	// 	return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
-// 	inter_list = NULL;
-// 	hit = intersection_obj(data->objects, &ray, &inter_list);
-//
-// 	if (!hit || !find_closest_inter(&closest_found, inter_list))
-// 	{
-// 		delete_inter_list(inter_list);
-// 		return ((t_color){0.68, 0.85, 0.9, 1});
-// 	}
-//
-// 	// t_color color = process_intersection(data, &closest_found, &ray);
-// 	// delete_inter_list(inter_list);
-// 	return((t_color){1, 0, 0, 1});
-// }
-
-
-t_color	trace_ray2(t_data *data, t_ray ray)
+t_color	trace_ray(t_data *data, t_ray ray)
 {
+	t_inter			closest_found;
 	t_inter_list	*inter_list;
-	// t_comps			computations;
 	bool			hit;
 
+	// if (!data->bvh_root)
+	// 	return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
 	inter_list = NULL;
-	if (!data->objects)
-		return ((t_color){0, 0, 0, 1});
+	hit = intersection_obj(data->objects, &ray, &inter_list);
 
-	hit = intersection_obj2(data->objects, ray, &inter_list);
-	if (!hit || !find_closest_inter2(inter_list))
+	if (!hit || !find_closest_inter(&closest_found, inter_list))
 	{
 		delete_inter_list(inter_list);
-		return ((t_color){0, 0, 0, 1});
+		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
-	// computations = process_computations()
-	return ((t_color){0, 0, 0, 1});
+
+	// t_color color = process_intersection(data, &closest_found, &ray);
+	// delete_inter_list(inter_list);
+	return((t_color){1, 0, 0, 1});
 }
+
+
+// t_color	trace_ray2(t_data *data, t_ray ray)
+// {
+// 	t_inter_list	*inter_list;
+// 	// t_comps			computations;
+// 	bool			hit;
+//
+// 	inter_list = NULL;
+// 	if (!data->objects)
+// 		return ((t_color){0, 0, 0, 1});
+//
+// 	hit = intersection_obj2(data->objects, ray, &inter_list);
+// 	if (!hit || !find_closest_inter2(inter_list))
+// 	{
+// 		delete_inter_list(inter_list);
+// 		return ((t_color){0, 0, 0, 1});
+// 	}
+// 	// computations = process_computations()
+// 	return ((t_color){0, 0, 0, 1});
+// }
 
 
 t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
@@ -262,7 +300,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		{
 			ray = ray_for_pixel(&data->camera, x, y);
 			mlx_put_pixel(mlx->img_ptr, x, y,
-				t_color_to_int(trace_ray2(data, ray)));
+				t_color_to_int(trace_ray(data, ray)));
 		}
 	}
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);

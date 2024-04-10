@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/09 18:20:33 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:17:24 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
 	return (bhask);
 }
 
-bool	hit_sphere(const t_sphere *sphere, t_ray ray, double t[2])
+bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
 {
 	t_vec3	sphere_to_ray;
 	t_bhaskara bhask;
@@ -47,13 +47,40 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, double t[2])
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
 	if (result.root1 > EPSILON && result.root1 < INFINITY)
-		t[0] = result.root1;
-	else if (result.root2 > EPSILON && result.root2 < INFINITY)
-		t[1] = result.root2;
+		xs->t = result.root1;
+	else if (result.root2 > EPSILON && result.root2 < INFINITY && result.root1 < result.root2)
+		xs->t = result.root2;
 	else
 		return (false);
 	return (true);
 }
+
+
+// bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
+// {
+// 	t_vec3	sphere_to_ray;
+// 	t_bhaskara bhask;
+// 	t_bhaskara result;
+//
+// 	init_bhask(&bhask, &result);
+// 	sphere_to_ray = subtract_coords(ray.origin, sphere->position);
+// 	bhask.a = dot_product(ray.direction, ray.direction);
+// 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray.direction);
+// 	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - 1;
+//
+// 	result = solve_bhaskara(bhask);
+// 	if (result.status == NO_REAL_ROOTS)
+// 		return (false);
+// 	if (result.root1 > EPSILON && result.root1 < INFINITY)
+// 		xs->t[0] = result.root1;
+// 	else if (result.root2 > EPSILON && result.root2 < INFINITY && result.root1 < result.root2)
+// 		xs->t[1] = result.root2;
+// 	else
+// 		return (false);
+// 	return (true);
+// }
+
+
 
 bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 {
