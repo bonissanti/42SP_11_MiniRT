@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/08 11:02:14 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/10 10:45:02 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,12 @@ void	set_camera_transform(t_camera *camera, t_coords from, t_vec3 forward, t_vec
 	translation = translation_matrix(-from.x, -from.y, -from.z);
 
 	matrix_identity(&perspective);
-	// double scale = tan(camera->fov * 0.5 * M_PI / 180);
-    // perspective.matrix[0][0] = 1 / (camera->aspect_ratio * scale);
-    // perspective.matrix[1][1] = 1 / scale;
-    // perspective.matrix[2][2] = -1;
-    // perspective.matrix[2][3] = -1;
-    // perspective.matrix[3][2] = -1;
 
 	camera->transform = matrix_multiply(&transform, &translation);
-	// camera->transform = matrix_multiply(&transform, &perspective);
 
 	matrix_identity(&camera->inversed_t);
 	invert_matrix(&camera->transform, &camera->inversed_t);
 }
-
 
 //TODO: Adicionar funções para configurar matrizes dos objetos, incluindo a inversão da matriz
 t_matrix	transform_sphere(t_coords coords, double radius)

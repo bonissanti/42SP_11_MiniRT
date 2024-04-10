@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/08 10:22:02 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/10 17:15:18 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	analyze_sphere(char *line, t_data *data)
 	// verifica valores
 	if (count_token(token, 3, "[sp] Sphere has wrong number of arguments\n"))
 		return (ERROR);
-	if (set_coordinates(token[0]) == ERROR || is_number(token[1]) == ERROR || set_colors(token[2]) == ERROR)
+	if (set_coordinates(token[0]) == ERROR || is_number(token[1]) == ERROR
+		|| set_colors(token[2]) == ERROR)
     {
         free_array(token);
         return (ERROR);
@@ -60,9 +61,9 @@ int	analyze_sphere(char *line, t_data *data)
 		return (ERROR);
 	}
 	new_sphere->diameter = ft_atod(token[1]);
-	// new_sphere->diameter = 1;
+	new_sphere->radius = new_sphere->diameter / 2;
 	fill_coordinates(token[0], new_sphere);
-	new_sphere->transform = transform_sphere(new_sphere->position, new_sphere->diameter / 2);
+	new_sphere->transform = transform_sphere(new_sphere->position, new_sphere->radius);
 	invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);
 	fill_colors(token[2], new_sphere);
 

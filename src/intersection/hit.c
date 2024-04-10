@@ -30,11 +30,8 @@ bool	hit_sphere(const t_sphere *sphere, t_ray *ray, double *closest_t)
 	sphere_to_ray = subtract_coords(ray->origin, sphere->position);
 	bhask.a = dot_product(ray->direction, ray->direction);
 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray->direction);
-	// bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - sphere->diameter * sphere->diameter / 4.0;
 	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - 1;
 	result = solve_bhaskara(bhask, ray);
-	// printf("result.root1: %f\n", result.root1);
-	// printf("result.root2: %f\n", result.root2);
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
 	if (result.root1 > EPSILON && result.root1 < INFINITY)

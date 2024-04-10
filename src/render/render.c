@@ -3,14 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/08 20:21:43 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/10 17:50:26 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+
+t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
+{
+	t_vec3	result;
+
+	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y
+			+ m->matrix[0][2] * point->z;
+	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y
+			+ m->matrix[1][2] * point->z;
+	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y
+			+ m->matrix[2][2] * point->z;
+	return (result);
+}
+
+t_ray	ray_transform(t_ray ray, t_matrix *matrix)
+{
+	t_ray	transformed_ray;
+
+	transformed_ray.origin = matrix_multiply_point(*matrix, ray.origin);
+	transformed_ray.direction = matrix_multiply_vector(matrix, &ray.direction);
+	return (transformed_ray);
+}
+
+t_geo_u get_geo(t_object *object)
+{
+	t_geo_u	geo;
+
+	if (object->type == SPHERE)
+		geo.sphere = (t_sphere *)object->object;
+	else if (object->type == PLANE)
+		geo.plane = (t_plane *)object->object;
+	else if (object->type == CYLINDER)
+		geo.cylinder = (t_cylinder *)object->object;
+	else
+		geo.sphere = NULL;
+	return (geo);
+}
 
 t_vec3	subtract_tuple(t_coords a, t_coords b)
 {
@@ -37,31 +74,19 @@ double	length_vector(t_vec3 v)
 	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-double	intersect_sphere(t_ray ray, t_sphere sphere)
-{
-	t_vec3	oc = subtract_tuple(ray.origin, sphere.position);
-	double	a = dot_product(ray.direction, ray.direction);
-	double	b = 2.0 * dot_product(oc, ray.direction);
-	double	c = dot_product(oc, oc) - pow(sphere.diameter / 2, 2);
-	// double	c = dot_product(oc, oc) - 1;
-	double	discriminant = b * b - 4 * a * c;
-
-	if (discriminant < 0)
-		return (-1.0);
-	else
-		return ((-b - sqrt(discriminant)) / (2.0 * a));
-}
-
 double intersect_object(t_ray ray, t_object *object)
 {
-    if (object->type == SPHERE)
-        return intersect_sphere(ray, *(t_sphere *)object->object);
-    // Add other object types here...
-
-    return -1.0;
+	double t = -1.0;
+    if (object->type == SPHERE)	
+		hit_sphere((t_sphere *)object->object, &ray, &t);
+    // else if (object->type == PLANE)
+    //     return intersect_plane(ray, *(t_plane *)object->object);
+	// else if (object->type == CYLINDER)
+    //     return intersect_cylinder(ray, *(t_cylinder *)object->object);
+    return (t);
 }
 
-t_coords	scale_c(t_coords a, double b)
+t_coords	multiply_tuple(t_coords a, double b)
 {
 	t_coords	result;
 
@@ -71,22 +96,37 @@ t_coords	scale_c(t_coords a, double b)
 	return (result);
 }
 
-bool is_in_shadow(t_coords point, t_light light, t_object *objects)
+bool is_in_shadow(t_coords point, t_light light, t_object *objects, t_vec3 normal)
 {
-    t_ray shadow_ray;
+	t_ray	shadow_ray;
+	double	light_distance;
 
-    shadow_ray.origin = point;
-    shadow_ray.direction = normalize_vector(subtract_tuple(light.position, scale_c(point, 0.999)));
+	shadow_ray.origin = add_tuple(point, multiply_tuple(normal, 0.0001));
+	shadow_ray.direction = normalize_vector(subtract_tuple(light.position, point));
+	light_distance = length_vector(subtract_tuple(light.position, point));
+	for (t_object *obj = objects; obj != NULL; obj = obj->next)
+	{
+		double t = intersect_object(ray_transform(shadow_ray, &get_geo(obj).sphere->inversed_t), obj);
+		// double t = intersect_object(shadow_ray, obj);
+		if (t > EPSILON && t < light_distance)
+			return (true);
+	}
+	return (false);
+}
 
-    double light_distance = length_vector(subtract_tuple(light.position, point));
+t_vec3	get_normal(t_coords point, t_object object)
+{
+	t_vec3	normal;
+	t_geo_u	geo;
 
-    for (t_object *obj = objects; obj != NULL; obj = obj->next)
-    {
-        double t = intersect_object(shadow_ray, obj);
-        if (t > EPSILON && t < light_distance)
-            return (true);
-    }
-    return (false);
+	geo = get_geo(&object);
+	if (object.type == SPHERE)
+		normal = subtract_tuple(point, geo.sphere->position);
+	else if (object.type == PLANE)
+		normal = (t_vec3){0, 1, 0};
+	// else if (object.type == CYLINDER)
+	// 	normal = subtract_tuple(point, geo.cylinder->position);
+	return (normalize_vector(normal));
 }
 
 t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
@@ -99,14 +139,11 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 
 	(void)ray;
 	sphere = (t_sphere *)closest->object->object;
-	normal = normalize_vector(subtract_coords((t_coords){closest->point.x,
-				closest->point.y, closest->point.z}, sphere->position));
+	normal = get_normal(closest->point, *closest->object);
 	light = subtract_coords(data->light.position,
 			(t_coords){closest->point.x, closest->point.y, closest->point.z});
 	light = normalize_vector(light);
-	// intensity = fmin(fmax(dot_product(normal, light), 0.0)
-	// 		+ data->amblight.ratio, 1.0);
-	if (is_in_shadow(closest->point, data->light, data->objects))
+	if (is_in_shadow(closest->point, data->light, data->objects, normal))
 		intensity = data->amblight.ratio; // only ambient light if in shadow 
 	else
 		intensity = fmin(fmax(dot_product(normal, light), 0.0)
@@ -118,56 +155,16 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	return (color);
 }
 
-t_vec3	matrix_multiply_vector(const t_matrix *m, const t_vec3 *point)
-{
-	t_vec3	result;
-
-	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z;
-	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z;
-	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z;
-	return (result);
-}
-
-t_ray	ray_transform(t_ray ray, t_matrix *matrix)
-{
-	t_ray	transformed_ray;
-
-	transformed_ray.origin = matrix_multiply_point(matrix, &ray.origin);
-	transformed_ray.direction = matrix_multiply_vector(matrix, &ray.direction);
-	return (transformed_ray);
-}
-
 t_vec3	get_intersection_point(t_ray ray, double t)
 {
 	t_vec3	intersection_point;
 
-	intersection_point = (t_vec3){ray.origin.x + ray.direction.x * t,
+	intersection_point = (t_vec3){
+		ray.origin.x + ray.direction.x * t,
 		ray.origin.y + ray.direction.y * t,
-		ray.origin.z + ray.direction.z * t};
+		ray.origin.z + ray.direction.z * t
+	};
 	return (intersection_point);
-}
-
-t_vec3	get_normal(t_vec3 vec, t_vec3 center)
-{
-	t_vec3	normal;
-
-	normal = subtract_vector(vec, center);
-	return (normalize_vector(normal));
-}
-
-t_geo_u get_geo(t_object *object)
-{
-	t_geo_u	geo;
-
-	if (object->type == SPHERE)
-		geo.sphere = (t_sphere *)object->object;
-	else if (object->type == PLANE)
-		geo.plane = (t_plane *)object->object;
-	else if (object->type == CYLINDER)
-		geo.cylinder = (t_cylinder *)object->object;
-	else
-		geo.sphere = NULL;
-	return (geo);
 }
 
 bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
@@ -175,7 +172,6 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	t_object	*cur;
 	bool		hit;
 	double		t_temp;
-	// t_geo_u		geo;
 	t_ray		temp_ray;
 
 	t_temp = 0.0;
@@ -183,7 +179,6 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	cur = object;
 	while (cur)
 	{
-		// geo = 
 		if (cur->type == SPHERE)
 		{
 			temp_ray = ray_transform(*ray, &get_geo(cur).sphere->inversed_t);
@@ -193,8 +188,7 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 		{
 			t_vec3 point = get_intersection_point(temp_ray, t_temp);
 			add_inter_list_back(inter_list, (t_inter){t_temp, point,
-				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
-				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+				get_normal(point, *cur), cur});
 			hit = true;
 		}
 		cur = cur->next;
@@ -250,7 +244,7 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	yoffset = (pos_y + 0.5) * camera->pixel_size;
 	world = set_coords(camera->half_width - xoffset, camera->half_height
 			- yoffset, -1);
-	pixel = matrix_multiply_point(&camera->inversed_t, &world);
+	pixel = matrix_multiply_point(camera->inversed_t, world);
 	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	ray.closest_t = INFINITY;

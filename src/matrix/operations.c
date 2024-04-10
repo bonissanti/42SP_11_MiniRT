@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/03 18:26:55 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:19:45 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,34 @@ t_matrix	translation_matrix(double	tx, double ty, double tz)
 	return (result);
 }
 
-t_coords	matrix_multiply_point(const t_matrix *m, const t_coords *point)
+t_coords	matrix_multiply_point(t_matrix m, const t_coords point)
 {
 	t_coords	result;
 
-	result.x = m->matrix[0][0] * point->x + m->matrix[0][1] * point->y + m->matrix[0][2] * point->z;
-	result.y = m->matrix[1][0] * point->x + m->matrix[1][1] * point->y + m->matrix[1][2] * point->z;
-	result.z = m->matrix[2][0] * point->x + m->matrix[2][1] * point->y + m->matrix[2][2] * point->z;
+	result.x = m.matrix[0][0] * point.x + m.matrix[0][1] * point.y + m.matrix[0][2] * point.z + m.matrix[0][3];
+	result.y = m.matrix[1][0] * point.x + m.matrix[1][1] * point.y + m.matrix[1][2] * point.z + m.matrix[1][3];
+	result.z = m.matrix[2][0] * point.x + m.matrix[2][1] * point.y + m.matrix[2][2] * point.z + m.matrix[2][3];
 	return (result);
 }
+
+// t_coords    matrix_multiply_point(t_matrix m, const t_coords coords)
+// {
+//     t_matrix    coord_mat;
+//     t_matrix    result_mat;
+//     t_coords    result;
+
+//     matrix_identity(&coord_mat);
+//     coord_mat.matrix[0][0] = coords.x;
+//     coord_mat.matrix[1][0] = coords.y;
+//     coord_mat.matrix[2][0] = coords.z;
+//     coord_mat.matrix[3][0] = 1.0;
+
+//     result_mat = matrix_multiply(&m, &coord_mat);
+//     result.x = result_mat.matrix[0][0];
+//     result.y = result_mat.matrix[1][0];
+//     result.z = result_mat.matrix[2][0];
+//     return (result);
+// }
 
 t_matrix	rotation_matrix_x(double angle)
 {
