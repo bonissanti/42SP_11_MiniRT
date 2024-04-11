@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:21 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 17:53:35 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/11 18:55:05 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,13 @@ int	set_camera(char *fov_line, t_data *data)
 		return (print_error("Fov is not a valid number, e.g[0 to 180]"));
 	data->camera.height_v = HEIGHT;
 	data->camera.width_v = WIDTH;
-	data->camera.fov = (ft_atod(fov_line) * M_PI) / 180;
+	data->camera.fov = ft_atod(fov_line) * (M_PI / 180.0);
 	data->camera.half_width = tan(data->camera.fov / 2.0);
 	data->camera.half_height = data->camera.half_width * (double)HEIGHT
 		/ (double)WIDTH;
 	data->camera.pixel_size = (data->camera.half_width * 2) / (double)WIDTH;
-	set_camera_transform(&data->camera, data->camera.origin, data->camera.orientation, set_up(data->camera.orientation));
+	set_camera_transform(&data->camera, data->camera.origin,
+		data->camera.orientation, set_up(data->camera.orientation));
 	return (OK);
 }
 

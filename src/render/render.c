@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/10 17:50:26 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/11 19:14:51 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,21 @@ t_coords	multiply_tuple(t_coords a, double b)
 	return (result);
 }
 
-bool is_in_shadow(t_coords point, t_light light, t_object *objects, t_vec3 normal)
+bool is_in_shadow(t_inter *closest, t_light light, t_object *objects, t_vec3 normal)
 {
 	t_ray	shadow_ray;
 	double	light_distance;
 
-	shadow_ray.origin = add_tuple(point, multiply_tuple(normal, 0.0001));
-	shadow_ray.direction = normalize_vector(subtract_tuple(light.position, point));
-	light_distance = length_vector(subtract_tuple(light.position, point));
+	shadow_ray.origin = add_tuple(closest->point, multiply_tuple(normal, 0.001));
+	shadow_ray.direction = normalize_vector(subtract_tuple(light.position, shadow_ray.origin));
+	light_distance = length_vector(subtract_tuple(light.position, shadow_ray.origin));
 	for (t_object *obj = objects; obj != NULL; obj = obj->next)
 	{
+		if (closest->object == obj)
+			obj = obj->next;
+		if (!obj)
+			break;
 		double t = intersect_object(ray_transform(shadow_ray, &get_geo(obj).sphere->inversed_t), obj);
-		// double t = intersect_object(shadow_ray, obj);
 		if (t > EPSILON && t < light_distance)
 			return (true);
 	}
@@ -119,11 +122,12 @@ t_vec3	get_normal(t_coords point, t_object object)
 	t_vec3	normal;
 	t_geo_u	geo;
 
+	normal = (t_vec3){ 0,0,0 };
 	geo = get_geo(&object);
 	if (object.type == SPHERE)
 		normal = subtract_tuple(point, geo.sphere->position);
-	else if (object.type == PLANE)
-		normal = (t_vec3){0, 1, 0};
+	// else if (object.type == PLANE)
+	// 	normal = (t_vec3){0, 1, 0};
 	// else if (object.type == CYLINDER)
 	// 	normal = subtract_tuple(point, geo.cylinder->position);
 	return (normalize_vector(normal));
@@ -143,11 +147,11 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	light = subtract_coords(data->light.position,
 			(t_coords){closest->point.x, closest->point.y, closest->point.z});
 	light = normalize_vector(light);
-	if (is_in_shadow(closest->point, data->light, data->objects, normal))
-		intensity = data->amblight.ratio; // only ambient light if in shadow 
+	if (is_in_shadow(closest, data->light, data->objects, normal))
+		intensity = data->amblight.ratio;
 	else
 		intensity = fmin(fmax(dot_product(normal, light), 0.0)
-				+ data->amblight.ratio, 1.0); // diffuse + ambient light if not in shadow
+				+ data->amblight.ratio, 1.0);
 	color.r = (sphere->color[0] / 255.0) * intensity;
 	color.g = (sphere->color[1] / 255.0) * intensity;
 	color.b = (sphere->color[2] / 255.0) * intensity;
@@ -171,6 +175,7 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 {
 	t_object	*cur;
 	bool		hit;
+	bool		cur_hit;
 	double		t_temp;
 	t_ray		temp_ray;
 
@@ -179,12 +184,13 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	cur = object;
 	while (cur)
 	{
+		cur_hit = false;
 		if (cur->type == SPHERE)
 		{
 			temp_ray = ray_transform(*ray, &get_geo(cur).sphere->inversed_t);
-			hit |= hit_sphere(cur->object, &temp_ray, &t_temp);
+			cur_hit = hit_sphere(cur->object, &temp_ray, &t_temp);
 		}
-		if (hit == true)
+		if (cur_hit == true)
 		{
 			t_vec3 point = get_intersection_point(temp_ray, t_temp);
 			add_inter_list_back(inter_list, (t_inter){t_temp, point,
@@ -195,21 +201,6 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	}
 	return (hit);
 }
-
-//-------------------TESTE-----------------------------------------------
-// void teste_inter_point(t_coords point, t_vec3 dir)
-// {
-// 	t_vec3		result;
-
-// 	result = get_intersection_point((t_ray){0, 0, 0, point, dir, NULL}, 0);
-// 	printf("result: %f %f %f\n", result.x, result.y, result.z);
-// 	result = get_intersection_point((t_ray){0, 0, 0, point, dir, NULL}, 1);
-// 	printf("result: %f %f %f\n", result.x, result.y, result.z);
-// 	result = get_intersection_point((t_ray){0, 0, 0, point, dir, NULL}, -1);
-// 	printf("result: %f %f %f\n", result.x, result.y, result.z);
-// 	result = get_intersection_point((t_ray){0, 0, 0, point, dir, NULL}, 2.5);
-// 	printf("result: %f %f %f\n", result.x, result.y, result.z);	
-// }
 
 t_color	trace_ray(t_data *data, t_ray ray)
 {
