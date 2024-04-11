@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/11 19:24:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:27:02 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void add_intersection_if_valid(t_object *obj, t_ray ray, double t, t_inter_list 
         t_vec3 point = get_intersection_point(ray, t);
         t_vec3 normal = get_normal_generic(obj, point); // Assume-se que essa função já esteja ajustada
         // Adiciona a interseção à lista
-        add_inter_list_back(inter_list, (t_inter){{t, 0}, point, normal, obj});
+        add_inter_list_back(inter_list, (t_inter){t, point, normal, obj});
     }
 }
 
@@ -194,8 +194,8 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 // 		}
 		if (hit == true)
 		{
-			t_vec3 point = get_intersection_point(temp_ray, xs.t[0]);
-			add_inter_list_back(inter_list, (t_inter){{xs.t[0], xs.t[1]}, point,
+			t_vec3 point = get_intersection_point(temp_ray, xs.t);
+			add_inter_list_back(inter_list, (t_inter){xs.t, point,
 				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
 				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
 			hit = true;

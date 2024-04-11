@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/11 17:22:15 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:26:13 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
 	if (result.root1 > EPSILON && result.root1 < INFINITY)
-		xs->t[0] = result.root1;
+		xs->t = result.root1;
 	if (result.root2 > EPSILON && result.root2 < INFINITY)
-		xs->t[1] = result.root2;
+		xs->t = result.root2;
 	else
 		return (false);
 	return (true);
