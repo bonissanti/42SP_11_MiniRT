@@ -8,6 +8,9 @@ void	add_inter_list_back(t_inter_list **list, t_inter inter)
 	new_node = (t_inter_list *)malloc(sizeof(t_inter_list));
 	if (!new_node)
 		return ;
+
+	// new_node->t = t;
+	// new_node->object = obj;
 	new_node->inter = inter;
 	new_node->next = NULL;
 

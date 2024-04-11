@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 19:17:16 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:24:19 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,8 @@ typedef struct s_comps
 
 typedef struct s_inter
 {
-	double					t[2];
+	double					t;
+	/* double					t[2]; */
 	t_vec3					point;
 	t_vec3					normal;
 	t_object				*object;

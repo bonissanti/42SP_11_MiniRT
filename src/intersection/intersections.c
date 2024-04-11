@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 16:50:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:50:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,12 +147,12 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 
 	current = list;
 	closest_t = INFINITY;
-	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};
+	*closest_inter = (t_inter){.t[0] = INFINITY, .t[1] = INFINITY, .object = NULL};
 	while (current)
 	{
-		if (current->inter.t < closest_t && current->inter.t > EPSILON)
+		if (current->inter.t[0] < closest_t && current->inter.t[0] > EPSILON)
 		{
-			closest_t = current->inter.t;
+			closest_t = current->inter.t[0];
 			*closest_inter = current->inter;
 			found = true;
 		}

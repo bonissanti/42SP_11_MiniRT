@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 19:17:24 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:22:15 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
 	if (result.root1 > EPSILON && result.root1 < INFINITY)
-		xs->t = result.root1;
-	else if (result.root2 > EPSILON && result.root2 < INFINITY && result.root1 < result.root2)
-		xs->t = result.root2;
+		xs->t[0] = result.root1;
+	if (result.root2 > EPSILON && result.root2 < INFINITY)
+		xs->t[1] = result.root2;
 	else
 		return (false);
 	return (true);
@@ -99,7 +99,7 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
 
-	// verifica os limites de altura
+	// verifica os limites de altura ṕara as duas raizes
 	double	y1 = ray.origin.y + bhask.root1 * ray.direction.y;
 	double	y2 = ray.origin.y + bhask.root2 * ray.direction.y;
 

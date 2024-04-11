@@ -60,7 +60,7 @@ void	test_identity_matrix(void)
 	// teste com multiplicação
 	t_coords point = {1, -99, 3};
 	printf(F_WHITE"Test #7 - "RESET BOLD"Matrix | Identity and multiply - start\n"RESET);
-	t_coords result2 = matrix_multiply_point(&result, &point);
+	t_coords result2 = matrix_multiply_coords(result, point);
 	compare_doubles(result2.x, point.x, "Multiplicação de identidade - x");
 	compare_doubles(result2.y, point.y, "Multiplicação de identidade - y");
 	compare_doubles(result2.z, point.z, "Multiplicação de identidade - z");

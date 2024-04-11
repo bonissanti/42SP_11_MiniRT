@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/10 19:13:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/11 19:24:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
 	color.a = 1;
 	return (color);
 }
-
-// t_comps	process_intersection()
 
 t_vec3	get_intersection_point(t_ray ray, double t)
 {
@@ -122,72 +120,90 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 // }
 
 
-void	add_intersection_if_valid(t_object *obj, t_ray ray, double t, t_inter_list **inter_list)
-{
-	t_vec3	point;
-	t_vec3	normal;
-
-	if (t > EPSILON && t < INFINITY)
-	{
-		point = get_intersection_point(ray, t);
-		normal = get_normal_generic(obj, point);
-		add_inter_list_back(inter_list, (t_inter){{t, 0}, point, normal, obj});
-	}
+void add_intersection_if_valid(t_object *obj, t_ray ray, double t, t_inter_list **inter_list) {
+    if (t > EPSILON && t < INFINITY) {
+        t_vec3 point = get_intersection_point(ray, t);
+        t_vec3 normal = get_normal_generic(obj, point); // Assume-se que essa função já esteja ajustada
+        // Adiciona a interseção à lista
+        add_inter_list_back(inter_list, (t_inter){{t, 0}, point, normal, obj});
+    }
 }
 
-bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
-{
-	bool		hit;
-	t_object	*cur;
-	t_inter		xs;
-
-	hit = false;
-	cur = object;
-	while (cur)
-	{
-		if (cur->type == SPHERE && hit_sphere(cur->object, *ray, &xs))
-		{
-			add_intersection_if_valid(cur, *ray, xs.t[0], inter_list);
-			add_intersection_if_valid(cur, *ray, xs.t[1], inter_list);
-			hit = true;
-		}
-		cur = cur->next;
-	}
-	return (hit);
-}
+// void	add_intersection_if_valid(t_object *obj, t_ray ray, double t, t_inter_list **inter_list)
+// {
+// 	t_vec3	point;
+// 	t_vec3	normal;
+//
+// 	if (t > EPSILON && t < INFINITY)
+// 	{
+// 		point = get_intersection_point(ray, t);
+// 		normal = get_normal_generic(obj, point);
+// 		add_inter_list_back(inter_list, obj, t) ;
+// 	}
+// }
 
 // bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 // {
-// 	t_object	*cur;
 // 	bool		hit;
-// 	t_inter		xs;
-// 	// t_geo_u		geo;
 // 	t_ray		temp_ray;
+// 	t_object	*cur;
+// 	t_geo_u		geo;
+// 	t_inter		xs;
 //
-// 	xs.t = 0.0;
 // 	hit = false;
 // 	cur = object;
 // 	while (cur)
 // 	{
-// 		// geo = 
+// 		geo = get_geo(object);
 // 		if (cur->type == SPHERE)
 // 		{
-// 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
-// 			hit |= hit_sphere(cur->object, temp_ray, &xs);
+// 			temp_ray = ray_transform(*ray, geo.sphere->inversed_t);
+// 			hit = hit_sphere(geo.sphere, *ray, &xs);
 // 		}
-// 		if (hit == true)
+// 		if (hit)
 // 		{
-// 			t_vec3 point = get_intersection_point(temp_ray, xs.t);
-// 			add_inter_list_back(inter_list, (t_inter){xs.t, point,
-// 				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
-// 				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
-// 			hit = true;
+// 			add_intersection_if_valid(cur, *ray, xs.t[0], inter_list);
+// 			add_intersection_if_valid(cur, *ray, xs.t[1], inter_list);
 // 		}
 // 		cur = cur->next;
 // 	}
 // 	return (hit);
 // }
 
+bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
+{
+	t_object	*cur;
+	bool		hit;
+	t_inter		xs;
+	t_ray		temp_ray;
+
+	hit = false;
+	cur = object;
+	while (cur)
+	{
+		// geo =
+		if (cur->type == SPHERE)
+		{
+			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
+			hit |= hit_sphere(cur->object, temp_ray, &xs);
+		}
+// 		if (hit)
+// 		{
+// 			add_intersection_if_valid(cur, *ray, xs.t[0], inter_list);
+// 			add_intersection_if_valid(cur, *ray, xs.t[1], inter_list);
+// 		}
+		if (hit == true)
+		{
+			t_vec3 point = get_intersection_point(temp_ray, xs.t[0]);
+			add_inter_list_back(inter_list, (t_inter){{xs.t[0], xs.t[1]}, point,
+				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
+				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+			hit = true;
+		}
+		cur = cur->next;
+	}
+	return (hit);
+}
 
 
 
@@ -222,7 +238,7 @@ t_color	trace_ray(t_data *data, t_ray ray)
 		delete_inter_list(inter_list);
 		return ((t_color){0.68, 0.85, 0.9, 1});
 	}
-
+	// printf("print\n");
 	// t_color color = process_intersection(data, &closest_found, &ray);
 	// delete_inter_list(inter_list);
 	return((t_color){1, 0, 0, 1});
