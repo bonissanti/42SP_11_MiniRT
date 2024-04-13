@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/11 19:14:51 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/13 20:38:29 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,19 @@ bool is_in_shadow(t_inter *closest, t_light light, t_object *objects, t_vec3 nor
 	t_ray	shadow_ray;
 	double	light_distance;
 
-	shadow_ray.origin = add_tuple(closest->point, multiply_tuple(normal, 0.001));
-	shadow_ray.direction = normalize_vector(subtract_tuple(light.position, shadow_ray.origin));
-	light_distance = length_vector(subtract_tuple(light.position, shadow_ray.origin));
+	shadow_ray.origin = add_tuple(closest->point, multiply_tuple(normal,
+				EPSILON));
+	// printf("shadow_ray.origin: %f %f %f\n", shadow_ray.origin.x, shadow_ray.origin.y, shadow_ray.origin.z);
+	shadow_ray.direction = normalize_vector(subtract_tuple(light.position,
+				shadow_ray.origin));
+	light_distance = length_vector(subtract_tuple(light.position,
+				shadow_ray.origin));
 	for (t_object *obj = objects; obj != NULL; obj = obj->next)
 	{
 		if (closest->object == obj)
-			obj = obj->next;
-		if (!obj)
-			break;
-		double t = intersect_object(ray_transform(shadow_ray, &get_geo(obj).sphere->inversed_t), obj);
+			continue ;
+		double t = intersect_object(ray_transform(shadow_ray,
+				&get_geo(obj).sphere->inversed_t), obj);
 		if (t > EPSILON && t < light_distance)
 			return (true);
 	}
@@ -192,7 +195,9 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 		}
 		if (cur_hit == true)
 		{
-			t_vec3 point = get_intersection_point(temp_ray, t_temp);
+			t_vec3 point = add_tuple(ray->origin, multiply_tuple(ray->direction, t_temp));
+			// printf("temp_ray.direction: %f %f %f\n", temp_ray.direction.x, temp_ray.direction.y, temp_ray.direction.z);
+			// printf("point: %f %f %f\n", point.x, point.y, point.z);
 			add_inter_list_back(inter_list, (t_inter){t_temp, point,
 				get_normal(point, *cur), cur});
 			hit = true;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 17:15:18 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/13 15:02:50 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ static int	fill_coordinates(char *line, t_sphere *new_sphere)
 	char	**split;
 
 	split = ft_split(line, ',');
-	new_sphere->position.x = ft_atod(split[0]);
-	new_sphere->position.y = ft_atod(split[1]);
-	new_sphere->position.z = ft_atod(split[2]);
+	double scale = 1.5;
+	new_sphere->position.x = ft_atod(split[0]) / scale;
+	new_sphere->position.y = ft_atod(split[1]) / scale;
+	new_sphere->position.z = ft_atod(split[2]) / scale;
 	free_array(split);
 	return (OK);
 }
