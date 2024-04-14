@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/11 15:48:10 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/14 19:32:51 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	fill_coordinates(char *line, t_sphere *new_sphere)
 {
-	char **split;
+	char	**split;
 
 	split = ft_split(line, ',');
 	new_sphere->position.x = ft_atod(split[0]);
@@ -26,7 +26,7 @@ static int	fill_coordinates(char *line, t_sphere *new_sphere)
 
 static int	fill_colors(char *line, t_sphere *new_sphere)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(line, ',');
 	new_sphere->color[0] = ft_atod(split_line[0]);
@@ -38,8 +38,8 @@ static int	fill_colors(char *line, t_sphere *new_sphere)
 
 int	analyze_sphere(char *line, t_data *data)
 {
-	char **token;
-	t_sphere *new_sphere = NULL;
+	char		**token;
+	t_sphere	*new_sphere = NULL;
 
 	token = ft_split_space(line);
 

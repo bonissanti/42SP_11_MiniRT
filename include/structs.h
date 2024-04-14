@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/11 19:24:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/14 19:16:30 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ typedef struct s_comps
 typedef struct s_inter
 {
 	double					t;
-	/* double					t[2]; */
+	// double					t[2];
 	t_vec3					point;
 	t_vec3					normal;
 	t_object				*object;

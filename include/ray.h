@@ -5,8 +5,8 @@
 
 t_ray		ray_for_pixel(t_camera *camera, double x, double y);
 bool		hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2]);
-bool		hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs);
-/* bool		hit_sphere(const t_sphere *sphere, t_ray ray, double t[2]); */
+// bool		hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs);
+bool		hit_sphere(const t_sphere *sphere, t_ray ray, double *t);
 bool		hit_plane(t_ray ray, double t[2]);
 t_color		trace_ray2(t_data *data, t_ray ray);
 t_color		trace_ray(t_data *data, t_ray ray);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/11 19:26:13 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/14 19:41:58 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
 	return (bhask);
 }
 
-bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
+bool	hit_sphere(const t_sphere *sphere, t_ray ray, double *t)
 {
 	t_vec3	sphere_to_ray;
 	t_bhaskara bhask;
@@ -42,19 +42,13 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
 	bhask.a = dot_product(ray.direction, ray.direction);
 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray.direction);
 	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - 1;
-
-	result = solve_bhaskara(bhask);
-	if (result.status == NO_REAL_ROOTS)
+	bhask.delta = bhask.b * bhask.b - 4 * bhask.a * bhask.c;
+	if (bhask.delta < 0)
 		return (false);
-	if (result.root1 > EPSILON && result.root1 < INFINITY)
-		xs->t = result.root1;
-	if (result.root2 > EPSILON && result.root2 < INFINITY)
-		xs->t = result.root2;
-	else
-		return (false);
+	t[0] = (-bhask.b - sqrt(bhask.delta)) / (2 * bhask.a);
+	t[1] = (-bhask.b + sqrt(bhask.delta)) / (2 * bhask.a);
 	return (true);
 }
-
 
 // bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
 // {
@@ -79,8 +73,6 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
 // 		return (false);
 // 	return (true);
 // }
-
-
 
 bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 {
@@ -130,7 +122,6 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	}
 	return (found_intersection);
 }
-
 
 bool	hit_plane(t_ray ray, double t[2])
 {
