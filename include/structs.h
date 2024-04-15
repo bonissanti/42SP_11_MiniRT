@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/15 11:06:22 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:59:26 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ typedef struct s_coords
 	double					x;
 	double					y;
 	double					z;
-}							t_coords, t_vec3;
+}							t_coords;
 
-typedef	struct s_quatern
+typedef struct s_coords		t_vec3;
+
+typedef struct s_quatern
 {
 	double					w;
 	double					x;
@@ -182,12 +184,8 @@ typedef struct s_object
 
 typedef struct s_ray
 {
-	/* double					closest_t; */
-	/* double					front_t; */
-	/* double					back_t; */
 	t_coords				origin;
 	t_vec3					direction;
-	/* t_object				*closest_object; */
 }							t_ray;
 
 

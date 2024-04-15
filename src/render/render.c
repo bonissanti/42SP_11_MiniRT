@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/15 16:48:26 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:24:54 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,21 @@ t_color	get_color(t_data *data, t_comps *closest)
 	double		intensity;
 	t_vec3		light;
 
+
 	sphere = (t_sphere *)closest->object->object;
 	light = subtract_coords(data->light.position, closest->point);
 	light = normalize_vector(light);
-	intensity = fmin(fmax(dot_product(closest->normalv, light), 0.0)
-			+ data->amblight.ratio, 1.0);
-	color.r = (sphere->color[0] / 255.0) * intensity;
+	// intensity = fmin(fmax(dot_product(closest->normalv, light), 0.0)
+	// 		+ data->amblight.ratio, 1.0);
+	intensity = fmax(dot_product(closest->normalv, light), 0.0)
+			+ data->amblight.ratio;
+	if (intensity > 1)
+		return ((t_color){1, 1, 1, 1});
+	color.r = (sphere->color[0] / 255.0) * intensitsy;
 	color.g = (sphere->color[1] / 255.0) * intensity;
 	color.b = (sphere->color[2] / 255.0) * intensity;
 	color.a = 1;
+	// printf("color: %f %f %f\n", color.r, color.g, color.b);
 	return (color);
 }
 
@@ -315,7 +321,6 @@ t_color	trace_ray2(t_data *data, t_ray ray)
 	computations = prepare_comps(closest_inter, ray);
 	return (get_color(data, &computations));
 }
-
 
 t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 {
