@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:14:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 15:11:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/15 11:16:33 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_ray	ray_transform(t_ray ray, t_matrix matrix)
 t_coords	ray_position(t_ray ray, double distance)
 {
 	t_coords	position;
-	
+
 	position.x = ray.origin.x + distance * ray.direction.x;
 	position.y = ray.origin.y + distance * ray.direction.y;
 	position.z = ray.origin.z + distance * ray.direction.z;

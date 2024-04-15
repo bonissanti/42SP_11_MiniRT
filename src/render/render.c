@@ -3,32 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/15 01:21:21 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/15 11:32:02 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 #include <math.h>
 
-t_color	process_intersection(t_data *data, t_inter *closest, t_ray *ray)
+// t_color	get_color(t_data *data, t_inter *closest, t_ray *ray)
+// {
+// 	t_color		color;
+// 	t_sphere	*sphere;
+// 	double		intensity;
+// 	t_vec3		normal;
+// 	t_vec3		light;
+
+// 	(void)ray;
+// 	sphere = (t_sphere *)closest->object->object;
+// 	normal = normalize_vector(subtract_coords((t_coords){closest->point.x,
+// 				closest->point.y, closest->point.z}, sphere->position));
+// 	light = subtract_coords(data->light.position,
+// 			(t_coords){closest->point.x, closest->point.y, closest->point.z});
+// 	light = normalize_vector(light);
+// 	intensity = fmin(fmax(dot_product(normal, light), 0.0)
+// 			+ data->amblight.ratio, 1.0);
+// 	color.r = (sphere->color[0] / 255.0) * intensity;
+// 	color.g = (sphere->color[1] / 255.0) * intensity;
+// 	color.b = (sphere->color[2] / 255.0) * intensity;
+// 	color.a = 1;
+// 	return (color);
+// }
+
+t_color	get_color(t_data *data, t_comps *closest)
 {
 	t_color		color;
 	t_sphere	*sphere;
 	double		intensity;
-	t_vec3		normal;
 	t_vec3		light;
 
-	(void)ray;
 	sphere = (t_sphere *)closest->object->object;
-	normal = normalize_vector(subtract_coords((t_coords){closest->point.x,
-				closest->point.y, closest->point.z}, sphere->position));
 	light = subtract_coords(data->light.position,
 			(t_coords){closest->point.x, closest->point.y, closest->point.z});
 	light = normalize_vector(light);
-	intensity = fmin(fmax(dot_product(normal, light), 0.0)
+	intensity = fmin(fmax(dot_product(closest->normalv, light), 0.0)
 			+ data->amblight.ratio, 1.0);
 	color.r = (sphere->color[0] / 255.0) * intensity;
 	color.g = (sphere->color[1] / 255.0) * intensity;
@@ -170,27 +190,54 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 // 	return (hit);
 // }
 
-t_comps	process_computations(t_coords point, t_inter inter, t_ray ray)
+t_coords	multiply_vector(t_coords v, double scalar)
+{
+	t_coords	result;
+
+	result.x = v.x * scalar;
+	result.y = v.y * scalar;
+	result.z = v.z * scalar;
+	return (result);
+}
+
+t_coords	add_coords(t_coords a, t_coords b)
+{
+	t_coords	result;
+
+	result.x = a.x + b.x;
+	result.y = a.y + b.y;
+	result.z = a.z + b.z;
+	return (result);
+}
+
+t_vec3	reflect_vector(t_vec3 in, t_vec3 normal)
+{
+	return (subtract_vector(in, multiply_vector(normal, 2 * dot_product(in,
+					normal))));
+}
+
+t_comps	prepare_comps(t_inter inter, t_ray ray)
 {
 	t_comps	computations;
+	t_sphere	*sphere;
 
+	sphere = (t_sphere *)inter.object->object;
 	computations.t = inter.t;
-	computations.point = point;
-	computations.over_point = add_coords(point, multiply_vector(inter.normal, EPSILON));
+	computations.point = get_intersection_point(ray_transform(ray, sphere->inversed_t), inter.t);
+	computations.over_point = add_coords(computations.point,
+			multiply_vector(inter.normal, EPSILON));
 	computations.eyev = normalize_vector(multiply_vector(ray.direction, -1));
-	computations.normalv = inter.normal;
+	computations.normalv = get_normal_generic(inter.object, computations.point);
+	computations.reflectv = reflect_vector(ray.direction, computations.normalv);
 	computations.object = inter.object;
 	return (computations);
 }
 
-void	add_to_list(t_ray temp_ray, t_object *cur, double t, t_inter_list **inter_list)
+void	add_to_list(t_object *cur, double t,
+	t_inter_list **inter_list)
 {
-	t_vec3	point;
-
-	point = get_intersection_point(temp_ray, t);
-	add_inter_list_back(inter_list, (t_inter){t, point,
-		get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
-		get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+	add_inter_list_back(inter_list, (t_inter){t, (t_vec3){0,0,0},
+		(t_vec3){0,0,0}, cur});
 }
 
 bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
@@ -209,15 +256,25 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
 			last_hit = hit_sphere(cur->object, temp_ray, t);
 		}
+		else if (cur->type == PLANE)
+		{
+			temp_ray = ray_transform(*ray, get_geo(cur).plane->inversed_t);
+			last_hit = hit_sphere(cur->object, temp_ray, t);
+		}
+		else if (cur->type == CYLINDER)
+		{
+			temp_ray = ray_transform(*ray, get_geo(cur).cylinder->inversed_t);
+			last_hit = hit_sphere(cur->object, temp_ray, t);
+		}
 		if (last_hit)
 		{
 			if (t[0] != t[1]) // Check if there are two distinct intersection points
 			{
-				add_to_list(temp_ray, cur, t[0], inter_list);
-				add_to_list(temp_ray, cur, t[1], inter_list);
+				add_to_list(cur, t[0], inter_list);
+				add_to_list(cur, t[1], inter_list);
 			}
 			else // Only one intersection point
-				add_to_list(temp_ray, cur, t[0], inter_list);
+				add_to_list(cur, t[0], inter_list);
 			last_hit = false;
 			hit = true;
 		}
@@ -229,6 +286,7 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 t_color	trace_ray2(t_data *data, t_ray ray)
 {
 	t_inter_list	*inter_list;
+	t_inter			closest_inter;
 	t_comps			computations;
 	bool			hit;
 
@@ -236,14 +294,13 @@ t_color	trace_ray2(t_data *data, t_ray ray)
 	if (!data->objects)
 		return ((t_color){0, 0, 0, 1});
 	hit = intersection_obj(data->objects, &ray, &inter_list);
-	if (!hit || !find_closest_inter2(inter_list))
-	// if (!hit)
+	if (!hit || !find_closest_inter(&closest_inter, inter_list))
 	{
 		delete_inter_list(inter_list);
 		return ((t_color){0, 0, 0, 1});
 	}
-	computations = process_computations();
-	return ((t_color){1, 0, 0, 1});
+	computations = prepare_comps(closest_inter, ray);
+	return (get_color(data, &computations));
 }
 
 
