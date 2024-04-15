@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/15 11:32:02 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:48:26 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ t_color	get_color(t_data *data, t_comps *closest)
 	t_vec3		light;
 
 	sphere = (t_sphere *)closest->object->object;
-	light = subtract_coords(data->light.position,
-			(t_coords){closest->point.x, closest->point.y, closest->point.z});
+	light = subtract_coords(data->light.position, closest->point);
 	light = normalize_vector(light);
 	intensity = fmin(fmax(dot_product(closest->normalv, light), 0.0)
 			+ data->amblight.ratio, 1.0);
@@ -90,6 +89,18 @@ t_geo_u	get_geo(t_object *object)
 	return (geo);
 }
 
+t_vec3	sphere_normal(t_vec3 point, t_sphere *sphere)
+{
+	t_coords	obj_point;
+	t_vec3		obj_normal;
+	t_vec3		normal;
+
+	obj_point = matrix_multiply_coords(sphere->inversed_t, point); 
+	obj_normal = subtract_coords(obj_point, (t_coords){0, 0, 0});
+	normal = matrix_multiply_coords(transpose_matrix(&sphere->inversed_t), obj_normal);
+	return (normal);
+}
+
 t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 {
 	t_vec3	normal;
@@ -97,12 +108,12 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 
 	geo = get_geo(obj);
 	if (geo.sphere)
-		normal = subtract_vector(point, geo.sphere->position);
+		normal = sphere_normal(point, geo.sphere);
 	else if (geo.cylinder)
 		normal = subtract_vector(point, geo.cylinder->position);
 	else
 		normal = subtract_vector(point, geo.plane->position);
-	return (normal);
+	return (normalize_vector(normal));
 }
 
 
@@ -212,18 +223,19 @@ t_coords	add_coords(t_coords a, t_coords b)
 
 t_vec3	reflect_vector(t_vec3 in, t_vec3 normal)
 {
-	return (subtract_vector(in, multiply_vector(normal, 2 * dot_product(in,
-					normal))));
+	return (subtract_vector(in, multiply_vector(normal,
+				2 * dot_product(in, normal))));
 }
 
 t_comps	prepare_comps(t_inter inter, t_ray ray)
 {
-	t_comps	computations;
+	t_comps		computations;
 	t_sphere	*sphere;
 
 	sphere = (t_sphere *)inter.object->object;
 	computations.t = inter.t;
-	computations.point = get_intersection_point(ray_transform(ray, sphere->inversed_t), inter.t);
+	computations.point = get_intersection_point(ray_transform(ray,
+				sphere->inversed_t), inter.t);
 	computations.over_point = add_coords(computations.point,
 			multiply_vector(inter.normal, EPSILON));
 	computations.eyev = normalize_vector(multiply_vector(ray.direction, -1));
@@ -236,11 +248,12 @@ t_comps	prepare_comps(t_inter inter, t_ray ray)
 void	add_to_list(t_object *cur, double t,
 	t_inter_list **inter_list)
 {
-	add_inter_list_back(inter_list, (t_inter){t, (t_vec3){0,0,0},
-		(t_vec3){0,0,0}, cur});
+	add_inter_list_back(inter_list, (t_inter){t, (t_vec3){0, 0, 0},
+		(t_vec3){0, 0, 0}, cur});
 }
 
-bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
+bool	intersection_obj(t_object *object, t_ray *ray,
+	t_inter_list **inter_list)
 {
 	t_object	*cur;
 	bool		hit;
@@ -256,24 +269,24 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
 			last_hit = hit_sphere(cur->object, temp_ray, t);
 		}
-		else if (cur->type == PLANE)
-		{
-			temp_ray = ray_transform(*ray, get_geo(cur).plane->inversed_t);
-			last_hit = hit_sphere(cur->object, temp_ray, t);
-		}
-		else if (cur->type == CYLINDER)
-		{
-			temp_ray = ray_transform(*ray, get_geo(cur).cylinder->inversed_t);
-			last_hit = hit_sphere(cur->object, temp_ray, t);
-		}
+		// else if (cur->type == PLANE)
+		// {
+		// 	temp_ray = ray_transform(*ray, get_geo(cur).plane->inversed_t);
+		// 	last_hit = hit_sphere(cur->object, temp_ray, t);
+		// }
+		// else if (cur->type == CYLINDER)
+		// {
+		// 	temp_ray = ray_transform(*ray, get_geo(cur).cylinder->inversed_t);
+		// 	last_hit = hit_sphere(cur->object, temp_ray, t);
+		// }
 		if (last_hit)
 		{
-			if (t[0] != t[1]) // Check if there are two distinct intersection points
+			if (t[0] != t[1])
 			{
 				add_to_list(cur, t[0], inter_list);
 				add_to_list(cur, t[1], inter_list);
 			}
-			else // Only one intersection point
+			else
 				add_to_list(cur, t[0], inter_list);
 			last_hit = false;
 			hit = true;
@@ -342,8 +355,6 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	int		y;
 	t_ray	ray;
 
-	// mlx_put_pixel(mlx->img_ptr, WIDTH / 2, HEIGHT / 2,
-	// 			t_color_to_int(trace_ray2(data, ray)));
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
 	// data->bvh_root = create_bvh(&data->objects);

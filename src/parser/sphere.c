@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/15 11:56:23 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:25:54 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ int	analyze_sphere(char *line, t_data *data)
 	// verifica valores
 	if (count_token(token, 3, "[sp] Sphere has wrong number of arguments\n"))
 		return (ERROR);
-	if (set_coordinates(token[0]) == ERROR || is_number(token[1]) == ERROR || set_colors(token[2]) == ERROR)
-    {
-        free_array(token);
-        return (ERROR);
-    }
+	if (set_coordinates(token[0]) == ERROR || is_number(token[1]) == ERROR
+		|| set_colors(token[2]) == ERROR)
+	{
+		free_array(token);
+		return (ERROR);
+	}
 
 	// se ok, cria um objeto, adiciona os valores e adiciona a lista
 	new_sphere = malloc(sizeof(t_sphere));
@@ -61,9 +62,10 @@ int	analyze_sphere(char *line, t_data *data)
 	}
 	new_sphere->diameter = ft_atod(token[1]) / 2;
 	fill_coordinates(token[0], new_sphere);
-	new_sphere->transform = transform_sphere(new_sphere->position, new_sphere->diameter);
-	invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);	
-	print_matrix(new_sphere->inversed_t);
+	new_sphere->transform = transform_sphere(new_sphere->position,
+			new_sphere->diameter);
+	invert_matrix(&new_sphere->transform, &new_sphere->inversed_t);
+	// print_matrix(new_sphere->inversed_t);
 	fill_colors(token[2], new_sphere);
 
 	if (add_objects(data, new_sphere, SPHERE) == ERROR)
