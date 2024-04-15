@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/15 00:04:45 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/15 01:21:21 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,29 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 // 	return (hit);
 // }
 
+t_comps	process_computations(t_coords point, t_inter inter, t_ray ray)
+{
+	t_comps	computations;
+
+	computations.t = inter.t;
+	computations.point = point;
+	computations.over_point = add_coords(point, multiply_vector(inter.normal, EPSILON));
+	computations.eyev = normalize_vector(multiply_vector(ray.direction, -1));
+	computations.normalv = inter.normal;
+	computations.object = inter.object;
+	return (computations);
+}
+
+void	add_to_list(t_ray temp_ray, t_object *cur, double t, t_inter_list **inter_list)
+{
+	t_vec3	point;
+
+	point = get_intersection_point(temp_ray, t);
+	add_inter_list_back(inter_list, (t_inter){t, point,
+		get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
+		get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+}
+
 bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 {
 	t_object	*cur;
@@ -190,28 +213,11 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 		{
 			if (t[0] != t[1]) // Check if there are two distinct intersection points
 			{
-				printf("t[0]: %f\n", t[0]);
-				printf("t[1]: %f\n", t[1]);
-				t_vec3 point1 = get_intersection_point(temp_ray, t[0]);
-				printf("point1: %f %f %f\n", point1.x, point1.y, point1.z);
-				add_inter_list_back(inter_list, (t_inter){t[0], point1,
-					get_normal(point1, (t_vec3){get_geo(cur).sphere->position.x,
-					get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
-				t_vec3 point2 = get_intersection_point(temp_ray, t[1]);
-				printf("point2: %f %f %f\n", point2.x, point2.y, point2.z);
-				add_inter_list_back(inter_list, (t_inter){t[1], point2,
-					get_normal(point2, (t_vec3){get_geo(cur).sphere->position.x,
-					get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+				add_to_list(temp_ray, cur, t[0], inter_list);
+				add_to_list(temp_ray, cur, t[1], inter_list);
 			}
 			else // Only one intersection point
-			{
-				printf("t[0]: %f\n", t[0]);
-				printf("t[1]: %f\n", t[1]);
-				t_vec3 point = get_intersection_point(temp_ray, t[0]);
-				add_inter_list_back(inter_list, (t_inter){t[0], point,
-					get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
-					get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
-			}
+				add_to_list(temp_ray, cur, t[0], inter_list);
 			last_hit = false;
 			hit = true;
 		}
@@ -220,33 +226,10 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 	return (hit);
 }
 
-// t_color	trace_ray(t_data *data, t_ray ray)
-// {
-// 	t_inter			closest_found;
-// 	t_inter_list	*inter_list;
-// 	bool			hit;
-
-// 	// if (!data->bvh_root)
-// 	// 	return ((t_color){0.68, 0.85, 0.9, 1}); //in case bvh is null
-// 	inter_list = NULL;
-// 	hit = intersection_obj(data->objects, &ray, &inter_list);
-
-// 	if (!hit || !find_closest_inter(&closest_found, inter_list))
-// 	{
-// 		delete_inter_list(inter_list);
-// 		return ((t_color){0.68, 0.85, 0.9, 1});
-// 	}
-// 	// printf("print\n");
-// 	// t_color color = process_intersection(data, &closest_found, &ray);
-// 	// delete_inter_list(inter_list);
-// 	return((t_color){1, 0, 0, 1});
-// }
-
-
 t_color	trace_ray2(t_data *data, t_ray ray)
 {
 	t_inter_list	*inter_list;
-	// t_comps			computations;
+	t_comps			computations;
 	bool			hit;
 
 	inter_list = NULL;
@@ -259,7 +242,7 @@ t_color	trace_ray2(t_data *data, t_ray ray)
 		delete_inter_list(inter_list);
 		return ((t_color){0, 0, 0, 1});
 	}
-	// computations = process_computations()
+	computations = process_computations();
 	return ((t_color){1, 0, 0, 1});
 }
 
@@ -302,12 +285,13 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	int		y;
 	t_ray	ray;
 
+	// mlx_put_pixel(mlx->img_ptr, WIDTH / 2, HEIGHT / 2,
+	// 			t_color_to_int(trace_ray2(data, ray)));
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
 	// data->bvh_root = create_bvh(&data->objects);
 	// traverseBVH(data->bvh_root, 0);
 	y = -1;
-	// teste_inter_point((t_coords){2, 3, 4}, (t_vec3){1, 0, 0});
 	while (++y < data->camera.height_v)
 	{
 		x = -1;
