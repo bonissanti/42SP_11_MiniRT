@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/14 19:31:40 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/15 00:04:45 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,29 +174,31 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 {
 	t_object	*cur;
 	bool		hit;
-	// t_inter		xs;
+	bool		last_hit;
 	t_ray		temp_ray;
 	double		t[2];
 
 	cur = object;
-	while (cur)
+	while (cur != NULL)
 	{
 		if (cur->type == SPHERE)
 		{
 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
-			hit |= hit_sphere(cur->object, temp_ray, t);
+			last_hit = hit_sphere(cur->object, temp_ray, t);
 		}
-		if (hit)
+		if (last_hit)
 		{
 			if (t[0] != t[1]) // Check if there are two distinct intersection points
 			{
 				printf("t[0]: %f\n", t[0]);
 				printf("t[1]: %f\n", t[1]);
 				t_vec3 point1 = get_intersection_point(temp_ray, t[0]);
-				t_vec3 point2 = get_intersection_point(temp_ray, t[1]);
+				printf("point1: %f %f %f\n", point1.x, point1.y, point1.z);
 				add_inter_list_back(inter_list, (t_inter){t[0], point1,
 					get_normal(point1, (t_vec3){get_geo(cur).sphere->position.x,
 					get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
+				t_vec3 point2 = get_intersection_point(temp_ray, t[1]);
+				printf("point2: %f %f %f\n", point2.x, point2.y, point2.z);
 				add_inter_list_back(inter_list, (t_inter){t[1], point2,
 					get_normal(point2, (t_vec3){get_geo(cur).sphere->position.x,
 					get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
@@ -210,6 +212,7 @@ bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
 					get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
 					get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
 			}
+			last_hit = false;
 			hit = true;
 		}
 		cur = cur->next;
@@ -249,10 +252,9 @@ t_color	trace_ray2(t_data *data, t_ray ray)
 	inter_list = NULL;
 	if (!data->objects)
 		return ((t_color){0, 0, 0, 1});
-
 	hit = intersection_obj(data->objects, &ray, &inter_list);
-	// if (!hit || !find_closest_inter2(inter_list))
-	if (!hit)
+	if (!hit || !find_closest_inter2(inter_list))
+	// if (!hit)
 	{
 		delete_inter_list(inter_list);
 		return ((t_color){0, 0, 0, 1});
@@ -296,29 +298,29 @@ int	t_color_to_int(t_color color)
 
 void	render_scene(t_data *data, t_mlx *mlx)
 {
-	// int		x;
-	// int		y;
+	int		x;
+	int		y;
 	t_ray	ray;
 
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
 	// data->bvh_root = create_bvh(&data->objects);
 	// traverseBVH(data->bvh_root, 0);
-	// y = -1;
+	y = -1;
 	// teste_inter_point((t_coords){2, 3, 4}, (t_vec3){1, 0, 0});
-	// while (++y < data->camera.height_v)
-	// {
-	// 	x = -1;
-	// 	while (++x < data->camera.width_v)
-	// 	{
-	// 		ray = ray_for_pixel(&data->camera, x, y);
-	// 		mlx_put_pixel(mlx->img_ptr, x, y,
-	// 			t_color_to_int(trace_ray2(data, ray)));
-	// 	}
-	// }
-	ray = ray_for_pixel(&data->camera, HEIGHT / 2, WIDTH / 2);
-	mlx_put_pixel(mlx->img_ptr, HEIGHT / 2, WIDTH / 2,
+	while (++y < data->camera.height_v)
+	{
+		x = -1;
+		while (++x < data->camera.width_v)
+		{
+			ray = ray_for_pixel(&data->camera, x, y);
+			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray2(data, ray)));
+		}
+	}
+	// ray = ray_for_pixel(&data->camera, WIDTH / 2, HEIGHT / 2);
+	// mlx_put_pixel(mlx->img_ptr, WIDTH / 2, HEIGHT / 2,
+	// 			t_color_to_int(trace_ray2(data, ray)));
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }

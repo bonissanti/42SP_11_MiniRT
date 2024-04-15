@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 15:13:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/15 00:00:38 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ t_vec3	matrix_multiply_vector(const t_matrix m, const t_vec3 *point)
 {
 	t_vec3	result;
 
-	result.x = m.matrix[0][0] * point->x + m.matrix[0][1] * point->y + m.matrix[0][2] * point->z + m.matrix[0][3];
-	result.y = m.matrix[1][0] * point->x + m.matrix[1][1] * point->y + m.matrix[1][2] * point->z + m.matrix[1][3];
-	result.z = m.matrix[2][0] * point->x + m.matrix[2][1] * point->y + m.matrix[2][2] * point->z + m.matrix[2][3];
+	result.x = m.matrix[0][0] * point->x + m.matrix[0][1] * point->y + m.matrix[0][2] * point->z;
+	result.y = m.matrix[1][0] * point->x + m.matrix[1][1] * point->y + m.matrix[1][2] * point->z;
+	result.z = m.matrix[2][0] * point->x + m.matrix[2][1] * point->y + m.matrix[2][2] * point->z;
 	return (result);
 }
 

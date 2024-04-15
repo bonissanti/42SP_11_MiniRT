@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_objects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:30 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:37:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/14 23:47:48 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int	add_objects(t_data *data, void *obj, t_object_type type)
 		return (-1);
 	new_obj->type = type;
 	new_obj->object = obj;
-	new_obj->next = data->objects;
+	if (!data->objects)
+		new_obj->next = NULL;
+	else
+		new_obj->next = data->objects;
 	data->objects = new_obj;
 	return (OK);
 }
