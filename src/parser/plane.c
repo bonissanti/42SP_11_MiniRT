@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:40 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/02 16:26:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:21:51 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	fill_coordinates(char *line, t_plane *new_plane)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(line, ',');
 	new_plane->position.x = ft_atod(split_line[0]);
@@ -46,12 +46,12 @@ static int	fill_vector(char *line, t_plane *new_plane)
 
 static int	fill_colors(char *line, t_plane *new_plane)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(line, ',');
-	new_plane->color[0] = ft_atod(split_line[0]);
-	new_plane->color[1] = ft_atod(split_line[1]);
-	new_plane->color[2] = ft_atod(split_line[2]);
+	new_plane->color[0] = ft_atod(split_line[0]) / 255;
+	new_plane->color[1] = ft_atod(split_line[1]) / 255;
+	new_plane->color[2] = ft_atod(split_line[2]) / 255;
 	free_array(split_line);
 	return (OK);
 }

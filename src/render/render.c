@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/16 12:17:11 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/16 17:35:34 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_vec3	reflect_vector(t_vec3 in, t_vec3 normal)
 				2 * dot_product(in, normal))));
 }
 
-typedef struct s_color_data
+typedef struct s_color_data //MOVE THIS
 {
 	t_color		color;
 	t_vec3		light;
@@ -147,18 +147,19 @@ t_coords	subtract_tuple(t_coords a, t_coords b)
 	return (result);
 }
 
-void intersect_object(t_ray ray, t_object *object, double *t, t_object *origin_obj)
+void	intersect_object(t_ray ray, t_object *object, double *t,
+	t_object *origin_obj)
 {
 	t[0] = -1.0;
 	t[1] = -1.0;
 	if (object == origin_obj)
 		return ;
-    if (object->type == SPHERE)	
+	if (object->type == SPHERE)	
 		hit_sphere((t_sphere *)object->object, ray, t);
-    // else if (object->type == PLANE)
-    //     return intersect_plane(ray, *(t_plane *)object->object);
-	// else if (object->type == CYLINDER)
-    //     return intersect_cylinder(ray, *(t_cylinder *)object->object);
+	else if (object->type == PLANE)
+		hit_plane(ray, t);
+	else if (object->type == CYLINDER)
+		hit_cylinder((t_cylinder *)object->object, ray, t);
 }
 
 double	vector_length(t_vec3 v)
@@ -193,6 +194,22 @@ bool is_in_shadow(t_comps *closest, t_light light, t_object *objects,
 	return (false);
 }
 
+t_color	normalize_color(t_color color) //Option to set_to_range_color
+{
+	double	max;
+	double	factor;
+
+	max = fmax(fmax(color.r, color.g), color.b);
+	if (max > 1)
+	{
+		factor = 1 / max;
+		color.r *= factor;
+		color.g *= factor;
+		color.b *= factor;
+	}
+	return (color);
+}
+
 t_color	get_color(t_data *data, t_comps *closest)
 {
 	t_color		color;
@@ -202,17 +219,17 @@ t_color	get_color(t_data *data, t_comps *closest)
 	double		light_dot_normal;
 
 	sphere = (t_sphere *)closest->object->object;
-	color = multiply_color((t_color){sphere->color[0] / 255.0, sphere->color[1] / 255.0,
-		sphere->color[2] / 255.0, 1}, data->light.brightness);
+	color = multiply_color((t_color){sphere->color[0], sphere->color[1],
+			sphere->color[2], 1}, data->light.brightness);
 	light = normalize_vector(subtract_coords(data->light.position,
-		closest->point));
+				closest->point));
 	ambient = multiply_color(color, data->amblight.ratio);
 	light_dot_normal = dot_product(light, closest->normalv);
 	if (light_dot_normal < 0
 		|| is_in_shadow(closest, data->light, data->objects, closest->normalv))
 		return (set_to_range_color(ambient));
 	return (set_to_range_color(get_diffuse(ambient, *closest, *data,
-			(t_color_data){color, light, light_dot_normal})));
+				(t_color_data){color, light, light_dot_normal})));
 }
 
 t_vec3	get_intersection_point(t_ray ray, double t)
@@ -245,6 +262,17 @@ t_vec3	sphere_normal(t_vec3 point, t_sphere *sphere)
 	return (normal);
 }
 
+t_vec3	plane_normal(t_plane *plane)
+{
+	t_vec3		obj_normal;
+	t_vec3		normal;
+
+	obj_normal = plane->vector;
+	normal = matrix_multiply_coords(transpose_matrix(&plane->inversed_t),
+			obj_normal);
+	return (normal);
+}
+
 t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 {
 	t_vec3	normal;
@@ -254,7 +282,7 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 	if (geo.sphere)
 		normal = sphere_normal(point, geo.sphere);
 	else if (geo.cylinder)
-		normal = subtract_vector(point, geo.cylinder->position);
+		normal = plane_normal(geo.plane);
 	else
 		normal = subtract_vector(point, geo.plane->position);
 	return (normalize_vector(normal));
@@ -365,16 +393,16 @@ bool	intersection_obj(t_object *object, t_ray *ray,
 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
 			last_hit = hit_sphere(cur->object, temp_ray, t);
 		}
-		// else if (cur->type == PLANE)
-		// {
-		// 	temp_ray = ray_transform(*ray, get_geo(cur).plane->inversed_t);
-		// 	last_hit = hit_sphere(cur->object, temp_ray, t);
-		// }
-		// else if (cur->type == CYLINDER)
-		// {
-		// 	temp_ray = ray_transform(*ray, get_geo(cur).cylinder->inversed_t);
-		// 	last_hit = hit_sphere(cur->object, temp_ray, t);
-		// }
+		else if (cur->type == PLANE)
+		{
+			temp_ray = ray_transform(*ray, get_geo(cur).plane->inversed_t);
+			last_hit = hit_plane(temp_ray, t);
+		}
+		else if (cur->type == CYLINDER)
+		{
+			temp_ray = ray_transform(*ray, get_geo(cur).cylinder->inversed_t);
+			last_hit = hit_cylinder(cur->object, temp_ray, t);
+		}
 		if (last_hit)
 		{
 			if (t[0] != t[1])
@@ -462,6 +490,19 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
 	y = -1;
+	for (t_object *obj = data->objects; obj; obj = obj->next)
+	{
+		if (obj->type == SPHERE)
+			printf("Color: %f %f %f\n", ((t_sphere *)obj->object)->color[0],
+				((t_sphere *)obj->object)->color[1],
+				((t_sphere *)obj->object)->color[2]);
+		else if (obj->type == PLANE)
+			printf("Color: %f %f %f\n", ((t_plane *)obj->object)->color[0],
+				((t_plane *)obj->object)->color[1],
+				((t_plane *)obj->object)->color[2]);
+		else if (obj->type == CYLINDER)
+			printf("Cylinder\n");
+	}
 	while (++y < data->camera.height_v)
 	{
 		x = -1;

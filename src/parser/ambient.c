@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ambient.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:37:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:22:39 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 static int	fill_colors(char *line, t_data *data)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(line, ',');
-	data->amblight.color[0] = ft_atod(split_line[0]);
-	data->amblight.color[1] = ft_atod(split_line[1]);
-	data->amblight.color[2] = ft_atod(split_line[2]);
+	data->amblight.color[0] = ft_atod(split_line[0]) / 255;
+	data->amblight.color[1] = ft_atod(split_line[1]) / 255;
+	data->amblight.color[2] = ft_atod(split_line[2]) / 255;
 	free_array(split_line);
 	return (OK);
 }
 
-int analyze_amblight(char *line, t_data *data)
+int	analyze_amblight(char *line, t_data *data)
 {
-	char    **token;
+	char	**token;
 
-    token = ft_split_space(line);
+	token = ft_split_space(line);
 	if (count_token(token, 2, "Ambient light has wrong number of arguments\n"))
 		return (ERROR);
-    if (set_range(token[0], 0.0, 1.0) == ERROR)
+	if (set_range(token[0], 0.0, 1.0) == ERROR)
 	{
 		free_array(token);
 		return (print_error("[A] Invalid ratio"));
@@ -43,7 +43,7 @@ int analyze_amblight(char *line, t_data *data)
 		return (ERROR);
 	}
 	fill_colors(token[1], data);
-    free_array(token);
-    return (OK);
+	free_array(token);
+	return (OK);
 }
 

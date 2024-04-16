@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 15:58:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:22:08 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	fill_coordinates(char *line, t_cylinder *new_cylinder)
 {
-	char **split;
+	char	**split;
 
 	split = ft_split(line, ',');
 	new_cylinder->position.x = ft_atod(split[0]);
@@ -26,12 +26,12 @@ static int	fill_coordinates(char *line, t_cylinder *new_cylinder)
 
 static int	fill_colors(char *line, t_cylinder *new_cylinder)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(line, ',');
-	new_cylinder->color[0] = ft_atod(split_line[0]);
-	new_cylinder->color[1] = ft_atod(split_line[1]);
-	new_cylinder->color[2] = ft_atod(split_line[2]);
+	new_cylinder->color[0] = ft_atod(split_line[0]) / 255;
+	new_cylinder->color[1] = ft_atod(split_line[1]) / 255;
+	new_cylinder->color[2] = ft_atod(split_line[2]) / 255;
 	free_array(split_line);
 	return (OK);
 }

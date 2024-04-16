@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/15 14:25:54 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:21:27 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ static int	fill_colors(char *line, t_sphere *new_sphere)
 	char	**split_line;
 
 	split_line = ft_split(line, ',');
-	new_sphere->color[0] = ft_atod(split_line[0]);
-	new_sphere->color[1] = ft_atod(split_line[1]);
-	new_sphere->color[2] = ft_atod(split_line[2]);
+	new_sphere->color[0] = ft_atod(split_line[0]) / 255;
+	new_sphere->color[1] = ft_atod(split_line[1]) / 255;
+	new_sphere->color[2] = ft_atod(split_line[2]) / 255;
 	free_array(split_line);
 	return (OK);
 }

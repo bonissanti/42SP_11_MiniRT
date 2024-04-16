@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/15 16:59:26 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:34:15 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef enum e_object_type
 typedef struct s_sphere
 {
 	double					diameter;
-	int						color[3];
+	double					color[3];
 	t_coords				position;
 	t_matrix				transform;
 	t_matrix				inversed_t;
@@ -98,7 +98,7 @@ typedef struct s_sphere
 
 typedef struct s_plane
 {
-	int						color[3];
+	double					color[3];
 	double					radius;
 	t_coords				position;
 	t_vec3					vector;
@@ -112,7 +112,7 @@ typedef struct s_cylinder
 	double					min;
 	double					height;
 	double					diameter;
-	int						color[3];
+	double					color[3];
 	t_coords				position;
 	t_vec3					vector;
 	t_matrix				transform;
