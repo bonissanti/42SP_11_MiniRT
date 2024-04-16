@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/15 18:24:54 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/15 23:25:05 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,91 @@
 // 	return (color);
 // }
 
+t_color	multiply_color(t_color color, double scalar)
+{
+	t_color	result;
+
+	result.r = color.r * scalar;
+	result.g = color.g * scalar;
+	result.b = color.b * scalar;
+	result.a = 1;
+	return (result);
+}
+
+t_color	add_colors(t_color a, t_color b)
+{
+	t_color	result;
+
+	result.r = a.r + b.r;
+	result.g = a.g + b.g;
+	result.b = a.b + b.b;
+	result.a = 1;
+	return (result);
+}
+
+t_color	set_to_range_color(t_color color)
+{
+	t_color	result;
+
+	result.r = fmin(fmax(color.r, 0.0), 1.0);
+	result.g = fmin(fmax(color.g, 0.0), 1.0);
+	result.b = fmin(fmax(color.b, 0.0), 1.0);
+	result.a = 1;
+	return (result);
+}
+
+t_coords	multiply_vector(t_coords v, double scalar)
+{
+	t_coords	result;
+
+	result.x = v.x * scalar;
+	result.y = v.y * scalar;
+	result.z = v.z * scalar;
+	return (result);
+}
+
+t_vec3	reflect_vector(t_vec3 in, t_vec3 normal)
+{
+	return (subtract_vector(in, multiply_vector(normal,
+				2 * dot_product(in, normal))));
+}
+
 t_color	get_color(t_data *data, t_comps *closest)
 {
 	t_color		color;
+	t_color		ambient;
+	t_color		diffuse;
 	t_sphere	*sphere;
-	double		intensity;
 	t_vec3		light;
+	t_vec3		reflect;
+	double		light_dot_normal;
+	double		reflect_dot_eye;
 
 
 	sphere = (t_sphere *)closest->object->object;
-	light = subtract_coords(data->light.position, closest->point);
-	light = normalize_vector(light);
-	// intensity = fmin(fmax(dot_product(closest->normalv, light), 0.0)
-	// 		+ data->amblight.ratio, 1.0);
-	intensity = fmax(dot_product(closest->normalv, light), 0.0)
-			+ data->amblight.ratio;
-	if (intensity > 1)
-		return ((t_color){1, 1, 1, 1});
-	color.r = (sphere->color[0] / 255.0) * intensitsy;
-	color.g = (sphere->color[1] / 255.0) * intensity;
-	color.b = (sphere->color[2] / 255.0) * intensity;
-	color.a = 1;
-	// printf("color: %f %f %f\n", color.r, color.g, color.b);
-	return (color);
+	color = multiply_color((t_color){sphere->color[0] / 255.0, sphere->color[1] / 255.0,
+		sphere->color[2] / 255.0, 1}, data->light.brightness);
+	light = normalize_vector(subtract_coords(data->light.position, closest->point));
+	ambient = multiply_color(color, data->amblight.ratio);
+	light_dot_normal = dot_product(light, closest->normalv);
+	if (light_dot_normal < 0)
+		color = ambient;
+	else
+	{
+		diffuse = multiply_color(color, DIFFUSE * light_dot_normal);
+		reflect = reflect_vector(multiply_vector(light, -1), closest->normalv);
+		reflect_dot_eye = dot_product(reflect, closest->eyev);
+		if (reflect_dot_eye <= 0)
+			color = add_colors(ambient, diffuse);
+		else
+		{
+			double factor = pow(reflect_dot_eye, SHININESS);
+			t_color specular = multiply_color((t_color){data->light.brightness,
+					data->light.brightness, data->light.brightness, 1}, SPECULAR * factor);
+			color = add_colors(add_colors(ambient, diffuse), specular);
+		}
+	}
+	return (set_to_range_color(color));
 }
 
 t_vec3	get_intersection_point(t_ray ray, double t)
@@ -207,15 +269,6 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 // 	return (hit);
 // }
 
-t_coords	multiply_vector(t_coords v, double scalar)
-{
-	t_coords	result;
-
-	result.x = v.x * scalar;
-	result.y = v.y * scalar;
-	result.z = v.z * scalar;
-	return (result);
-}
 
 t_coords	add_coords(t_coords a, t_coords b)
 {
@@ -225,12 +278,6 @@ t_coords	add_coords(t_coords a, t_coords b)
 	result.y = a.y + b.y;
 	result.z = a.z + b.z;
 	return (result);
-}
-
-t_vec3	reflect_vector(t_vec3 in, t_vec3 normal)
-{
-	return (subtract_vector(in, multiply_vector(normal,
-				2 * dot_product(in, normal))));
 }
 
 t_comps	prepare_comps(t_inter inter, t_ray ray)

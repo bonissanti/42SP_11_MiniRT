@@ -30,6 +30,7 @@
 # define ONE_REAL_ROOTS 1
 # define TWO_REAL_ROOTS 2
 # define SPECULAR 0.9
+# define DIFFUSE 0.9
 # define SHININESS 200
 
 /* key config */
