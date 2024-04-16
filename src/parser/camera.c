@@ -80,17 +80,12 @@ int	analyze_camera(char *line, t_data *data)
 	token = ft_split_space(line);
 	if (count_token(token, 3, "Camera has wrong number of arguments\n"))
 		return (ERROR);
-	if (set_coordinates(token[0]) == ERROR)
+	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR)
 	{
 		free_array(token);
 		return (ERROR);
 	}
 	fill_coordnates(token[0], data);
-	if (set_vector_3d(token[1]) == ERROR)
-	{
-		free_array(token);
-		return (ERROR);
-	}
 	fill_vector(token[1], data);
 	if (set_camera(token[2], data) == ERROR)
 	{

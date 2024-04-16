@@ -56,41 +56,38 @@ static int	fill_colors(char *line, t_plane *new_plane)
 	return (OK);
 }
 
+static void	fill_plane_data(t_plane *plane, char **tokens)
+{
+	fill_coordinates(tokens[0], plane);
+	fill_vector(tokens[1], plane);
+	fill_colors(tokens[2], plane);
+	plane->transform = transform_plane(plane->position, plane->vector);
+	invert_matrix(&plane->transform, &plane->inversed_t);
+
+}
+
 int	analyze_plane(char *line, t_data *data)
 {
 	char		**token;
 	t_plane		*new_plane;
 
 	token = ft_split_space(line);
-
-	//verifica valores
 	if (count_token(token, 3, "Plane has wrong number of arguments"))
 		return (ERROR);
-	if (set_coordinates(token[0]) == ERROR && set_vector_3d(token[1]) == ERROR && set_colors(token[2]) == ERROR)
-	{
-		free_array(token);
-		return (ERROR);
-	}
-
-	// se ok, cria um objeto, insere os valores e adiciona à lista
 	new_plane = malloc(sizeof(t_plane));
-	if (!new_plane)
+	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR 
+		|| set_colors(token[2]) == ERROR || !new_plane)
 	{
 		free_array(token);
 		return (ERROR);
 	}
-	fill_coordinates(token[0], new_plane);
-	fill_vector(token[1], new_plane);
-	fill_colors(token[2], new_plane);
-	new_plane->transform = transform_plane(new_plane->position, new_plane->vector);
-	invert_matrix(&new_plane->transform, &new_plane->inversed_t);
+	fill_plane_data(new_plane, token);
 	if (add_objects(data, new_plane, PLANE) == ERROR)
 	{
 		free(new_plane);
 		free_array(token);
 		return (ERROR);
 	}
-	
 	free_array(token);
 	return (OK);
 }

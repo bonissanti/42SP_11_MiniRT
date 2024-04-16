@@ -75,6 +75,7 @@ int	main(int argc, char **argv)
 	render_scene(&data, &mlx);
 	// mlx_image_to_window(mlx.win_ptr, mlx.img_ptr, 0, 0);
 	mlx_loop(mlx.win_ptr);
+	mlx_terminate(mlx.win_ptr);
 	free_objects(data.objects);
 	return (0);
 }

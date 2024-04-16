@@ -56,6 +56,19 @@ static int	fill_vector(char *line, t_cylinder *new_cylinder)
 	return (OK);
 }
 
+static void	fill_cylinder_data(t_cylinder *cylinder, char **tokens)
+{
+	fill_coordinates(tokens[0], cylinder);
+	fill_vector(tokens[1], cylinder);
+	cylinder->diameter = ft_atod(tokens[2]);
+	cylinder->height = ft_atod(tokens[3]);
+	cylinder->max = cylinder->height / 2;
+	cylinder->min = -cylinder->height / 2;
+	cylinder->transform = transform_cylinder(cylinder->position, cylinder->diameter / 2, cylinder->vector);
+	invert_matrix(&cylinder->transform, &cylinder->inversed_t);
+	fill_colors(tokens[4], cylinder);
+}
+
 int	analyze_cylinder(char *line, t_data *data)
 {
 	char	**token;
@@ -64,57 +77,15 @@ int	analyze_cylinder(char *line, t_data *data)
 	token = ft_split_space(line);
 	if (count_token(token, 5, "Cylinder has wrong number of arguments"))
 		return (ERROR);
-	// verifica valores
-	if (set_coordinates(token[0]) == ERROR)
-	{
-		free_array(token);
-		return (ERROR);
-	}
-
-	if (set_vector_3d(token[1]) == ERROR)
-	{
-		free_array(token);
-		return (ERROR);
-	}
-
-	if (is_number(token[2]) == ERROR && is_number(token[3]) == ERROR)
-	{
-		free_array(token);
-		return (print_error("[cy] Invalid number"));
-	}
-	if (set_colors(token[4]) == ERROR)
-	{
-		free_array(token);
-		return (ERROR);
-	}
-
-	// se ok, cria um objeto, insere os valores e adiciona a lista
 	new_cylinder = malloc(sizeof(t_cylinder));
-	if (!new_cylinder)
+	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR 
+		|| is_number(token[2]) == ERROR || is_number(token[3]) == ERROR 
+		|| set_colors(token[4]) == ERROR || !new_cylinder)
 	{
 		free_array(token);
 		return (ERROR);
 	}
-	fill_coordinates(token[0], new_cylinder);
-	fill_vector(token[1], new_cylinder);
-	new_cylinder->diameter = ft_atod(token[2]);
-	new_cylinder->height = ft_atod(token[3]);
-	new_cylinder->max = new_cylinder->height / 2;
-	new_cylinder->min = -new_cylinder->height / 2;
-	new_cylinder->transform = transform_cylinder(new_cylinder->position, new_cylinder->diameter / 2, new_cylinder->vector);
-	invert_matrix(&new_cylinder->transform, &new_cylinder->inversed_t);
-	
-	#ifndef TEST_H
-	printf("fucker test");
-	print_matrix(new_cylinder->transform);
-	printf("\n");
-	print_matrix(new_cylinder->inversed_t);
-	
-	#endif /* ifdef TEST_H
-		print_matrix(new_cylinder->inversed_t); */
-
-	fill_colors(token[4], new_cylinder);
-	
+	fill_cylinder_data(new_cylinder, token);
 	if (add_objects(data, new_cylinder, CYLINDER) == ERROR)
 	{
 		free(new_cylinder);
@@ -124,3 +95,4 @@ int	analyze_cylinder(char *line, t_data *data)
 	free_array(token);
 	return (OK);
 }
+

@@ -444,6 +444,15 @@ int	t_color_to_int(t_color color)
 	return ((red << 24) | (green << 16) | (blue << 8) | alpha);
 }
 
+static void	key_hook(void *param)
+{
+	t_mlx *mlx;
+
+	mlx = (t_mlx *)param;
+	if (mlx_is_key_down(mlx->win_ptr, MLX_KEY_ESCAPE))
+		mlx_close_window(mlx->win_ptr);
+}
+
 void	render_scene(t_data *data, t_mlx *mlx)
 {
 	int		x;
@@ -452,8 +461,6 @@ void	render_scene(t_data *data, t_mlx *mlx)
 
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
-	// data->bvh_root = create_bvh(&data->objects);
-	// traverseBVH(data->bvh_root, 0);
 	y = -1;
 	while (++y < data->camera.height_v)
 	{
@@ -465,9 +472,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 				t_color_to_int(trace_ray2(data, ray)));
 		}
 	}
-	// ray = ray_for_pixel(&data->camera, WIDTH / 2, HEIGHT / 2);
-	// mlx_put_pixel(mlx->img_ptr, WIDTH / 2, HEIGHT / 2,
-	// 			t_color_to_int(trace_ray2(data, ray)));
+	mlx_loop_hook(mlx->win_ptr, key_hook, mlx);
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }
