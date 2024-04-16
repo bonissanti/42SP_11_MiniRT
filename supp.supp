@@ -1,0 +1,16 @@
+# Valgrind suppresions file to ignore the MLX42 Library from testing leaks.
+{
+   mlx42-lib
+   Memcheck:Leak
+   ...
+   fun:malloc
+   ...
+   fun:???
+}
+
+{
+   mlx42-lib
+   Memcheck:Leak
+   ...
+   fun:???
+}

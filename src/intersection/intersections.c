@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/15 10:51:41 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:44:56 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 	double			closest_t;
 	t_inter_list	*current;
 
+	if (!list)
+		return (false);
 	current = list;
 	closest_t = INFINITY;
 	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};

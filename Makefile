@@ -74,7 +74,7 @@ TEST_OBJS	= $(TEST_SRCS:$(TEST_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 CC = gcc
 CCPFLAGS = ./include/
-CFLAGS = -Wall -Wextra -Werror -g3 -I$(HEADER) -I$(MLX)
+CFLAGS = -Wall -Wextra -Werror -g3 -o -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
@@ -142,5 +142,8 @@ fclean_t: clean_test
 	@echo "$(RED)$(TEST_N) deleted$(RESET)"
 
 re: fclean all
+
+val:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=supp.supp ./$(NAME) scenes/teste_cor.rt
 
 .PHONY: all clean fclean test clean_test fclean_test re

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   aux_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:59 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/16 10:08:16 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minirt.h"
+#include "../../include/minirt.h"
 
 /**
  * Function: ft_strxspn

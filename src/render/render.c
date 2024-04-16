@@ -6,36 +6,27 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/15 23:25:05 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/16 12:17:11 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 #include <math.h>
 
-// t_color	get_color(t_data *data, t_inter *closest, t_ray *ray)
-// {
-// 	t_color		color;
-// 	t_sphere	*sphere;
-// 	double		intensity;
-// 	t_vec3		normal;
-// 	t_vec3		light;
+t_geo_u	get_geo(t_object *object)
+{
+	t_geo_u	geo;
 
-// 	(void)ray;
-// 	sphere = (t_sphere *)closest->object->object;
-// 	normal = normalize_vector(subtract_coords((t_coords){closest->point.x,
-// 				closest->point.y, closest->point.z}, sphere->position));
-// 	light = subtract_coords(data->light.position,
-// 			(t_coords){closest->point.x, closest->point.y, closest->point.z});
-// 	light = normalize_vector(light);
-// 	intensity = fmin(fmax(dot_product(normal, light), 0.0)
-// 			+ data->amblight.ratio, 1.0);
-// 	color.r = (sphere->color[0] / 255.0) * intensity;
-// 	color.g = (sphere->color[1] / 255.0) * intensity;
-// 	color.b = (sphere->color[2] / 255.0) * intensity;
-// 	color.a = 1;
-// 	return (color);
-// }
+	if (object->type == SPHERE)
+		geo.sphere = (t_sphere *)object->object;
+	else if (object->type == PLANE)
+		geo.plane = (t_plane *)object->object;
+	else if (object->type == CYLINDER)
+		geo.cylinder = (t_cylinder *)object->object;
+	else
+		geo.sphere = NULL;
+	return (geo);
+}
 
 t_color	multiply_color(t_color color, double scalar)
 {
@@ -86,42 +77,142 @@ t_vec3	reflect_vector(t_vec3 in, t_vec3 normal)
 				2 * dot_product(in, normal))));
 }
 
+typedef struct s_color_data
+{
+	t_color		color;
+	t_vec3		light;
+	double		light_dot_normal;
+}	t_color_data;
+
+bool	is_inside(t_vec3 eyev, t_vec3 *normal)
+{
+	if (dot_product(eyev, *normal) >= 0)
+		return (false);
+	normal->x = -normal->x;
+	normal->y = -normal->y;
+	normal->z = -normal->z;
+	return (true);
+}
+
+t_color	get_diffuse(t_color ambient, t_comps comps, t_data data, t_color_data c_data)
+{
+	t_color		diffuse;
+	t_color 	specular;
+	t_vec3		reflect;
+	double		reflect_dot_eye;
+	double		factor;
+
+	diffuse = multiply_color(c_data.color, DIFFUSE * c_data.light_dot_normal);
+	reflect = reflect_vector(multiply_vector(c_data.light, -1), comps.normalv);
+	reflect_dot_eye = dot_product(reflect, comps.eyev);
+	if (reflect_dot_eye <= 0)
+		return(add_colors(ambient, diffuse));
+	else
+	{
+		factor = pow(reflect_dot_eye, SHININESS);
+		specular = multiply_color((t_color){data.light.brightness,
+				data.light.brightness, data.light.brightness, 1},
+				SPECULAR * factor);
+		return(add_colors(add_colors(ambient, diffuse), specular));
+	}
+}
+
+t_coords	add_tuple(t_coords a, t_coords b)
+{
+	t_coords	result;
+
+	result.x = a.x + b.x;
+	result.y = a.y + b.y;
+	result.z = a.z + b.z;
+	return (result);
+}
+
+t_coords	multiply_tuple(t_coords a, double scalar)
+{
+	t_coords	result;
+
+	result.x = a.x * scalar;
+	result.y = a.y * scalar;
+	result.z = a.z * scalar;
+	return (result);
+}
+
+t_coords	subtract_tuple(t_coords a, t_coords b)
+{
+	t_coords	result;
+
+	result.x = a.x - b.x;
+	result.y = a.y - b.y;
+	result.z = a.z - b.z;
+	return (result);
+}
+
+void intersect_object(t_ray ray, t_object *object, double *t, t_object *origin_obj)
+{
+	t[0] = -1.0;
+	t[1] = -1.0;
+	if (object == origin_obj)
+		return ;
+    if (object->type == SPHERE)	
+		hit_sphere((t_sphere *)object->object, ray, t);
+    // else if (object->type == PLANE)
+    //     return intersect_plane(ray, *(t_plane *)object->object);
+	// else if (object->type == CYLINDER)
+    //     return intersect_cylinder(ray, *(t_cylinder *)object->object);
+}
+
+double	vector_length(t_vec3 v)
+{
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+}
+
+bool is_in_shadow(t_comps *closest, t_light light, t_object *objects,
+	t_vec3 normal)
+{
+	t_object	*obj;
+	t_ray		shadow_ray;
+	double		light_distance;
+	double		t[2];
+
+	shadow_ray.origin = add_tuple(closest->point, multiply_tuple(normal,
+				EPSILON));
+	shadow_ray.direction = normalize_vector(subtract_tuple(light.position,
+				shadow_ray.origin));
+	light_distance = vector_length(subtract_tuple(light.position,
+				shadow_ray.origin));
+	obj = objects;
+	while (obj != NULL)
+	{
+		intersect_object(ray_transform(shadow_ray,
+				get_geo(obj).sphere->inversed_t), obj, t, closest->object);
+		if ((t[0] > EPSILON && t[0] < light_distance)
+			|| (t[1] > EPSILON && t[1] < light_distance))
+			return (true);
+		obj = obj->next;
+	}
+	return (false);
+}
+
 t_color	get_color(t_data *data, t_comps *closest)
 {
 	t_color		color;
 	t_color		ambient;
-	t_color		diffuse;
 	t_sphere	*sphere;
 	t_vec3		light;
-	t_vec3		reflect;
 	double		light_dot_normal;
-	double		reflect_dot_eye;
-
 
 	sphere = (t_sphere *)closest->object->object;
 	color = multiply_color((t_color){sphere->color[0] / 255.0, sphere->color[1] / 255.0,
 		sphere->color[2] / 255.0, 1}, data->light.brightness);
-	light = normalize_vector(subtract_coords(data->light.position, closest->point));
+	light = normalize_vector(subtract_coords(data->light.position,
+		closest->point));
 	ambient = multiply_color(color, data->amblight.ratio);
 	light_dot_normal = dot_product(light, closest->normalv);
-	if (light_dot_normal < 0)
-		color = ambient;
-	else
-	{
-		diffuse = multiply_color(color, DIFFUSE * light_dot_normal);
-		reflect = reflect_vector(multiply_vector(light, -1), closest->normalv);
-		reflect_dot_eye = dot_product(reflect, closest->eyev);
-		if (reflect_dot_eye <= 0)
-			color = add_colors(ambient, diffuse);
-		else
-		{
-			double factor = pow(reflect_dot_eye, SHININESS);
-			t_color specular = multiply_color((t_color){data->light.brightness,
-					data->light.brightness, data->light.brightness, 1}, SPECULAR * factor);
-			color = add_colors(add_colors(ambient, diffuse), specular);
-		}
-	}
-	return (set_to_range_color(color));
+	if (light_dot_normal < 0
+		|| is_in_shadow(closest, data->light, data->objects, closest->normalv))
+		return (set_to_range_color(ambient));
+	return (set_to_range_color(get_diffuse(ambient, *closest, *data,
+			(t_color_data){color, light, light_dot_normal})));
 }
 
 t_vec3	get_intersection_point(t_ray ray, double t)
@@ -140,21 +231,6 @@ t_vec3	get_normal(t_vec3 point, t_vec3 center)
 
 	normal = subtract_vector(point, center);
 	return (normalize_vector(normal));
-}
-
-t_geo_u	get_geo(t_object *object)
-{
-	t_geo_u	geo;
-
-	if (object->type == SPHERE)
-		geo.sphere = (t_sphere *)object->object;
-	else if (object->type == PLANE)
-		geo.plane = (t_plane *)object->object;
-	else if (object->type == CYLINDER)
-		geo.cylinder = (t_cylinder *)object->object;
-	else
-		geo.sphere = NULL;
-	return (geo);
 }
 
 t_vec3	sphere_normal(t_vec3 point, t_sphere *sphere)
@@ -183,41 +259,6 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 		normal = subtract_vector(point, geo.plane->position);
 	return (normalize_vector(normal));
 }
-
-
-// bool intersection_obj(t_object *object, t_ray *ray, t_inter_list **inter_list)
-// {
-// 	t_object	*cur;
-// 	bool		hit;
-// 	t_inter		xs;
-// 	// t_geo_u		geo;
-// 	t_ray		temp_ray;
-//
-// 	xs.t[0] = 0.0;
-// 	xs.t[1] = 0.0;
-// 	hit = false;
-// 	cur = object;
-// 	while (cur)
-// 	{
-// 		// geo = 
-// 		if (cur->type == SPHERE)
-// 		{
-// 			temp_ray = ray_transform(*ray, get_geo(cur).sphere->inversed_t);
-// 			hit |= hit_sphere(cur->object, temp_ray, &xs);
-// 		}
-// 		if (hit == true)
-// 		{
-// 			t_vec3 point = get_intersection_point(temp_ray, xs.t[0]);
-// 			add_inter_list_back(inter_list, (t_inter){xs.t[0], point,
-// 				get_normal(point, (t_vec3){get_geo(cur).sphere->position.x,
-// 				get_geo(cur).sphere->position.y, get_geo(cur).sphere->position.z}), cur});
-// 			hit = true;
-// 		}
-// 		cur = cur->next;
-// 	}
-// 	return (hit);
-// }
-
 
 // void add_intersection_if_valid(t_object *obj, t_ray ray, double t, t_inter_list **inter_list) {
 //     if (t > EPSILON && t < INFINITY) {
@@ -293,6 +334,7 @@ t_comps	prepare_comps(t_inter inter, t_ray ray)
 			multiply_vector(inter.normal, EPSILON));
 	computations.eyev = normalize_vector(multiply_vector(ray.direction, -1));
 	computations.normalv = get_normal_generic(inter.object, computations.point);
+	is_inside(computations.eyev, &computations.normalv);
 	computations.reflectv = reflect_vector(ray.direction, computations.normalv);
 	computations.object = inter.object;
 	return (computations);
@@ -315,6 +357,7 @@ bool	intersection_obj(t_object *object, t_ray *ray,
 	double		t[2];
 
 	cur = object;
+	hit = false;
 	while (cur != NULL)
 	{
 		if (cur->type == SPHERE)
@@ -354,17 +397,17 @@ t_color	trace_ray2(t_data *data, t_ray ray)
 	t_inter_list	*inter_list;
 	t_inter			closest_inter;
 	t_comps			computations;
-	bool			hit;
 
 	inter_list = NULL;
 	if (!data->objects)
 		return ((t_color){0, 0, 0, 1});
-	hit = intersection_obj(data->objects, &ray, &inter_list);
-	if (!hit || !find_closest_inter(&closest_inter, inter_list))
+	if (!intersection_obj(data->objects, &ray, &inter_list)
+		|| !find_closest_inter(&closest_inter, inter_list))
 	{
 		delete_inter_list(inter_list);
 		return ((t_color){0, 0, 0, 1});
 	}
+	delete_inter_list(inter_list);
 	computations = prepare_comps(closest_inter, ray);
 	return (get_color(data, &computations));
 }

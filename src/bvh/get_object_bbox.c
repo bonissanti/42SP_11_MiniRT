@@ -6,11 +6,11 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:40:06 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/03/31 23:57:53 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/16 10:08:45 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minirt.h"
+#include "../../include/minirt.h"
 
 t_coords	mat4_mul_vec3(const t_matrix *m, const t_coords *point)
 {
