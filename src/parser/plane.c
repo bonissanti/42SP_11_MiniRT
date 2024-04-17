@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:40 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 17:21:51 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/17 00:19:59 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int	fill_coordinates(char *line, t_plane *new_plane)
 	char	**split_line;
 
 	split_line = ft_split(line, ',');
-	new_plane->position.x = ft_atod(split_line[0]);
-	new_plane->position.y = ft_atod(split_line[1]);
-	new_plane->position.z = ft_atod(split_line[2]);
+	new_plane->position.x = ft_atod(split_line[0]) / 1.5;
+	new_plane->position.y = ft_atod(split_line[1]) / 1.5;
+	new_plane->position.z = ft_atod(split_line[2]) / 1.5;
 	free_array(split_line);
 	return (OK);
 }

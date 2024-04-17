@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/14 19:41:58 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/17 00:26:37 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	if (check_equal_doubles(bhask.a, 0))
 		return (false);
  
-	bhask.b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
-	bhask.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - 1;
+	bhask.b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
+	bhask.c = (ray.origin.x * ray.origin.x) + (ray.origin.z * ray.origin.z) - 1;
 	result = solve_bhaskara(bhask);
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
@@ -120,7 +120,7 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 			found_intersection = true;
 		}
 	}
-	return (found_intersection);
+	return found_intersection;
 }
 
 bool	hit_plane(t_ray ray, double t[2])

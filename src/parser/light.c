@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/17 00:10:43 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	fill_coordnates(char *cam_line, t_data *data)
 	char **split_line;
 
 	split_line = ft_split(cam_line, ',');
-	data->light.position.x = ft_atod(split_line[0]);
-	data->light.position.y = ft_atod(split_line[1]);
-	data->light.position.z = ft_atod(split_line[2]);
+	data->light.position.x = ft_atod(split_line[0]) / 1.5;
+	data->light.position.y = ft_atod(split_line[1]) / 1.5;
+	data->light.position.z = ft_atod(split_line[2]) / 1.5;
 	free_array(split_line);
 	return (OK);
 }

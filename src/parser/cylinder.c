@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 17:22:08 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/17 15:18:40 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int	fill_coordinates(char *line, t_cylinder *new_cylinder)
 	char	**split;
 
 	split = ft_split(line, ',');
-	new_cylinder->position.x = ft_atod(split[0]);
-	new_cylinder->position.y = ft_atod(split[1]);
-	new_cylinder->position.z = ft_atod(split[2]);
+	new_cylinder->position.x = ft_atod(split[0]) / 1.5;
+	new_cylinder->position.y = ft_atod(split[1]) / 1.5;
+	new_cylinder->position.z = ft_atod(split[2]) / 1.5;
 	free_array(split);
 	return (OK);
 }
@@ -61,7 +61,7 @@ static void	fill_cylinder_data(t_cylinder *cylinder, char **tokens)
 	fill_coordinates(tokens[0], cylinder);
 	fill_vector(tokens[1], cylinder);
 	cylinder->diameter = ft_atod(tokens[2]);
-	cylinder->height = ft_atod(tokens[3]);
+	cylinder->height = ft_atod(tokens[3]) / 2;
 	cylinder->max = cylinder->height / 2;
 	cylinder->min = -cylinder->height / 2;
 	cylinder->transform = transform_cylinder(cylinder->position, cylinder->diameter / 2, cylinder->vector);
