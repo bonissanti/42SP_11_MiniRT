@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/18 18:52:14 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 19:19:02 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,17 @@ bool is_in_shadow(t_comps *closest, t_light light, t_object *objects,
 	return (false);
 }
 
+t_color	set_color(double color[3])
+{
+	t_color	result;
+
+	result.r = color[0];
+	result.g = color[1];
+	result.b = color[2];
+	result.a = 1;
+	return (result);
+}
+
 t_color	get_color(t_data *data, t_comps *closest)
 {
 	t_color		color;
@@ -203,17 +214,11 @@ t_color	get_color(t_data *data, t_comps *closest)
 	double		light_dot_normal;
 
 	if (closest->object->type == SPHERE)
-		color = (t_color){get_geo(closest->object).sphere->color[0],
-			get_geo(closest->object).sphere->color[1],
-			get_geo(closest->object).sphere->color[2], 1};
+		color = set_color(get_geo(closest->object).sphere->color);
 	else if (closest->object->type == PLANE)
-		color = (t_color){get_geo(closest->object).plane->color[0],
-			get_geo(closest->object).plane->color[1],
-			get_geo(closest->object).plane->color[2], 1};
+		color = set_color(get_geo(closest->object).plane->color);
 	else
-		color = (t_color){get_geo(closest->object).cylinder->color[0],
-			get_geo(closest->object).cylinder->color[1],
-			get_geo(closest->object).cylinder->color[2], 1};
+		color = set_color(get_geo(closest->object).cylinder->color);
 	color = multiply_color(color, data->light.brightness);
 	light = normalize_vector(subtract_coords(data->light.position,
 				closest->point));
@@ -223,7 +228,7 @@ t_color	get_color(t_data *data, t_comps *closest)
 		|| is_in_shadow(closest, data->light, data->objects, closest->normalv))
 		return (set_to_range_color(ambient));
 	return (set_to_range_color(get_diffuse(ambient, *closest, *data,
-			(t_color_data){color, light, light_dot_normal})));
+				(t_color_data){color, light, light_dot_normal})));
 }
 
 t_vec3	get_intersection_point(t_ray ray, double t)
@@ -244,19 +249,17 @@ t_vec3	sphere_normal(t_vec3 point, t_sphere *sphere)
 
 	obj_point = matrix_multiply_coords(sphere->inversed_t, point);
 	obj_normal = subtract_coords(obj_point, (t_coords){0, 0, 0});
-	normal = matrix_multiply_coords(transpose_matrix(&sphere->transform), obj_normal);
+	normal = matrix_multiply_coords(transpose_matrix(&sphere->transform),
+			obj_normal);
 	return (normal);
 }
 
 t_vec3	plane_normal(t_vec3 point, t_plane *plane)
 {
-	// t_coords	obj_point;
 	t_vec3		obj_normal;
 	t_vec3		normal;
 
 	(void)point;
-	// obj_point = matrix_multiply_coords(plane->inversed_t, point);
-	// obj_normal = subtract_coords(obj_point, plane->vector);
 	obj_normal = set_vector(0, 1, 0);
 	normal = matrix_multiply_vector(transpose_matrix(&plane->transform),
 			&obj_normal);
@@ -278,7 +281,7 @@ t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cyl)
 		obj_normal = set_vector(0, -1, 0);
 	else
 		obj_normal = set_vector(obj_point.x, 0, obj_point.z);
-	normal = matrix_multiply_vector(cyl->inversed_t,
+	normal = matrix_multiply_vector(transpose_matrix(&cyl->transform),
 			&obj_normal);
 	return (normalize_vector(normal));
 }
