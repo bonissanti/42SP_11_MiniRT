@@ -24,7 +24,9 @@ BIN_MLX = ./MLX42/build/libmlx42.a
 
 INIT		= init/init.c \
 			init/list_objects.c
-UTILS		= utils/to_finish.c
+UTILS		= utils/to_finish.c \
+			  utils/geo.c \
+			  utils/minilib.c
 PARSER 		= parser/aux_functions.c 	\
 			parser/aux_functions2.c		\
 			parser/validation.c 		\

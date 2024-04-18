@@ -6,27 +6,11 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/16 17:35:34 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:58:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
-#include <math.h>
-
-t_geo_u	get_geo(t_object *object)
-{
-	t_geo_u	geo;
-
-	if (object->type == SPHERE)
-		geo.sphere = (t_sphere *)object->object;
-	else if (object->type == PLANE)
-		geo.plane = (t_plane *)object->object;
-	else if (object->type == CYLINDER)
-		geo.cylinder = (t_cylinder *)object->object;
-	else
-		geo.sphere = NULL;
-	return (geo);
-}
 
 t_color	multiply_color(t_color color, double scalar)
 {
@@ -230,16 +214,6 @@ t_color	get_color(t_data *data, t_comps *closest)
 		return (set_to_range_color(ambient));
 	return (set_to_range_color(get_diffuse(ambient, *closest, *data,
 				(t_color_data){color, light, light_dot_normal})));
-}
-
-t_vec3	get_intersection_point(t_ray ray, double t)
-{
-	t_vec3	intersection_point;
-
-	intersection_point = (t_vec3){ray.origin.x + ray.direction.x * t,
-		ray.origin.y + ray.direction.y * t,
-		ray.origin.z + ray.direction.z * t};
-	return (intersection_point);
 }
 
 t_vec3	get_normal(t_vec3 point, t_vec3 center)
