@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 13:17:23 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/18 13:17:24 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minirt.h"
 
 void	add_inter_list_back(t_inter_list **list, t_inter inter)
@@ -8,12 +20,8 @@ void	add_inter_list_back(t_inter_list **list, t_inter inter)
 	new_node = (t_inter_list *)malloc(sizeof(t_inter_list));
 	if (!new_node)
 		return ;
-
-	// new_node->t = t;
-	// new_node->object = obj;
 	new_node->inter = inter;
 	new_node->next = NULL;
-
 	if (*list == NULL)
 		*list = new_node;
 	else
@@ -47,7 +55,7 @@ void	add_inter_list_back(t_inter_list **list, t_inter inter)
 // 		inter.normal.z = geo->cylinder->position.z;
 // 		inter.object = obj;
 // 	}
-// 	else 
+// 	else
 // 	{
 // 		inter.normal.x = geo->plane->position.x;
 // 		inter.normal.y = geo->plane->position.y;

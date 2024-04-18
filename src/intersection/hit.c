@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/14 19:41:58 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:14:51 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
 	else if (bhask.delta == 0)
 	{
 		bhask.status = ONE_REAL_ROOTS;
-		bhask.root1 = bhask.root2 = -bhask.b / (2 * bhask.a);
+		bhask.root1 = -bhask.b / (2 * bhask.a);
+		bhask.root2 = bhask.root1;
 	}
 	else
 		bhask.status = NO_REAL_ROOTS;
@@ -33,9 +34,9 @@ static t_bhaskara	solve_bhaskara(t_bhaskara bhask)
 
 bool	hit_sphere(const t_sphere *sphere, t_ray ray, double *t)
 {
-	t_vec3	sphere_to_ray;
-	t_bhaskara bhask;
-	t_bhaskara result;
+	t_vec3		sphere_to_ray;
+	t_bhaskara	bhask;
+	t_bhaskara	result;
 
 	init_bhask(&bhask, &result);
 	sphere_to_ray = subtract_coords(ray.origin, sphere->position);
@@ -50,57 +51,33 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, double *t)
 	return (true);
 }
 
-// bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
-// {
-// 	t_vec3	sphere_to_ray;
-// 	t_bhaskara bhask;
-// 	t_bhaskara result;
-//
-// 	init_bhask(&bhask, &result);
-// 	sphere_to_ray = subtract_coords(ray.origin, sphere->position);
-// 	bhask.a = dot_product(ray.direction, ray.direction);
-// 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray.direction);
-// 	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - 1;
-//
-// 	result = solve_bhaskara(bhask);
-// 	if (result.status == NO_REAL_ROOTS)
-// 		return (false);
-// 	if (result.root1 > EPSILON && result.root1 < INFINITY)
-// 		xs->t[0] = result.root1;
-// 	else if (result.root2 > EPSILON && result.root2 < INFINITY && result.root1 < result.root2)
-// 		xs->t[1] = result.root2;
-// 	else
-// 		return (false);
-// 	return (true);
-// }
-
 bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 {
 	t_bhaskara	bhask;
 	t_bhaskara	result;
+	double		y1;
+	double		y2;
+	bool		within_limits_t1;
+	bool		within_limits_t2;
+	bool		found_intersection;
 
 	init_bhask(&bhask, &result);
 	bhask.a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
-	
 	if (check_equal_doubles(bhask.a, 0))
 		return (false);
- 
-	bhask.b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
+	bhask.b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z
+			* ray.direction.z);
 	bhask.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - 1;
 	result = solve_bhaskara(bhask);
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
-
 	// verifica os limites de altura ṕara as duas raizes
-	double	y1 = ray.origin.y + bhask.root1 * ray.direction.y;
-	double	y2 = ray.origin.y + bhask.root2 * ray.direction.y;
-
-	bool	within_limits_t1 = y1 >= cyl->min && y1 <= cyl->max;
-	bool	within_limits_t2 = y2 >= cyl->min && y2 <= cyl->max;
-
+	y1 = ray.origin.y + bhask.root1 * ray.direction.y;
+	y2 = ray.origin.y + bhask.root2 * ray.direction.y;
+	within_limits_t1 = y1 >= cyl->min && y1 <= cyl->max;
+	within_limits_t2 = y2 >= cyl->min && y2 <= cyl->max;
 	// define as interseções
-	bool	found_intersection = false;
-
+	found_intersection = false;
 	if (result.status == TWO_REAL_ROOTS || result.status == ONE_REAL_ROOTS)
 	{
 		if (result.root1 > 0 && within_limits_t1)

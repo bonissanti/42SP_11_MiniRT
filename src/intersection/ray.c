@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:14:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/15 11:16:33 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:31:00 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,3 @@ t_coords	ray_position(t_ray ray, double distance)
 	position.z = ray.origin.z + distance * ray.direction.z;
 	return (position);
 }
-

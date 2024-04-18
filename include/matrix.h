@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 14:27:52 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/18 14:27:53 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MATRIX_H
 # define MATRIX_H
 
@@ -5,12 +17,13 @@
 
 // # Matrices
 void		matrix_identity(t_matrix *mat);
-void		set_camera_transform(t_camera *camera, t_coords from, t_vec3 forward, t_vec3 up);
+void		set_camera_transform(t_camera *camera, t_coords from,
+				t_vec3 forward, t_vec3 up);
 void		basic_invert_matrix(const t_matrix *original, t_matrix *inverted);
 void		matrix_free(t_matrix *matrix);
 t_coords	matrix_multiply_coords(t_matrix original, const t_coords coords);
 t_matrix	*create_matrix(void);
-t_matrix	matrix_multiply (t_matrix *a, t_matrix *b);
+t_matrix	matrix_multiply(t_matrix *a, t_matrix *b);
 t_matrix	translation_matrix(double tx, double ty, double tz);
 
 // # Operations
@@ -23,7 +36,8 @@ t_matrix	simple_rotation_x(double angle);
 t_matrix	simple_rotation_z(double angle);
 
 // # Inverted
-void		submatrix(t_matrix *original, t_matrix *submatrix, int row_ign, int col_ign);
+void		create_submatrix(t_matrix *original, t_matrix *submatrix,
+				int row_ign, int col_ign);
 void		invert_matrix(t_matrix *original, t_matrix *inverted);
 double		calculate_cofactor(t_matrix *original, int i, int j);
 double		calculate_minor(t_matrix *original, int row_ign, int col_ign);

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:43:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	set_brightness(char *bright_line, t_data *data)
 
 static int	fill_coordnates(char *cam_line, t_data *data)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(cam_line, ',');
 	data->light.position.x = ft_atod(split_line[0]);
@@ -39,7 +39,7 @@ static int	fill_coordnates(char *cam_line, t_data *data)
 
 int	analyze_light(char *line, t_data *data)
 {
-	char **token;
+	char	**token;
 
 	token = ft_split_space(line);
 	if (count_token(token, 2, "Light has wrong number of arguments\n"))
@@ -59,4 +59,3 @@ int	analyze_light(char *line, t_data *data)
 	free_array(token);
 	return (OK);
 }
-

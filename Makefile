@@ -35,10 +35,10 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/plane.c				\
 			parser/sphere.c				
 
-BVH			= bvh/create_bvh.c			\
-			bvh/get_object_bbox.c		\
-			bvh/get_quadrant.c			\
-			bvh/sort_list.c				
+# BVH			= bvh/create_bvh.c			\
+# 			bvh/get_object_bbox.c		\
+# 			bvh/get_quadrant.c			\
+# 			bvh/sort_list.c				
 
 RENDER		= render/render.c \
 
@@ -49,12 +49,15 @@ INTER		= intersection/hit.c \
 
 OPERATIONS	= operations/vector.c \
 			  operations/coords.c \
-			  operations/equal_values.c
+			  operations/others.c
 
 MATRIX		= matrix/matrix.c \
 			  matrix/inverse.c \
+			  matrix/inverse_utils.c \
 			  matrix/transformation.c \
-			  matrix/operations.c 
+			  matrix/operations.c \
+			  matrix/arbitrary_rotation.c \
+			  matrix/simple_rotation.c
 
 TEST_DIR	= ./src/tests
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(RENDER) $(INTER) $(MATRIX)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ambient.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 17:22:39 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:43:57 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,3 @@ int	analyze_amblight(char *line, t_data *data)
 	free_array(token);
 	return (OK);
 }
-

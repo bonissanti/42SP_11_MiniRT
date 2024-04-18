@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:17 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/03 15:42:12 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:59:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,4 @@ void	matrix_identity(t_matrix *mat)
 				mat->matrix[y][x] = 0.0;
 		}
 	}
-// # ifdef TEST
-	// printf("identity matrix\n");
-	// print_matrix(*mat);
-// # endif
-}
-
-//WARNING: Talvez essa função esteja inútil aqui, já que armazeno na stack.
-t_matrix	*create_matrix(void)
-{
-	t_matrix	*transform;
-
-	transform = malloc(sizeof(t_matrix));
-	if (!transform)
-		return (NULL);
-	matrix_identity(transform);
-	return (transform);
-}
-
-void	matrix_free(t_matrix *matrix)
-{
-	if (matrix)
-		free(matrix);
 }

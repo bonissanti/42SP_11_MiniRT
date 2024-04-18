@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 11:42:16 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:20:24 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,34 +32,33 @@
  * the orientation.
  *
  * Process:
- * 1. Calculates the 'left' vector as the cross product between 'forward' and
- * 		the normalization of 'up', establishing an axis orthogonal to the viewing
- * 		direction and the up vector.
+ * 1. Calculates the 'left' vector as the cross product between 'forward' and 
+ * the normalization of 'up', establishing an axis orthogonal to the viewing
+ * direction and the up vector.
  * 2. Recalculates 'up' (true_up) as the cross product between 'left' and
- * 		'forward' to ensure orthogonality and correctness of the basis.
+ * 'forward' to ensure orthogonality and correctness of the basis.
  * 3. Constructs the camer's orientation matrix based on the 'left', 'true_up'
- * 		and 'forward' vectors.
- * 4. Calculates the translation matrix to position the camera at the origin ('from')
- * 		of the view.
- * 5. Calculates and stores the inverse of the transformation matrix, essential for
- * 		ray transformations during the ray tracing process.
+ * and 'forward' vectors.
+ * 4. Calculates the translation matrix to position the camera at the origin
+ * ('from')	of the view.
+ * 5. Calculates and stores the inverse of the transformation matrix, essential
+ * for ray transformations during the ray tracing process.
  *
- * @return: This function does not return a value. Instead, it directly modifies the
- * 'camera' structure passed as a parameter.
+ * @return: This function does not return a value. Instead, it directly 
+ * modifies the 'camera' structure passed as a parameter.
  */
 
-void	set_camera_transform(t_camera *camera, t_coords from, t_vec3 forward, t_vec3 up)
+void	set_camera_transform(t_camera *camera, t_coords from, t_vec3 forward,
+		t_vec3 up)
 {
-	t_vec3	left;
-	t_vec3	true_up;
-	t_matrix transform;
-	t_matrix translation;
+	t_vec3		left;
+	t_vec3		true_up;
+	t_matrix	transform;
+	t_matrix	translation;
 
 	matrix_identity(&transform);
 	left = cross_vector(forward, normalize_vector(up));
 	true_up = cross_vector(left, forward);
-
-	// orientation
 	transform.matrix[0][0] = left.x;
 	transform.matrix[0][1] = left.y;
 	transform.matrix[0][2] = left.z;
@@ -70,20 +69,12 @@ void	set_camera_transform(t_camera *camera, t_coords from, t_vec3 forward, t_vec
 	transform.matrix[2][1] = -forward.y;
 	transform.matrix[2][2] = -forward.z;
 	transform.matrix[3][3] = 1.0;
-
-	//NOTE: Ainda são necessários mais testes, seguindo o esperado pelo livro
-	// translation + multiply_matrix
-	
-
 	translation = translation_matrix(-from.x, -from.y, -from.z);
 	camera->transform = matrix_multiply(&transform, &translation);
-
 	matrix_identity(&camera->inversed_t);
 	invert_matrix(&camera->transform, &camera->inversed_t);
 }
 
-
-//TODO: Adicionar funções para configurar matrizes dos objetos, incluindo a inversão da matriz
 t_matrix	transform_sphere(t_coords coords, double radius)
 {
 	t_matrix	transform;
@@ -108,14 +99,15 @@ t_matrix	transform_plane(t_coords coords, t_vec3 orientation)
 	return (transform);
 }
 
-t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation) 
+t_matrix	transform_cylinder(t_coords coords, double radius,
+		t_vec3 orientation)
 {
 	t_matrix	transform;
 	t_matrix	translation;
 	t_matrix	scaling;
 	t_matrix	rotation;
 	t_matrix	temp_rot;
-	
+
 	rotation = verify_orientation(orientation);
 	scaling = scaling_matrix(radius, 1, radius);
 	translation = translation_matrix(coords.x, coords.y, coords.z);

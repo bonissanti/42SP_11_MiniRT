@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 14:26:58 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/18 14:26:59 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -5,21 +17,21 @@
 # include "../libft/include/libft.h"
 # include "bvh.h"
 # include "elements.h"
+# include "intersection.h"
 # include "matrix.h"
 # include "mlx_utils.h"
 # include "ray.h"
 # include "structs.h"
-# include "intersection.h"
 # include "test.h" // for tests
 # include <fcntl.h>
-# include <math.h>
 # include <float.h> // DBL_MAX, DBL_MIN
+# include <math.h>
+# include <stdbool.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <stddef.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdbool.h>
 
 /* Macros */
 
@@ -58,7 +70,6 @@ t_vec3		cross_vector(t_vec3 a, t_vec3 b);
 t_vec3		matrix_multiply_vector(const t_matrix m, const t_vec3 *point);
 t_vec3		subtract_vector(t_vec3 a, t_vec3 b);
 t_vec3		subtract_coords(t_coords a, t_coords b);
-void		print_matrix(t_matrix to_test);
 
 // # Object lists ------------
 
@@ -77,7 +88,7 @@ double		ft_atod(char *str);
 size_t		ft_strxspn(const char *str, const char *set, int mode);
 
 // # TESTING -----------------
-void	print_objects(t_object *head);
-void	traverseBVH(t_bvh_node *node, int depth);
+void		print_objects(t_object *head);
+void		traverseBVH(t_bvh_node *node, int depth);
 
 #endif

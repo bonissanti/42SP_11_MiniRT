@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 17:21:27 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:43:36 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,17 @@ static void	fill_sphere_data(t_sphere *sphere, char **tokens)
 {
 	sphere->diameter = ft_atod(tokens[1]) / 2;
 	fill_coordinates(tokens[0], sphere);
-	sphere->transform = transform_sphere(sphere->position,
-			sphere->diameter);
+	sphere->transform = transform_sphere(sphere->position, sphere->diameter);
 	invert_matrix(&sphere->transform, &sphere->inversed_t);
 	fill_colors(tokens[2], sphere);
-
 }
 
 int	analyze_sphere(char *line, t_data *data)
 {
 	char		**token;
-	t_sphere	*new_sphere = NULL;
+	t_sphere	*new_sphere;
 
+	new_sphere = NULL;
 	token = ft_split_space(line);
 	if (count_token(token, 3, "[sp] Sphere has wrong number of arguments\n"))
 		return (ERROR);

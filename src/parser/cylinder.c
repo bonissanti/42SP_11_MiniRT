@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 17:22:08 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:43:44 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,23 @@ static void	fill_cylinder_data(t_cylinder *cylinder, char **tokens)
 	cylinder->height = ft_atod(tokens[3]);
 	cylinder->max = cylinder->height / 2;
 	cylinder->min = -cylinder->height / 2;
-	cylinder->transform = transform_cylinder(cylinder->position, cylinder->diameter / 2, cylinder->vector);
+	cylinder->transform = transform_cylinder(cylinder->position,
+			cylinder->diameter / 2, cylinder->vector);
 	invert_matrix(&cylinder->transform, &cylinder->inversed_t);
 	fill_colors(tokens[4], cylinder);
 }
 
 int	analyze_cylinder(char *line, t_data *data)
 {
-	char	**token;
+	char		**token;
 	t_cylinder	*new_cylinder;
 
 	token = ft_split_space(line);
 	if (count_token(token, 5, "Cylinder has wrong number of arguments"))
 		return (ERROR);
 	new_cylinder = malloc(sizeof(t_cylinder));
-	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR 
-		|| is_number(token[2]) == ERROR || is_number(token[3]) == ERROR 
+	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR
+		|| is_number(token[2]) == ERROR || is_number(token[3]) == ERROR
 		|| set_colors(token[4]) == ERROR || !new_cylinder)
 	{
 		free_array(token);
@@ -95,4 +96,3 @@ int	analyze_cylinder(char *line, t_data *data)
 	free_array(token);
 	return (OK);
 }
-

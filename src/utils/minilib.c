@@ -1,0 +1,161 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minilib.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 12:55:22 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/18 16:32:52 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minirt.h"
+
+/**
+ * Function: ft_strxspn
+ * --------------------
+ * Custom implementation that combines the functionality of the C library
+ * functions strspn and strcspn based on the specified mode.
+ * It operates in two modes:
+ * Mode 0 (strspn mode): Returns the length of the initial segment of 'str'
+ * which consists solely of characters found in 'set'.
+ * Example: For str = "hello" and set = "he", it returns 2.
+ * Mode 1 (strcspn mode): Returns the length of the initial segment of 'str'
+ * which consists solely of characters not found in 'set'.
+ * Example: For str = "hello" and set = "world", it returns 0.
+ *
+ * @param str: The input string to be searched.
+ * @param set: The set of characters to be used for comparison,
+ * depending on the mode.
+ * @param mode: Determines the function mode; 0 for strspn mode, 1 for
+ * strcspn mode.
+ *
+ * @return: The length of the initial segment of 'str' based on the selected
+ * mode.
+ */
+
+size_t	ft_strxspn(const char *str, const char *set, int mode)
+{
+	const char	*ptr;
+	const char	*search;
+	size_t		count;
+
+	count = 0;
+	ptr = str;
+	while (*ptr)
+	{
+		search = set;
+		while (*search)
+		{
+			if (*ptr == *search)
+				break ;
+			search++;
+		}
+		if ((mode == 0 && !*search) || (mode == 1 && *search))
+			return (count);
+		ptr++;
+		count++;
+	}
+	return (count);
+}
+
+/**
+ * Function: ft_strtok
+ * --------------------
+ * Custom implementation of the strtok function,
+	which is used to tokenize a string
+ * into sequences separated by characters found in the delimiter string.
+ * It maintains a static pointer to keep track of the current position in
+ * the string, allowing subsequent calls with a NULL pointer for 'str' to
+ * continue tokenizing the same string.
+ *
+ * @param str: The input string to be tokenized.
+ * @param delim: The delimiter string used to separate the tokens.
+ *
+ * @return: A pointer to the next token found in the string, or NULL if no more.
+ */
+
+char	*ft_strtok(char *str, const char *delim)
+{
+	static char	*line;
+
+	if (str)
+		line = str;
+	else if (!line)
+		return (NULL);
+	str = line + ft_strxspn(line, delim, 0);
+	if (!*str)
+		return (line = NULL);
+	line = str + ft_strxspn(str, delim, 1);
+	if (*line)
+		*line++ = '\0';
+	else
+		line = NULL;
+	return (str);
+}
+
+static	double	process_decimal_part(char **str)
+{
+	double	result;
+	double	power;
+
+	(*str)++;
+	result = 0.0;
+	power = 1.0;
+	while ((**str) && (**str >= '0' && **str <= '9'))
+	{
+		result = result * 10 + (**str - '0');
+		power *= 10;
+		str++;
+	}
+	return (result / power);
+}
+
+/**
+ * Function: ft_atod
+ * --------------------
+ * Custom implementation of the atof function, which is used to convert a string
+ * to a double-precision floating-point number. It handles both positive and
+ * negative numbers, as well as decimal numbers.
+ *
+ * This function works in two steps:
+ * 1. It reads the integer part of the number by iterating through the string
+ * and converting each character to its corresponding integer value.
+ *
+ * 2. If a decimal point is found, it reads the fractional part of the number
+ * by iterating through the string and converting each character to its
+ * corresponding integer value, while also keeping track of the power of 10
+ * to divide the result by the correct amount.
+ *
+ * @param str: The input string to be converted to a double.
+ *
+ * @return: The double value of the input string.
+ */
+
+double	ft_atod(char *str)
+{
+	double	result;
+	double	decimal;
+	int		sign;
+
+	result = 0.0;
+	decimal = 0.0;
+	sign = 1;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		result = result * 10 + (*str - '0');
+		str++;
+	}
+	if (*str == '.')
+		decimal = process_decimal_part(&str);
+	return (sign * (result + decimal));
+}

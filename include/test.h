@@ -37,5 +37,6 @@ void	check_equal_coords(t_coords *result, t_coords *expected);
 void	check_equal_matrices(t_matrix result, t_matrix expected, const char *testName);
 void	compare_double(double actual, double expected, const char *testName);
 void	check_equal_doubles_p(double a, double b, const char *testName);
+void	print_matrix(t_matrix to_test);
 
 # endif

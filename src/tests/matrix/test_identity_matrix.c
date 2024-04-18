@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test_identity_matrix.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/18 14:27:08 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/18 14:27:09 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/test.h"
 
 t_matrix	identity_example(void)
@@ -10,6 +22,22 @@ t_matrix	identity_example(void)
 	example.matrix[2][2] = 1;
 	example.matrix[3][3] = 1;
 	return (example);
+}
+
+void	print_matrix(t_matrix to_test)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (++y < 4)
+	{
+		x = -1;
+		while (++x < 4)
+			printf("%f ", to_test.matrix[y][x]);
+		printf("\n");
+	}
+	//TODO: deletar isso quando terminar o render
 }
 
 void	check_equal_matrices(t_matrix result, t_matrix expected, const char *testName)

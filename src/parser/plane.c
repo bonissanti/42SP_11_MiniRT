@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:40 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 17:21:51 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:43:33 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,18 @@ static void	fill_plane_data(t_plane *plane, char **tokens)
 	fill_colors(tokens[2], plane);
 	plane->transform = transform_plane(plane->position, plane->vector);
 	invert_matrix(&plane->transform, &plane->inversed_t);
-
 }
 
 int	analyze_plane(char *line, t_data *data)
 {
-	char		**token;
-	t_plane		*new_plane;
+	char	**token;
+	t_plane	*new_plane;
 
 	token = ft_split_space(line);
 	if (count_token(token, 3, "Plane has wrong number of arguments"))
 		return (ERROR);
 	new_plane = malloc(sizeof(t_plane));
-	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR 
+	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR
 		|| set_colors(token[2]) == ERROR || !new_plane)
 	{
 		free_array(token);
@@ -91,4 +90,3 @@ int	analyze_plane(char *line, t_data *data)
 	free_array(token);
 	return (OK);
 }
-
