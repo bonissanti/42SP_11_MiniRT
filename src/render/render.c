@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/18 19:19:02 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/20 00:56:02 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ t_color	get_color(t_data *data, t_comps *closest)
 		color = set_color(get_geo(closest->object).cylinder->color);
 	color = multiply_color(color, data->light.brightness);
 	light = normalize_vector(subtract_coords(data->light.position,
-				closest->point));
+				closest->over_point));
 	ambient = multiply_color(color, data->amblight.ratio);
 	light_dot_normal = dot_product(light, closest->normalv);
 	if (light_dot_normal < 0
@@ -248,7 +248,7 @@ t_vec3	sphere_normal(t_vec3 point, t_sphere *sphere)
 	t_vec3		normal;
 
 	obj_point = matrix_multiply_coords(sphere->inversed_t, point);
-	obj_normal = subtract_coords(obj_point, (t_coords){0, 0, 0});
+	obj_normal = subtract_coords(obj_point, sphere->position);
 	normal = matrix_multiply_coords(transpose_matrix(&sphere->transform),
 			obj_normal);
 	return (normal);
@@ -266,27 +266,40 @@ t_vec3	plane_normal(t_vec3 point, t_plane *plane)
 	return (normal);
 }
 
-t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cyl)
-{
-	t_coords	obj_point;
-	t_vec3		obj_normal;
-	t_vec3		normal;
-	double		dist;
+// t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cyl)
+// {
+// 	t_coords	obj_point;
+// 	t_vec3		obj_normal;
+// 	t_vec3		normal;
+// 	double		dist;
 
-	obj_point = matrix_multiply_coords(cyl->inversed_t, point);
-	dist = pow(obj_point.x, 2) + pow(obj_point.z, 2);
-	if (dist < 1 && obj_point.y >= cyl->max - EPSILON)
-		obj_normal = set_vector(0, 1, 0);
-	else if (dist < 1 && obj_point.y <= cyl->min + EPSILON)
-		obj_normal = set_vector(0, -1, 0);
-	else
-		obj_normal = set_vector(obj_point.x, 0, obj_point.z);
-	normal = matrix_multiply_vector(transpose_matrix(&cyl->transform),
-			&obj_normal);
-	return (normalize_vector(normal));
+// 	obj_point = matrix_multiply_coords(cyl->inversed_t, point);
+// 	dist = pow(obj_point.x, 2) + pow(obj_point.z, 2);
+// 	if (dist < 1 && obj_point.y >= cyl->max - EPSILON)
+// 		obj_normal = set_vector(0, 1, 0);
+// 	else if (dist < 1 && obj_point.y <= cyl->min + EPSILON)
+// 		obj_normal = set_vector(0, -1, 0);
+// 	else
+// 		obj_normal = set_vector(obj_point.x, 0, obj_point.z);
+// 	normal = matrix_multiply_vector(transpose_matrix(&cyl->transform),
+// 			&obj_normal);
+// 	return (normal);
+// }
+
+t_vec3 cylinder_normal(t_vec3 *point, t_cylinder *cy)
+{
+	t_vec3 base = (t_vec3){cy->position.x, cy->position.y - cy->height/2, cy->position.z};
+    t_vec3 base_to_point = subtract_tuple(matrix_multiply_coords(cy->inversed_t, *point), base);
+	// t_vec3 base_to_point = subtract_tuple(*point, base);
+    double projection_length = dot_product(base_to_point, cy->vector);
+    t_vec3 closest_point_on_axis = add_tuple(cy->position, multiply_tuple(cy->vector, projection_length));
+    t_vec3 normal = subtract_tuple(*point, closest_point_on_axis);
+	normal = matrix_multiply_vector(transpose_matrix(&cy->transform),
+			&normal);
+    return (normal);
 }
 
-t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
+t_vec3	get_normal(t_object *obj, t_vec3 point)
 {
 	t_vec3	normal;
 	t_geo_u	geo;
@@ -295,7 +308,7 @@ t_vec3	get_normal_generic(t_object *obj, t_vec3 point)
 	if (obj->type == SPHERE)
 		normal = sphere_normal(point, geo.sphere);
 	else if (obj->type == CYLINDER)
-		normal = cylinder_normal(point, geo.cylinder);
+		normal = cylinder_normal(&point, geo.cylinder);
 	else
 		normal = plane_normal(point, geo.plane);
 	return (normalize_vector(normal));
@@ -318,7 +331,7 @@ t_comps	prepare_comps(t_inter inter, t_ray ray)
 	computations.t = inter.t;
 	computations.point = get_intersection_point(ray, inter.t);
 	computations.eyev = multiply_vector(ray.direction, -1);
-	computations.normalv = get_normal_generic(inter.object, computations.point);
+	computations.normalv = get_normal(inter.object, computations.point);
 	computations.normalv = is_inside(computations.eyev, computations.normalv);
 	computations.over_point = add_coords(computations.point,
 			multiply_vector(computations.normalv, EPSILON));
@@ -441,6 +454,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
+	printf("Rendering...\n");
 	y = -1;
 	while (++y < data->camera.height_v)
 	{
@@ -451,6 +465,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray2(data, ray)));
 		}
+		printf("Progress: %.2f%%\r", (float)y / HEIGHT * 100);
 	}
 	mlx_loop_hook(mlx->win_ptr, key_hook, mlx);
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);

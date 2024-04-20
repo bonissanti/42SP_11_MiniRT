@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/17 00:26:37 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/20 00:56:13 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,8 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 
 	init_bhask(&bhask, &result);
 	bhask.a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
-	
 	if (check_equal_doubles(bhask.a, 0))
 		return (false);
- 
 	bhask.b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
 	bhask.c = (ray.origin.x * ray.origin.x) + (ray.origin.z * ray.origin.z) - 1;
 	result = solve_bhaskara(bhask);
@@ -120,7 +118,18 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 			found_intersection = true;
 		}
 	}
-	return found_intersection;
+
+	// truncate the cylinder to its given height
+	if (found_intersection)
+	{
+		double intersection_y = ray.origin.y + t[0] * ray.direction.y;
+		if (intersection_y < cyl->min || intersection_y > cyl->max)
+			t[0] = INFINITY;
+		intersection_y = ray.origin.y + t[1] * ray.direction.y;
+		if (intersection_y < cyl->min || intersection_y > cyl->max)
+			t[1] = INFINITY;
+	}
+	return (found_intersection);
 }
 
 bool	hit_plane(t_ray ray, double t[2])
