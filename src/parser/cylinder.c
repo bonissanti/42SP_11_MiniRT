@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/20 01:02:42 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/20 19:01:59 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int	fill_coordinates(char *line, t_cylinder *new_cylinder)
 	char	**split;
 
 	split = ft_split(line, ',');
-	new_cylinder->position.x = ft_atod(split[0]) / 1.5;
-	new_cylinder->position.y = ft_atod(split[1]) / 1.5;
-	new_cylinder->position.z = ft_atod(split[2]) / 1.5;
+	new_cylinder->position.x = ft_atod(split[0]);
+	new_cylinder->position.y = ft_atod(split[1]);
+	new_cylinder->position.z = ft_atod(split[2]);
 	free_array(split);
 	return (OK);
 }
@@ -60,26 +60,28 @@ static void	fill_cylinder_data(t_cylinder *cylinder, char **tokens)
 {
 	fill_coordinates(tokens[0], cylinder);
 	fill_vector(tokens[1], cylinder);
-	cylinder->diameter = ft_atod(tokens[2]);
-	cylinder->height = ft_atod(tokens[3]) / 2;
+	cylinder->diameter = ft_atod(tokens[2]) / 2;
+	cylinder->height = ft_atod(tokens[3]);
 	cylinder->max = cylinder->height / 2;
-	cylinder->min = -cylinder->height / 2;
-	cylinder->transform = transform_cylinder(cylinder->position, cylinder->diameter / 2, cylinder->vector);
+	cylinder->min = -(cylinder->height / 2);
+	cylinder->transform = transform_cylinder(cylinder->position,
+			cylinder->diameter, cylinder->vector);
 	invert_matrix(&cylinder->transform, &cylinder->inversed_t);
+	cylinder->position = (t_coords) {0, 0, 0}; //change later
 	fill_colors(tokens[4], cylinder);
 }
 
 int	analyze_cylinder(char *line, t_data *data)
 {
-	char	**token;
+	char		**token;
 	t_cylinder	*new_cylinder;
 
 	token = ft_split_space(line);
 	if (count_token(token, 5, "Cylinder has wrong number of arguments"))
 		return (ERROR);
 	new_cylinder = malloc(sizeof(t_cylinder));
-	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR 
-		|| is_number(token[2]) == ERROR || is_number(token[3]) == ERROR 
+	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR
+		|| is_number(token[2]) == ERROR || is_number(token[3]) == ERROR
 		|| set_colors(token[4]) == ERROR || !new_cylinder)
 	{
 		free_array(token);

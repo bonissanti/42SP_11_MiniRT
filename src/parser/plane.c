@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:40 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/17 00:19:59 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/20 19:01:52 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int	fill_coordinates(char *line, t_plane *new_plane)
 	char	**split_line;
 
 	split_line = ft_split(line, ',');
-	new_plane->position.x = ft_atod(split_line[0]) / 1.5;
-	new_plane->position.y = ft_atod(split_line[1]) / 1.5;
-	new_plane->position.z = ft_atod(split_line[2]) / 1.5;
+	new_plane->position.x = ft_atod(split_line[0]);
+	new_plane->position.y = ft_atod(split_line[1]);
+	new_plane->position.z = ft_atod(split_line[2]);
 	free_array(split_line);
 	return (OK);
 }
@@ -63,7 +63,7 @@ static void	fill_plane_data(t_plane *plane, char **tokens)
 	fill_colors(tokens[2], plane);
 	plane->transform = transform_plane(plane->position, plane->vector);
 	invert_matrix(&plane->transform, &plane->inversed_t);
-
+	plane->position = (t_coords) {0, 0, 0}; //change later
 }
 
 int	analyze_plane(char *line, t_data *data)

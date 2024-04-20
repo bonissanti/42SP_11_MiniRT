@@ -41,6 +41,7 @@ BVH			= bvh/create_bvh.c			\
 			bvh/sort_list.c				
 
 RENDER		= render/render.c \
+			  render/normal.c
 
 INTER		= intersection/hit.c \
 			  intersection/intersections.c \
@@ -49,7 +50,8 @@ INTER		= intersection/hit.c \
 
 OPERATIONS	= operations/vector.c \
 			  operations/coords.c \
-			  operations/equal_values.c
+			  operations/equal_values.c \
+			  operations/tuple.c
 
 MATRIX		= matrix/matrix.c \
 			  matrix/inverse.c \
@@ -78,7 +80,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 -o -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42 -lglfw3 -lm -ldl -pthread
+LDFLAGS = -L./MLX42/build -lmlx42 -lglfw -lm -ldl -pthread
 
 ################################ Progress ###################################
 

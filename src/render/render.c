@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/20 00:56:02 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/20 15:16:51 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,11 @@ t_vec3	is_inside(t_vec3 eyev, t_vec3 normal)
 	return (normal);
 }
 
-t_color	get_diffuse(t_color ambient, t_comps comps, t_data data, t_color_data c_data)
+t_color	get_diffuse(t_color ambient, t_comps comps, t_data data,
+	t_color_data c_data)
 {
 	t_color		diffuse;
-	t_color 	specular;
+	t_color		specular;
 	t_vec3		reflect;
 	double		reflect_dot_eye;
 	double		factor;
@@ -114,36 +115,6 @@ t_color	get_diffuse(t_color ambient, t_comps comps, t_data data, t_color_data c_
 				SPECULAR * factor);
 		return (add_colors(add_colors(ambient, diffuse), specular));
 	}
-}
-
-t_coords	add_tuple(t_coords a, t_coords b)
-{
-	t_coords	result;
-
-	result.x = a.x + b.x;
-	result.y = a.y + b.y;
-	result.z = a.z + b.z;
-	return (result);
-}
-
-t_coords	multiply_tuple(t_coords a, double scalar)
-{
-	t_coords	result;
-
-	result.x = a.x * scalar;
-	result.y = a.y * scalar;
-	result.z = a.z * scalar;
-	return (result);
-}
-
-t_coords	subtract_tuple(t_coords a, t_coords b)
-{
-	t_coords	result;
-
-	result.x = a.x - b.x;
-	result.y = a.y - b.y;
-	result.z = a.z - b.z;
-	return (result);
 }
 
 void	intersect_object(t_ray ray, t_object *obj, double *t,
@@ -219,6 +190,7 @@ t_color	get_color(t_data *data, t_comps *closest)
 		color = set_color(get_geo(closest->object).plane->color);
 	else
 		color = set_color(get_geo(closest->object).cylinder->color);
+	// color = add_colors(color, set_color(data->amblight.color));
 	color = multiply_color(color, data->light.brightness);
 	light = normalize_vector(subtract_coords(data->light.position,
 				closest->over_point));
@@ -239,79 +211,6 @@ t_vec3	get_intersection_point(t_ray ray, double t)
 		ray.origin.y + ray.direction.y * t,
 		ray.origin.z + ray.direction.z * t};
 	return (intersection_point);
-}
-
-t_vec3	sphere_normal(t_vec3 point, t_sphere *sphere)
-{
-	t_coords	obj_point;
-	t_vec3		obj_normal;
-	t_vec3		normal;
-
-	obj_point = matrix_multiply_coords(sphere->inversed_t, point);
-	obj_normal = subtract_coords(obj_point, sphere->position);
-	normal = matrix_multiply_coords(transpose_matrix(&sphere->transform),
-			obj_normal);
-	return (normal);
-}
-
-t_vec3	plane_normal(t_vec3 point, t_plane *plane)
-{
-	t_vec3		obj_normal;
-	t_vec3		normal;
-
-	(void)point;
-	obj_normal = set_vector(0, 1, 0);
-	normal = matrix_multiply_vector(transpose_matrix(&plane->transform),
-			&obj_normal);
-	return (normal);
-}
-
-// t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cyl)
-// {
-// 	t_coords	obj_point;
-// 	t_vec3		obj_normal;
-// 	t_vec3		normal;
-// 	double		dist;
-
-// 	obj_point = matrix_multiply_coords(cyl->inversed_t, point);
-// 	dist = pow(obj_point.x, 2) + pow(obj_point.z, 2);
-// 	if (dist < 1 && obj_point.y >= cyl->max - EPSILON)
-// 		obj_normal = set_vector(0, 1, 0);
-// 	else if (dist < 1 && obj_point.y <= cyl->min + EPSILON)
-// 		obj_normal = set_vector(0, -1, 0);
-// 	else
-// 		obj_normal = set_vector(obj_point.x, 0, obj_point.z);
-// 	normal = matrix_multiply_vector(transpose_matrix(&cyl->transform),
-// 			&obj_normal);
-// 	return (normal);
-// }
-
-t_vec3 cylinder_normal(t_vec3 *point, t_cylinder *cy)
-{
-	t_vec3 base = (t_vec3){cy->position.x, cy->position.y - cy->height/2, cy->position.z};
-    t_vec3 base_to_point = subtract_tuple(matrix_multiply_coords(cy->inversed_t, *point), base);
-	// t_vec3 base_to_point = subtract_tuple(*point, base);
-    double projection_length = dot_product(base_to_point, cy->vector);
-    t_vec3 closest_point_on_axis = add_tuple(cy->position, multiply_tuple(cy->vector, projection_length));
-    t_vec3 normal = subtract_tuple(*point, closest_point_on_axis);
-	normal = matrix_multiply_vector(transpose_matrix(&cy->transform),
-			&normal);
-    return (normal);
-}
-
-t_vec3	get_normal(t_object *obj, t_vec3 point)
-{
-	t_vec3	normal;
-	t_geo_u	geo;
-
-	geo = get_geo(obj);
-	if (obj->type == SPHERE)
-		normal = sphere_normal(point, geo.sphere);
-	else if (obj->type == CYLINDER)
-		normal = cylinder_normal(&point, geo.cylinder);
-	else
-		normal = plane_normal(point, geo.plane);
-	return (normalize_vector(normal));
 }
 
 t_coords	add_coords(t_coords a, t_coords b)
@@ -361,13 +260,13 @@ bool	intersection_obj(t_object *object, t_ray *ray,
 	{
 		if (cur->type == SPHERE)
 			last_hit = hit_sphere(cur->object, ray_transform(*ray,
-					get_geo(cur).sphere->inversed_t), t);
+						get_geo(cur).sphere->inversed_t), t);
 		else if (cur->type == PLANE)
 			last_hit = hit_plane(ray_transform(*ray,
-					get_geo(cur).plane->inversed_t), t);
+						get_geo(cur).plane->inversed_t), t);
 		else if (cur->type == CYLINDER)
 			last_hit = hit_cylinder(cur->object, ray_transform(*ray,
-					get_geo(cur).cylinder->inversed_t), t);
+						get_geo(cur).cylinder->inversed_t), t);
 		if (last_hit)
 		{
 			if (t[0] != t[1])
@@ -439,7 +338,7 @@ int	t_color_to_int(t_color color)
 
 static void	key_hook(void *param)
 {
-	t_mlx *mlx;
+	t_mlx	*mlx;
 
 	mlx = (t_mlx *)param;
 	if (mlx_is_key_down(mlx->win_ptr, MLX_KEY_ESCAPE))

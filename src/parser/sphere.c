@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 17:21:27 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:01:34 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int	fill_coordinates(char *line, t_sphere *new_sphere)
 	char	**split;
 
 	split = ft_split(line, ',');
-	new_sphere->position.x = ft_atod(split[0]) / 1.5;
-	new_sphere->position.y = ft_atod(split[1]) / 1.5;
-	new_sphere->position.z = ft_atod(split[2]) / 1.5;
+	new_sphere->position.x = ft_atod(split[0]);
+	new_sphere->position.y = ft_atod(split[1]);
+	new_sphere->position.z = ft_atod(split[2]);
 	free_array(split);
 	return (OK);
 }
@@ -43,6 +43,7 @@ static void	fill_sphere_data(t_sphere *sphere, char **tokens)
 	sphere->transform = transform_sphere(sphere->position,
 			sphere->diameter);
 	invert_matrix(&sphere->transform, &sphere->inversed_t);
+	sphere->position = (t_coords) {0, 0, 0}; //change later
 	fill_colors(tokens[2], sphere);
 
 }
@@ -50,7 +51,7 @@ static void	fill_sphere_data(t_sphere *sphere, char **tokens)
 int	analyze_sphere(char *line, t_data *data)
 {
 	char		**token;
-	t_sphere	*new_sphere = NULL;
+	t_sphere	*new_sphere;
 
 	token = ft_split_space(line);
 	if (count_token(token, 3, "[sp] Sphere has wrong number of arguments\n"))

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
+/*   Updated: 2024/04/20 14:13:09 by rseelaen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -59,6 +71,10 @@ t_vec3		matrix_multiply_vector(const t_matrix m, const t_vec3 *point);
 t_vec3		subtract_vector(t_vec3 a, t_vec3 b);
 t_vec3		subtract_coords(t_coords a, t_coords b);
 void		print_matrix(t_matrix to_test);
+t_coords	add_tuple(t_coords a, t_coords b);
+t_coords	multiply_tuple(t_coords a, double scalar);
+t_coords	subtract_tuple(t_coords a, t_coords b);
+double		vector_length(t_vec3 v);
 
 // # Object lists ------------
 
@@ -76,8 +92,16 @@ void		free_array(char **array);
 double		ft_atod(char *str);
 size_t		ft_strxspn(const char *str, const char *set, int mode);
 
+// # Render ------------------
+
+t_geo_u		get_geo(t_object *object);
+t_vec3		sphere_normal(t_vec3 point, t_sphere *sphere);
+t_vec3		plane_normal(t_vec3 point, t_plane *plane);
+t_vec3		cylinder_normal(t_vec3 *point, t_cylinder *cy);
+t_vec3		get_normal(t_object *obj, t_vec3 point);
+
 // # TESTING -----------------
-void	print_objects(t_object *head);
-void	traverseBVH(t_bvh_node *node, int depth);
+void		print_objects(t_object *head);
+void		traverseBVH(t_bvh_node *node, int depth);
 
 #endif
