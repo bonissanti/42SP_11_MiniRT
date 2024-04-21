@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/20 18:35:07 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:12:18 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, double *t)
 // 	return (true);
 // }
 
+bool	check_cap(t_ray ray, double t, double radius)
+{
+	double x = ray.origin.x + t * ray.direction.x;
+	double z = ray.origin.z + t * ray.direction.z;
+
+	return (x * x + z * z <= radius * radius);
+}
+
 bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 {
 	t_bhaskara	bhask;
@@ -81,7 +89,7 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	bool		found_intersection;
 
 	init_bhask(&bhask, &result);
-	bhask.a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
+	bhask.a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
 	if (check_equal_doubles(bhask.a, 0))
 		return (false);
 	bhask.b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z

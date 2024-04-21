@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/20 14:13:09 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:56:06 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ size_t		ft_strxspn(const char *str, const char *set, int mode);
 t_geo_u		get_geo(t_object *object);
 t_vec3		sphere_normal(t_vec3 point, t_sphere *sphere);
 t_vec3		plane_normal(t_vec3 point, t_plane *plane);
-t_vec3		cylinder_normal(t_vec3 *point, t_cylinder *cy);
+t_vec3		cylinder_normal(t_vec3 point, t_cylinder *cy);
 t_vec3		get_normal(t_object *obj, t_vec3 point);
 
 // # TESTING -----------------

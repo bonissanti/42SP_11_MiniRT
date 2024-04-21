@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/20 15:16:51 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/21 18:55:02 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_color	get_diffuse(t_color ambient, t_comps comps, t_data data,
 	diffuse = multiply_color(c_data.color, DIFFUSE * c_data.light_dot_normal);
 	reflect = reflect_vector(multiply_vector(c_data.light, -1), comps.normalv);
 	reflect_dot_eye = dot_product(reflect, comps.eyev);
-	if (reflect_dot_eye <= 0)
+	if (reflect_dot_eye < 0)
 		return (add_colors(ambient, diffuse));
 	else
 	{
@@ -345,14 +345,32 @@ static void	key_hook(void *param)
 		mlx_close_window(mlx->win_ptr);
 }
 
+void	blank_image(mlx_image_t *img, int color)
+{
+	uint32_t		x;
+	uint32_t		y;
+
+	y = -1;
+	while (++y < img->height)
+	{
+		x = -1;
+		while (++x < img->width)
+			mlx_put_pixel(img, x, y, color);
+	}
+}
+
 void	render_scene(t_data *data, t_mlx *mlx)
 {
 	int		x;
 	int		y;
 	t_ray	ray;
 
+	// (void)data;
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
+	mlx_loop_hook(mlx->win_ptr, key_hook, mlx);
+	// blank_image(mlx->img_ptr, 0xff);
+	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering...\n");
 	y = -1;
 	while (++y < data->camera.height_v)
@@ -365,8 +383,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 				t_color_to_int(trace_ray2(data, ray)));
 		}
 		printf("Progress: %.2f%%\r", (float)y / HEIGHT * 100);
+		// mlx_put_string(mlx->win_ptr, "Rendering...", 0, 0);
 	}
-	mlx_loop_hook(mlx->win_ptr, key_hook, mlx);
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }

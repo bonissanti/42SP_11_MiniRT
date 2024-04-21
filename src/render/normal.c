@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:57:25 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/20 18:47:35 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:05:24 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,43 +37,20 @@ t_vec3	plane_normal(t_vec3 point, t_plane *plane)
 	return (normal);
 }
 
-// t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cyl)
-// {
-// 	t_coords	obj_point;
-// 	t_vec3		obj_normal;
-// 	t_vec3		normal;
-// 	double		dist;
-
-// 	obj_point = matrix_multiply_coords(cyl->inversed_t, point);
-// 	dist = pow(obj_point.x, 2) + pow(obj_point.z, 2);
-// 	if (dist < 1 && obj_point.y >= cyl->max - EPSILON)
-// 		obj_normal = set_vector(0, 1, 0);
-// 	else if (dist < 1 && obj_point.y <= cyl->min + EPSILON)
-// 		obj_normal = set_vector(0, -1, 0);
-// 	else
-// 		obj_normal = set_vector(obj_point.x, 0, obj_point.z);
-// 	normal = matrix_multiply_vector(transpose_matrix(&cyl->transform),
-// 			&obj_normal);
-// 	return (normal);
-// }
-
-t_vec3	cylinder_normal(t_vec3 *point, t_cylinder *cy)
+t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cy)
 {
-	t_vec3	base;
-	t_vec3	base_to_point;
-	t_vec3	closest_point_on_axis;
-	t_vec3	normal;
-	double	projection_length;
+	double	distance;
+	t_coords	obj_point;
+	t_vec3		normal;
 
-	base = (t_vec3){cy->position.x, cy->position.y,
-		cy->position.z};
-	base_to_point = subtract_tuple(matrix_multiply_coords(cy->inversed_t,
-				*point), base);
-	// base_to_point = base;
-	projection_length = dot_product(base_to_point, cy->vector);
-	closest_point_on_axis = add_tuple(cy->position, multiply_tuple(cy->vector,
-				projection_length));
-	normal = subtract_tuple(*point, closest_point_on_axis);
+	obj_point = matrix_multiply_coords(cy->inversed_t, point);
+	distance = obj_point.x * obj_point.x + obj_point.z * obj_point.z;
+	if (distance < 1 && obj_point.y - cy->height / 2 >= cy->max - EPSILON)
+		normal = set_vector(0, 1, 0);
+	else if (distance < 1 && obj_point.y - cy->height / 2 <= cy->min + EPSILON)
+		normal = set_vector(0, -1, 0);
+	else
+		normal = set_vector(obj_point.x, 0, obj_point.z);
 	normal = matrix_multiply_vector(transpose_matrix(&cy->transform),
 			&normal);
 	return (normal);
@@ -88,7 +65,7 @@ t_vec3	get_normal(t_object *obj, t_vec3 point)
 	if (obj->type == SPHERE)
 		normal = sphere_normal(point, geo.sphere);
 	else if (obj->type == CYLINDER)
-		normal = cylinder_normal(&point, geo.cylinder);
+		normal = cylinder_normal(point, geo.cylinder);
 	else
 		normal = plane_normal(point, geo.plane);
 	return (normalize_vector(normal));
