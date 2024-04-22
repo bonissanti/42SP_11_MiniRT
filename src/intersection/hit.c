@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/21 21:51:11 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/21 22:10:04 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ bool	intersect_caps(const t_cylinder *cyl, t_ray ray, double t[2])
 	bool	found_intersection;
 
 	found_intersection = false;
-	t_cap = (cyl->min - (ray.origin.y  - (cyl->height / 2))) / ray.direction.y;
+	t_cap = (cyl->min - (ray.origin.y)) / ray.direction.y;
 	if (check_cap(ray, t_cap, cyl->diameter * 2))
 	{
 		if (t_cap > EPSILON && t_cap < t[0])
@@ -73,7 +73,7 @@ bool	intersect_caps(const t_cylinder *cyl, t_ray ray, double t[2])
 			found_intersection = true;
 		}
 	}
-	t_cap = (cyl->max - (ray.origin.y  - (cyl->height / 2))) / ray.direction.y;
+	t_cap = (cyl->max - (ray.origin.y)) / ray.direction.y;
 	if (check_cap(ray, t_cap, cyl->diameter * 2))
 	{
 		if (t_cap > EPSILON && t_cap < t[1])
@@ -120,10 +120,10 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	}
 	if (found_intersection)
 	{
-		double intersection_y = (ray.origin.y - (cyl->height / 2)) + t[0] * ray.direction.y;
+		double intersection_y = (ray.origin.y) + t[0] * ray.direction.y;
 		if (intersection_y < cyl->min || intersection_y > cyl->max)
 			t[0] = INFINITY;
-		intersection_y = (ray.origin.y  - (cyl->height / 2)) + t[1] * ray.direction.y;
+		intersection_y = (ray.origin.y) + t[1] * ray.direction.y;
 		if (intersection_y < cyl->min || intersection_y > cyl->max)
 			t[1] = INFINITY;
 	}

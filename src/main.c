@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/11 11:58:08 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/21 23:35:48 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,18 @@
 // 	traverseBVH(node->right, depth + 1);
 // }
 
+static void	key_hook(void *param)
+{
+	t_mlx	*mlx;
+
+	mlx = (t_mlx *)param;
+	if (mlx_is_key_down(mlx->win_ptr, MLX_KEY_ESCAPE))
+	{
+		mlx_close_window(mlx->win_ptr);
+		// mlx_terminate(mlx->win_ptr);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_data		data;
@@ -73,7 +85,7 @@ int	main(int argc, char **argv)
 	else if (parse_lines(&data) == ERROR)
 		return (1);
 	render_scene(&data, &mlx);
-	// mlx_image_to_window(mlx.win_ptr, mlx.img_ptr, 0, 0);
+	mlx_loop_hook(mlx.win_ptr, key_hook, &mlx);
 	mlx_loop(mlx.win_ptr);
 	mlx_terminate(mlx.win_ptr);
 	free_objects(data.objects);

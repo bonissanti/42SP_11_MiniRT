@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/21 21:05:30 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/21 23:32:42 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,15 +326,6 @@ int	t_color_to_int(t_color color)
 	return ((red << 24) | (green << 16) | (blue << 8) | alpha);
 }
 
-static void	key_hook(void *param)
-{
-	t_mlx	*mlx;
-
-	mlx = (t_mlx *)param;
-	if (mlx_is_key_down(mlx->win_ptr, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx->win_ptr);
-}
-
 void	blank_image(mlx_image_t *img, int color)
 {
 	uint32_t		x;
@@ -355,12 +346,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 	int		y;
 	t_ray	ray;
 
-	// (void)data;
 	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
 	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
-	mlx_loop_hook(mlx->win_ptr, key_hook, mlx);
-	// blank_image(mlx->img_ptr, 0xff);
-	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering...\n");
 	y = -1;
 	while (++y < data->camera.height_v)
@@ -373,7 +360,6 @@ void	render_scene(t_data *data, t_mlx *mlx)
 				t_color_to_int(trace_ray2(data, ray)));
 		}
 		printf("Progress: %.2f%%\r", (float)y / HEIGHT * 100);
-		// mlx_put_string(mlx->win_ptr, "Rendering...", 0, 0);
 	}
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
