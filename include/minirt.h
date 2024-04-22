@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/21 18:56:06 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/21 21:06:25 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_coords	add_tuple(t_coords a, t_coords b);
 t_coords	multiply_tuple(t_coords a, double scalar);
 t_coords	subtract_tuple(t_coords a, t_coords b);
 double		vector_length(t_vec3 v);
+t_coords	multiply_vector(t_coords v, double scalar);
 
 // # Object lists ------------
 

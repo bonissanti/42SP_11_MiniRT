@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/21 18:55:02 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/21 21:05:30 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,6 @@ t_color	set_to_range_color(t_color color)
 	result.g = fmin(fmax(color.g, 0.0), 1.0);
 	result.b = fmin(fmax(color.b, 0.0), 1.0);
 	result.a = 1;
-	return (result);
-}
-
-t_coords	multiply_vector(t_coords v, double scalar)
-{
-	t_coords	result;
-
-	result.x = v.x * scalar;
-	result.y = v.y * scalar;
-	result.z = v.z * scalar;
 	return (result);
 }
 

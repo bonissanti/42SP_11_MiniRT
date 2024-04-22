@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tuple.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:00:42 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/20 13:01:25 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/21 21:06:10 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,15 @@ t_coords	subtract_tuple(t_coords a, t_coords b)
 	result.x = a.x - b.x;
 	result.y = a.y - b.y;
 	result.z = a.z - b.z;
+	return (result);
+}
+
+t_coords	multiply_vector(t_coords v, double scalar)
+{
+	t_coords	result;
+
+	result.x = v.x * scalar;
+	result.y = v.y * scalar;
+	result.z = v.z * scalar;
 	return (result);
 }

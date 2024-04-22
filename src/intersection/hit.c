@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/21 20:12:18 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/21 21:51:11 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,36 +50,39 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, double *t)
 	return (true);
 }
 
-// bool	hit_sphere(const t_sphere *sphere, t_ray ray, t_inter *xs)
-// {
-// 	t_vec3	sphere_to_ray;
-// 	t_bhaskara bhask;
-// 	t_bhaskara result;
-//
-// 	init_bhask(&bhask, &result);
-// 	sphere_to_ray = subtract_coords(ray.origin, sphere->position);
-// 	bhask.a = dot_product(ray.direction, ray.direction);
-// 	bhask.b = 2.0 * dot_product(sphere_to_ray, ray.direction);
-// 	bhask.c = dot_product(sphere_to_ray, sphere_to_ray) - 1;
-//
-// 	result = solve_bhaskara(bhask);
-// 	if (result.status == NO_REAL_ROOTS)
-// 		return (false);
-// 	if (result.root1 > EPSILON && result.root1 < INFINITY)
-// 		xs->t[0] = result.root1;
-// 	else if (result.root2 > EPSILON && result.root2 < INFINITY && result.root1 < result.root2)
-// 		xs->t[1] = result.root2;
-// 	else
-// 		return (false);
-// 	return (true);
-// }
-
 bool	check_cap(t_ray ray, double t, double radius)
 {
 	double x = ray.origin.x + t * ray.direction.x;
 	double z = ray.origin.z + t * ray.direction.z;
 
 	return (x * x + z * z <= radius * radius);
+}
+
+bool	intersect_caps(const t_cylinder *cyl, t_ray ray, double t[2])
+{
+	double	t_cap;
+	bool	found_intersection;
+
+	found_intersection = false;
+	t_cap = (cyl->min - (ray.origin.y  - (cyl->height / 2))) / ray.direction.y;
+	if (check_cap(ray, t_cap, cyl->diameter * 2))
+	{
+		if (t_cap > EPSILON && t_cap < t[0])
+		{
+			t[0] = t_cap;
+			found_intersection = true;
+		}
+	}
+	t_cap = (cyl->max - (ray.origin.y  - (cyl->height / 2))) / ray.direction.y;
+	if (check_cap(ray, t_cap, cyl->diameter * 2))
+	{
+		if (t_cap > EPSILON && t_cap < t[1])
+		{
+			t[1] = t_cap;
+			found_intersection = true;
+		}
+	}
+	return (found_intersection);
 }
 
 bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
@@ -91,7 +94,7 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	init_bhask(&bhask, &result);
 	bhask.a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
 	if (check_equal_doubles(bhask.a, 0))
-		return (false);
+		return (intersect_caps(cyl, ray, t));
 	bhask.b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z
 		* ray.direction.z;
 	bhask.c = (ray.origin.x * ray.origin.x) + (ray.origin.z * ray.origin.z) - 1;
@@ -124,6 +127,7 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 		if (intersection_y < cyl->min || intersection_y > cyl->max)
 			t[1] = INFINITY;
 	}
+	intersect_caps(cyl, ray, t);
 	return (found_intersection);
 }
 
