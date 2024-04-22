@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/21 21:06:25 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:24:36 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_coords	multiply_vector(t_coords v, double scalar);
 
 int			add_objects(t_data *data, void *obj, t_object_type type);
 void		free_objects(t_object *objects);
+void    	add_to_list(t_object *cur, double t, t_inter_list **inter_list);
 
 // # Aux ---------------------
 
@@ -100,6 +101,14 @@ t_vec3		sphere_normal(t_vec3 point, t_sphere *sphere);
 t_vec3		plane_normal(t_vec3 point, t_plane *plane);
 t_vec3		cylinder_normal(t_vec3 point, t_cylinder *cy);
 t_vec3		get_normal(t_object *obj, t_vec3 point);
+
+// # Color -------------------
+
+t_color	    multiply_color(t_color color, double scalar);
+t_color 	add_colors(t_color a, t_color b);
+t_color 	set_to_range_color(t_color color);
+t_color 	set_color(double color[3]);
+int	        t_color_to_int(t_color color);
 
 // # TESTING -----------------
 void		print_objects(t_object *head);

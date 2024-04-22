@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/21 23:32:42 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:24:55 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,39 +26,6 @@ t_geo_u	get_geo(t_object *object)
 	else
 		geo.sphere = NULL;
 	return (geo);
-}
-
-t_color	multiply_color(t_color color, double scalar)
-{
-	t_color	result;
-
-	result.r = color.r * scalar;
-	result.g = color.g * scalar;
-	result.b = color.b * scalar;
-	result.a = 1;
-	return (result);
-}
-
-t_color	add_colors(t_color a, t_color b)
-{
-	t_color	result;
-
-	result.r = a.r + b.r;
-	result.g = a.g + b.g;
-	result.b = a.b + b.b;
-	result.a = 1;
-	return (result);
-}
-
-t_color	set_to_range_color(t_color color)
-{
-	t_color	result;
-
-	result.r = fmin(fmax(color.r, 0.0), 1.0);
-	result.g = fmin(fmax(color.g, 0.0), 1.0);
-	result.b = fmin(fmax(color.b, 0.0), 1.0);
-	result.a = 1;
-	return (result);
 }
 
 t_vec3	reflect_vector(t_vec3 in, t_vec3 normal)
@@ -112,6 +79,7 @@ void	intersect_object(t_ray ray, t_object *obj, double *t,
 {
 	t[0] = -1.0;
 	t[1] = -1.0;
+	// (void)origin_obj;
 	if (obj == origin_obj)
 		return ;
 	if (obj->type == SPHERE)
@@ -154,17 +122,6 @@ bool is_in_shadow(t_comps *closest, t_light light, t_object *objects,
 		obj = obj->next;
 	}
 	return (false);
-}
-
-t_color	set_color(double color[3])
-{
-	t_color	result;
-
-	result.r = color[0];
-	result.g = color[1];
-	result.b = color[2];
-	result.a = 1;
-	return (result);
 }
 
 t_color	get_color(t_data *data, t_comps *closest)
@@ -227,13 +184,6 @@ t_comps	prepare_comps(t_inter inter, t_ray ray)
 	computations.reflectv = reflect_vector(ray.direction, computations.normalv);
 	computations.object = inter.object;
 	return (computations);
-}
-
-void	add_to_list(t_object *cur, double t,
-	t_inter_list **inter_list)
-{
-	add_inter_list_back(inter_list, (t_inter){t, (t_vec3){0, 0, 0},
-		(t_vec3){0, 0, 0}, cur});
 }
 
 bool	intersection_obj(t_object *object, t_ray *ray,
@@ -310,34 +260,6 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	ray.origin = camera->origin;
 	ray.direction = normalize_vector(subtract_coords(pixel, ray.origin));
 	return (ray);
-}
-
-int	t_color_to_int(t_color color)
-{
-	int	red;
-	int	green;
-	int	blue;
-	int	alpha;
-
-	red = (int)(color.r * 255.999);
-	green = (int)(color.g * 255.999);
-	blue = (int)(color.b * 255.999);
-	alpha = (int)(color.a * 255.999);
-	return ((red << 24) | (green << 16) | (blue << 8) | alpha);
-}
-
-void	blank_image(mlx_image_t *img, int color)
-{
-	uint32_t		x;
-	uint32_t		y;
-
-	y = -1;
-	while (++y < img->height)
-	{
-		x = -1;
-		while (++x < img->width)
-			mlx_put_pixel(img, x, y, color);
-	}
 }
 
 void	render_scene(t_data *data, t_mlx *mlx)

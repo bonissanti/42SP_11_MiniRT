@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:30 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/14 23:47:48 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:23:26 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,9 @@ void	free_objects(t_object *objects)
 	}
 }
 
+void	add_to_list(t_object *cur, double t,
+	t_inter_list **inter_list)
+{
+	add_inter_list_back(inter_list, (t_inter){t, (t_vec3){0, 0, 0},
+		(t_vec3){0, 0, 0}, cur});
+}

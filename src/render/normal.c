@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:57:25 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/21 22:09:06 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:52:48 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,13 @@ t_vec3	plane_normal(t_vec3 point, t_plane *plane)
 
 t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cy)
 {
-	double	distance;
 	t_coords	obj_point;
 	t_vec3		normal;
 
 	obj_point = matrix_multiply_coords(cy->inversed_t, point);
-	distance = obj_point.x * obj_point.x + obj_point.z * obj_point.z;
-	if (distance < 1 && obj_point.y >= cy->max - EPSILON)
+	if (obj_point.y >= cy->max - EPSILON)
 		normal = set_vector(0, 1, 0);
-	else if (distance < 1 && obj_point.y <= cy->min + EPSILON)
+	else if (obj_point.y <= cy->min + EPSILON)
 		normal = set_vector(0, -1, 0);
 	else
 		normal = set_vector(obj_point.x, 0, obj_point.z);

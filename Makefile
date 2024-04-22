@@ -41,7 +41,8 @@ BVH			= bvh/create_bvh.c			\
 			bvh/sort_list.c				
 
 RENDER		= render/render.c \
-			  render/normal.c
+			  render/normal.c \
+			  render/color.c
 
 INTER		= intersection/hit.c \
 			  intersection/intersections.c \

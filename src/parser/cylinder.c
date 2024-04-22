@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/21 20:05:32 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 14:09:15 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ static void	fill_cylinder_data(t_cylinder *cyl, char **tokens)
 	cyl->transform = transform_cylinder(cyl->position,
 			cyl->diameter, cyl->vector);
 	invert_matrix(&cyl->transform, &cyl->inversed_t);
-	cyl->position = (t_coords) {0, 0, 0}; //change later
+	cyl->position = (t_coords) {0, 0, 0};
+	cyl->vector = (t_coords) {0, 1, 0};
 	fill_colors(tokens[4], cyl);
 }
 
