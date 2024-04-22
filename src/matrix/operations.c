@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/10 15:07:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:51:39 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ t_matrix	scaling_matrix(double sx, double sy, double sz)
 	scaling.matrix[0][0] = sx;
 	scaling.matrix[1][1] = sy;
 	scaling.matrix[2][2] = sz;
-	return (scaling);	
+	return (scaling);
 }
 
-t_matrix	translation_matrix(double	tx, double ty, double tz)
+t_matrix	translation_matrix(double tx, double ty, double tz)
 {
 	t_matrix	result;
 
@@ -143,7 +143,7 @@ t_matrix	arbitrary_rotation_xy(double x_angle, double y_angle)
 
 	rotation_x = simple_rotation_x(x_angle);
 	rotation_y = simple_rotation_y(y_angle);
-	result = matrix_multiply(&rotation_x, &rotation_y);
+	result = matrix_multiply(&rotation_y, &rotation_x);
 	return (result);
 }
 
@@ -155,7 +155,7 @@ t_matrix	arbitrary_rotation_zx(double z_angle, double x_angle)
 
 	rotation_z = simple_rotation_z(z_angle);
 	rotation_x = simple_rotation_x(x_angle);
-	result = matrix_multiply(&rotation_z, &rotation_x);
+	result = matrix_multiply(&rotation_x, &rotation_z);
 	return (result);
 }
 

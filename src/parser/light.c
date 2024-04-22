@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/17 00:10:43 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 18:19:30 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ int	set_brightness(char *bright_line, t_data *data)
 
 static int	fill_coordnates(char *cam_line, t_data *data)
 {
-	char **split_line;
+	char	**split_line;
 
 	split_line = ft_split(cam_line, ',');
-	data->light.position.x = ft_atod(split_line[0]) / 1.5;
-	data->light.position.y = ft_atod(split_line[1]) / 1.5;
-	data->light.position.z = ft_atod(split_line[2]) / 1.5;
+	data->light.position.x = ft_atod(split_line[0]);
+	data->light.position.y = ft_atod(split_line[1]);
+	data->light.position.z = ft_atod(split_line[2]);
 	free_array(split_line);
 	return (OK);
 }
 
 int	analyze_light(char *line, t_data *data)
 {
-	char **token;
+	char	**token;
 
 	token = ft_split_space(line);
 	if (count_token(token, 2, "Light has wrong number of arguments\n"))

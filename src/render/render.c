@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/22 13:24:55 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 18:34:45 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,8 +281,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray2(data, ray)));
 		}
-		printf("Progress: %.2f%%\r", (float)y / HEIGHT * 100);
+		printf("\rProgress: %.2f%%\r", (float)y / HEIGHT * 100);
 	}
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
-	printf("Rendering done\n");
+	printf("\e[1;32mRendering done\n\e[0m");
 }

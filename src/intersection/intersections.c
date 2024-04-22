@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/16 09:44:56 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/22 18:06:00 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,25 +162,3 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 	}
 	return (found);
 }
-
-// bool	find_closest_inter2(t_inter_list *head)
-// {
-// 	bool			found;
-// 	t_inter_list	*current;
-// 	double			current_closest_t;
-
-// 	current = head;
-// 	found = false;
-// 	current_closest_t = INFINITY;
-// 	while (current)
-// 	{
-// 		if (current->inter.t < current_closest_t && current->inter.t > EPSILON)
-// 		{
-// 			current_closest_t = current->inter.t;
-// 			found = true;
-// 		}
-// 		current = current->next;
-// 	}
-// 	return (found);
-// }
-
