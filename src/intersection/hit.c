@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 13:14:51 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:18:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,52 +51,84 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, double *t)
 	return (true);
 }
 
+bool	check_cap(t_ray ray, double t, double radius)
+{
+	double x = ray.origin.x + t * ray.direction.x;
+	double z = ray.origin.z + t * ray.direction.z;
+
+	return (x * x + z * z <= radius * radius);
+}
+
+bool	intersect_caps(const t_cylinder *cyl, t_ray ray, double t[2])
+{
+	double	t_cap;
+	bool	found_intersection;
+
+	found_intersection = false;
+	t_cap = (cyl->min - (ray.origin.y)) / ray.direction.y;
+	if (check_cap(ray, t_cap, cyl->diameter * 2))
+	{
+		if (t_cap > EPSILON && t_cap < t[0])
+		{
+			t[0] = t_cap;
+			found_intersection = true;
+		}
+	}
+	t_cap = (cyl->max - (ray.origin.y)) / ray.direction.y;
+	if (check_cap(ray, t_cap, cyl->diameter * 2))
+	{
+		if (t_cap > EPSILON && t_cap < t[1])
+		{
+			t[1] = t_cap;
+			found_intersection = true;
+		}
+	}
+	return (found_intersection);
+}
+
 bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 {
 	t_bhaskara	bhask;
 	t_bhaskara	result;
-	double		y1;
-	double		y2;
-	bool		within_limits_t1;
-	bool		within_limits_t2;
 	bool		found_intersection;
 
 	init_bhask(&bhask, &result);
-	bhask.a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
+	bhask.a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
 	if (check_equal_doubles(bhask.a, 0))
-		return (false);
-	bhask.b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z
-			* ray.direction.z);
-	bhask.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - 1;
+		return (intersect_caps(cyl, ray, t));
+	bhask.b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z
+		* ray.direction.z;
+	bhask.c = (ray.origin.x * ray.origin.x) + (ray.origin.z * ray.origin.z) - 1;
 	result = solve_bhaskara(bhask);
 	if (result.status == NO_REAL_ROOTS)
 		return (false);
-	// verifica os limites de altura ṕara as duas raizes
-	y1 = ray.origin.y + bhask.root1 * ray.direction.y;
-	y2 = ray.origin.y + bhask.root2 * ray.direction.y;
-	within_limits_t1 = y1 >= cyl->min && y1 <= cyl->max;
-	within_limits_t2 = y2 >= cyl->min && y2 <= cyl->max;
-	// define as interseções
 	found_intersection = false;
-	if (result.status == TWO_REAL_ROOTS || result.status == ONE_REAL_ROOTS)
+	if (result.root1 > 0)
 	{
-		if (result.root1 > 0 && within_limits_t1)
-		{
-			t[0] = t[1] = result.root1;
-			found_intersection = true;
-		}
-		if (result.root2 > 0 && within_limits_t2)
-		{
-			if (!found_intersection || result.root2 < t[0])
-			{
-				t[1] = t[0];
-				t[0] = result.root2;
-			}
-			else
-				t[1] = result.root2;
-			found_intersection = true;
-		}
+		t[0] = t[1] = result.root1;
+		found_intersection = true;
 	}
+	if (result.root2 > 0)
+	{
+		if (!found_intersection || result.root2 < t[0])
+		{
+			t[1] = t[0];
+			t[0] = result.root2;
+		}
+		else
+			t[1] = result.root2;
+		found_intersection = true;
+	}
+	if (found_intersection)
+	{
+		double intersection_y = (ray.origin.y) + t[0] * ray.direction.y;
+		if (intersection_y < cyl->min || intersection_y > cyl->max)
+			t[0] = INFINITY;
+		intersection_y = (ray.origin.y) + t[1] * ray.direction.y;
+		if (intersection_y < cyl->min || intersection_y > cyl->max)
+			t[1] = INFINITY;
+	}
+	intersect_caps(cyl, ray, t);
 	return (found_intersection);
 }
 

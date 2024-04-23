@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 12:43:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:43:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,20 @@ static int	fill_vector(char *line, t_cylinder *new_cylinder)
 	return (OK);
 }
 
-static void	fill_cylinder_data(t_cylinder *cylinder, char **tokens)
+static void	fill_cylinder_data(t_cylinder *cyl, char **tokens)
 {
-	fill_coordinates(tokens[0], cylinder);
-	fill_vector(tokens[1], cylinder);
-	cylinder->diameter = ft_atod(tokens[2]);
-	cylinder->height = ft_atod(tokens[3]);
-	cylinder->max = cylinder->height / 2;
-	cylinder->min = -cylinder->height / 2;
-	cylinder->transform = transform_cylinder(cylinder->position,
-			cylinder->diameter / 2, cylinder->vector);
-	invert_matrix(&cylinder->transform, &cylinder->inversed_t);
-	fill_colors(tokens[4], cylinder);
+	fill_coordinates(tokens[0], cyl);
+	fill_vector(tokens[1], cyl);
+	cyl->diameter = ft_atod(tokens[2]) / 2;
+	cyl->height = ft_atod(tokens[3]);
+	cyl->max = cyl->height / 2;
+	cyl->min = -(cyl->height / 2);
+	cyl->transform = transform_cylinder(cyl->position,
+			cyl->diameter, cyl->vector);
+	invert_matrix(&cyl->transform, &cyl->inversed_t);
+	cyl->position = (t_coords) {0, 0, 0};
+	cyl->vector = (t_coords) {0, 1, 0};
+	fill_colors(tokens[4], cyl);
 }
 
 int	analyze_cylinder(char *line, t_data *data)

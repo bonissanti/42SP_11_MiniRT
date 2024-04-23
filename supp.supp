@@ -14,3 +14,17 @@
    ...
    fun:???
 }
+
+{
+   glfw
+   Memcheck:Leak
+   ...
+   fun:???
+}
+
+{
+   glfw3
+   Memcheck:Leak
+   ...
+   fun:???
+}

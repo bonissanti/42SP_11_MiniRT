@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:00:08 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 12:03:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:36:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_matrix	simple_rotation_y(double angle)
 	return (rotation);
 }
 
-t_matrix	simple_rotation_z(double angle)
+t_matrix simple_rotation_z(double angle)
 {
 	t_matrix	rotation;
 
@@ -47,3 +47,4 @@ t_matrix	simple_rotation_z(double angle)
 	rotation.matrix[1][1] = cos(angle);
 	return (rotation);
 }
+

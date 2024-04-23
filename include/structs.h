@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 14:26:34 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:17:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ typedef struct s_light
 
 typedef struct s_amblight
 {
-	double				ratio;
-	int					color[3];
-}						t_amblight;
+	double					ratio;
+	double					color[3];
+}							t_amblight;
 
 /*	Objects */
 

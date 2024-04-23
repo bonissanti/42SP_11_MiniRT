@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_objects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:30 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 13:16:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:18:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,11 @@ void	free_objects(t_object *objects)
 		free(current);
 		current = next;
 	}
+}
+
+void	add_to_list(t_object *cur, double t,
+	t_inter_list **inter_list)
+{
+	add_inter_list_back(inter_list, (t_inter){t, (t_vec3){0, 0, 0},
+		(t_vec3){0, 0, 0}, cur});
 }

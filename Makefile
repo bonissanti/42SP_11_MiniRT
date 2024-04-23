@@ -43,6 +43,8 @@ PARSER 		= parser/aux_functions.c 	\
 # 			bvh/sort_list.c				
 
 RENDER		= render/render.c \
+			  render/normal.c \
+			  render/color.c
 
 INTER		= intersection/hit.c \
 			  intersection/intersections.c \
@@ -51,7 +53,8 @@ INTER		= intersection/hit.c \
 
 OPERATIONS	= operations/vector.c \
 			  operations/coords.c \
-			  operations/others.c
+			  operations/others.c \
+			  operations/tuple.c
 
 MATRIX		= matrix/matrix.c \
 			  matrix/inverse.c \

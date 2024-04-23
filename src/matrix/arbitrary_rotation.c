@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:59:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 12:00:59 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:37:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_matrix	arbitrary_rotation_xy(double x_angle, double y_angle)
 
 	rotation_x = simple_rotation_x(x_angle);
 	rotation_y = simple_rotation_y(y_angle);
-	result = matrix_multiply(&rotation_x, &rotation_y);
+	result = matrix_multiply(&rotation_y, &rotation_x);
 	return (result);
 }
 
@@ -32,6 +32,6 @@ t_matrix	arbitrary_rotation_zx(double z_angle, double x_angle)
 
 	rotation_z = simple_rotation_z(z_angle);
 	rotation_x = simple_rotation_x(x_angle);
-	result = matrix_multiply(&rotation_z, &rotation_x);
+	result = matrix_multiply(&rotation_x, &rotation_z);
 	return (result);
 }

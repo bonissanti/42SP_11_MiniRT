@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:40 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 12:43:33 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 13:06:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	analyze_plane(char *line, t_data *data)
 	if (count_token(token, 3, "Plane has wrong number of arguments"))
 		return (ERROR);
 	new_plane = malloc(sizeof(t_plane));
+	ft_bzero(new_plane, 0);
 	if (set_coordinates(token[0]) == ERROR || set_vector_3d(token[1]) == ERROR
 		|| set_colors(token[2]) == ERROR || !new_plane)
 	{
