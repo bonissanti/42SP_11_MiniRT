@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/11 19:28:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:49:27 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 /* config window */
 
-# define HEIGHT 700
+# define HEIGHT 750
 # define WIDTH 1000
 # define TITLE "miniRTARDOS"
 

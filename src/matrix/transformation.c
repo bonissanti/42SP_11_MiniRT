@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/04 11:42:16 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:18:57 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ t_matrix	transform_cylinder(t_coords coords, double radius, t_vec3 orientation)
 	t_matrix	scaling;
 	t_matrix	rotation;
 	t_matrix	temp_rot;
-	
-	rotation = verify_orientation(orientation);
-	scaling = scaling_matrix(radius, 1, radius);
+
 	translation = translation_matrix(coords.x, coords.y, coords.z);
+	scaling = scaling_matrix(radius, 1, radius);
+	rotation = verify_orientation(orientation);
 	temp_rot = matrix_multiply(&rotation, &scaling);
 	transform = matrix_multiply(&translation, &temp_rot);
 	return (transform);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 00:31:33 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/23 16:36:39 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,17 @@ static void	fill_cylinder_data(t_cylinder *cyl, char **tokens)
 {
 	fill_coordinates(tokens[0], cyl);
 	fill_vector(tokens[1], cyl);
-	cyl->diameter = ft_atod(tokens[2]) / 2;
+	cyl->diameter = ft_atod(tokens[2]);
 	cyl->height = ft_atod(tokens[3]);
 	cyl->max = cyl->height / 2;
 	cyl->min = -(cyl->height / 2);
 	cyl->transform = transform_cylinder(cyl->position,
-			cyl->diameter, cyl->vector);
+			cyl->diameter / 2, cyl->vector);
 	invert_matrix(&cyl->transform, &cyl->inversed_t);
-	// cyl->position = (t_coords) {0, 0, 0};
-	// cyl->vector = (t_coords) {0, 1, 0};
+	cyl->position = (t_coords){0, 0, 0};
+	cyl->vector = (t_coords){0, 1, 0};
 	print_matrix(cyl->transform);
-	print_matrix(cyl->inversed_t);
+	// print_matrix(cyl->inversed_t);
 	printf("\n");
 	fill_colors(tokens[4], cyl);
 }

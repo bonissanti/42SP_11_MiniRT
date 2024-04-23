@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:57:25 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/23 00:04:54 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/23 16:45:12 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cy)
 	distance = obj_point.x * obj_point.x + obj_point.z * obj_point.z;
 	if (distance < 1 && obj_point.y >= cy->max - EPSILON)
 		normal = set_vector(0, 1, 0);
-	else if (distance < 1 &&  obj_point.y <= cy->min + EPSILON)
+	else if (distance < 1 && obj_point.y <= cy->min + EPSILON)
 		normal = set_vector(0, -1, 0);
 	else
 		normal = set_vector(obj_point.x, 0, obj_point.z);
-	normal = matrix_multiply_vector(transpose_matrix(&cy->transform),
+	normal = matrix_multiply_vector(cy->transform,
 			&normal);
 	return (normal);
 }

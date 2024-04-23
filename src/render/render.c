@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/23 15:16:22 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/23 16:54:26 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ typedef struct s_color_data //MOVE THIS
 t_vec3	is_inside(t_vec3 eyev, t_vec3 normal)
 {
 
-	if (dot_product(eyev, normal) >= 0)
-		return (normal);
-	normal = multiply_vector(normal, -1);
+	if (dot_product(eyev, normal) < 0)
+		return (multiply_vector(normal, -1));
 	return (normal);
 }
 
@@ -281,6 +280,7 @@ void	render_scene(t_data *data, t_mlx *mlx)
 		}
 		printf("Progress: %.2f%%\r", (float)y / HEIGHT * 100);
 	}
+	mlx_put_string(mlx->win_ptr, "Rendering done", 10, 10);
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering done\n");
 }
