@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 16:57:49 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:07:32 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,5 +196,5 @@ t_matrix	verify_orientation(t_vec3 orientation)
 	if (check_equal_doubles(orientation.y, 0))
 		return (arbitrary_rotation_xy(M_PI / 2, atan2(orientation.x, orientation.z)));
 	else
-	 	return (arbitrary_rotation_zx(atan2(orientation.z, orientation.y), atan2(-orientation.x, orientation.y)));
+	 	return (arbitrary_rotation_zx(atan2(-orientation.x, orientation.y), atan2(orientation.z, orientation.y)));
 }
