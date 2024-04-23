@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/22 18:55:26 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/23 00:31:33 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,11 @@ static void	fill_cylinder_data(t_cylinder *cyl, char **tokens)
 	cyl->transform = transform_cylinder(cyl->position,
 			cyl->diameter, cyl->vector);
 	invert_matrix(&cyl->transform, &cyl->inversed_t);
-	cyl->position = (t_coords) {0, 0, 0};
-	cyl->vector = (t_coords) {0, 1, 0};
+	// cyl->position = (t_coords) {0, 0, 0};
+	// cyl->vector = (t_coords) {0, 1, 0};
 	print_matrix(cyl->transform);
 	print_matrix(cyl->inversed_t);
+	printf("\n");
 	fill_colors(tokens[4], cyl);
 }
 

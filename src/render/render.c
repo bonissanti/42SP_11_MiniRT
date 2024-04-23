@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/22 18:34:45 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:16:22 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	intersect_object(t_ray ray, t_object *obj, double *t,
 {
 	t[0] = -1.0;
 	t[1] = -1.0;
+	
 	// (void)origin_obj;
 	if (obj == origin_obj)
 		return ;
@@ -98,15 +99,13 @@ double	vector_length(t_vec3 v)
 	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-bool is_in_shadow(t_comps *closest, t_light light, t_object *objects,
-	t_vec3 normal)
+bool is_in_shadow(t_comps *closest, t_light light, t_object *objects)
 {
 	t_object	*obj;
 	t_ray		shadow_ray;
 	double		light_distance;
 	double		t[2];
 
-	(void)normal;
 	shadow_ray.origin = closest->over_point;
 	shadow_ray.direction = normalize_vector(subtract_tuple(light.position,
 				shadow_ray.origin));
@@ -137,14 +136,13 @@ t_color	get_color(t_data *data, t_comps *closest)
 		color = set_color(get_geo(closest->object).plane->color);
 	else
 		color = set_color(get_geo(closest->object).cylinder->color);
-	// color = add_colors(color, set_color(data->amblight.color));
 	color = multiply_color(color, data->light.brightness);
 	light = normalize_vector(subtract_coords(data->light.position,
 				closest->over_point));
 	ambient = multiply_color(color, data->amblight.ratio);
 	light_dot_normal = dot_product(light, closest->normalv);
 	if (light_dot_normal < 0
-		|| is_in_shadow(closest, data->light, data->objects, closest->normalv))
+		|| is_in_shadow(closest, data->light, data->objects))
 		return (set_to_range_color(ambient));
 	return (set_to_range_color(get_diffuse(ambient, *closest, *data,
 				(t_color_data){color, light, light_dot_normal})));
@@ -281,8 +279,8 @@ void	render_scene(t_data *data, t_mlx *mlx)
 			mlx_put_pixel(mlx->img_ptr, x, y,
 				t_color_to_int(trace_ray2(data, ray)));
 		}
-		printf("\rProgress: %.2f%%\r", (float)y / HEIGHT * 100);
+		printf("Progress: %.2f%%\r", (float)y / HEIGHT * 100);
 	}
 	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
-	printf("\e[1;32mRendering done\n\e[0m");
+	printf("Rendering done\n");
 }
