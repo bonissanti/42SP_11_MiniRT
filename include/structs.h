@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/21 20:05:37 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/23 22:00:59 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,13 @@ typedef struct s_color
 	double					b;
 	double					a;
 }							t_color;
+
+typedef struct s_color_data 
+{
+	t_color		color;
+	t_vec3		light;
+	double		light_dot_normal;
+}				t_color_data;
 
 /*	Struct BVH */
 

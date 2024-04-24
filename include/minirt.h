@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/22 13:24:36 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/23 22:05:04 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ t_vec3		plane_normal(t_vec3 point, t_plane *plane);
 t_vec3		cylinder_normal(t_vec3 point, t_cylinder *cy);
 t_vec3		get_normal(t_object *obj, t_vec3 point);
 
+t_vec3	    reflect_vector(t_vec3 in, t_vec3 normal);
+
 // # Color -------------------
 
 t_color	    multiply_color(t_color color, double scalar);
@@ -109,6 +111,8 @@ t_color 	add_colors(t_color a, t_color b);
 t_color 	set_to_range_color(t_color color);
 t_color 	set_color(double color[3]);
 int	        t_color_to_int(t_color color);
+
+t_color	    get_color(t_data *data, t_comps *closest);
 
 // # TESTING -----------------
 void		print_objects(t_object *head);

@@ -40,9 +40,10 @@ BVH			= bvh/create_bvh.c			\
 			bvh/get_quadrant.c			\
 			bvh/sort_list.c				
 
-RENDER		= render/render.c \
-			  render/normal.c \
-			  render/color.c
+RENDER		= render/render.c			\
+			  render/normal.c			\
+			  render/color.c			\
+			  render/get_color.c
 
 INTER		= intersection/hit.c \
 			  intersection/intersections.c \
