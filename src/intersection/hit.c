@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 16:58:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 12:18:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:20:57 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,11 @@ bool	hit_sphere(const t_sphere *sphere, t_ray ray, double *t)
 
 bool	check_cap(t_ray ray, double t, double radius)
 {
-	double x = ray.origin.x + t * ray.direction.x;
-	double z = ray.origin.z + t * ray.direction.z;
+	double	x;
+	double	z;
 
+	x = ray.origin.x + t * ray.direction.x;
+	z = ray.origin.z + t * ray.direction.z;
 	return (x * x + z * z <= radius * radius);
 }
 
@@ -91,9 +93,11 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	t_bhaskara	bhask;
 	t_bhaskara	result;
 	bool		found_intersection;
+	double		intersection_y;
 
 	init_bhask(&bhask, &result);
-	bhask.a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
+	bhask.a = (ray.direction.x * ray.direction.x) + (ray.direction.z
+			* ray.direction.z);
 	if (check_equal_doubles(bhask.a, 0))
 		return (intersect_caps(cyl, ray, t));
 	bhask.b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z
@@ -121,7 +125,7 @@ bool	hit_cylinder(const t_cylinder *cyl, t_ray ray, double t[2])
 	}
 	if (found_intersection)
 	{
-		double intersection_y = (ray.origin.y) + t[0] * ray.direction.y;
+		intersection_y = (ray.origin.y) + t[0] * ray.direction.y;
 		if (intersection_y < cyl->min || intersection_y > cyl->max)
 			t[0] = INFINITY;
 		intersection_y = (ray.origin.y) + t[1] * ray.direction.y;

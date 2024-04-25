@@ -6,55 +6,27 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 12:17:58 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:20:51 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-// void	print_objects(t_object *head)
-// {
-// 	t_object	*current;
-// 	t_sphere	*sphere;
-// 	int			i;
-//
-// 	current = head;
-// 	i = 0;
-// 	printf("\nPrinting objects\n----------------\n");
-// 	while (current != NULL)
-// 	{
-// 		sphere = (t_sphere *)current->object;
-// 		printf("Object %d: %f %f %f\n", i, sphere->position.x,
-// 			sphere->position.y, sphere->position.z);
-// 		current = current->next;
-// 		i++;
-// 	}
-// }
+void	print_matrix(t_matrix to_test)
+{
+	int	x;
+	int	y;
 
-// void	traverseBVH(t_bvh_node *node, int depth)
-// {
-// 	if (node == NULL)
-// 	{
-// 		return ;
-// 	}
-// 	// Print indentation based on depth
-// 	for (int i = 0; i < depth; ++i)
-// 	{
-// 		printf("  ");
-// 	}
-// 	// Print node's bounding box coordinates
-// 	if (node->object != NULL)
-// 		printf("Leaf: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)\n",
-// 			node->bbox.min.x, node->bbox.min.y, node->bbox.min.z,
-// 			node->bbox.max.x, node->bbox.max.y, node->bbox.max.z);
-// 	else
-// 		printf("Inner Node: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)\n",
-// 			node->bbox.min.x, node->bbox.min.y, node->bbox.min.z,
-// 			node->bbox.max.x, node->bbox.max.y, node->bbox.max.z);
-// 	// Traverse left and right subtrees
-// 	traverseBVH(node->left, depth + 1);
-// 	traverseBVH(node->right, depth + 1);
-// }
+	y = -1;
+	while (++y < 4)
+	{
+		x = -1;
+		while (++x < 4)
+			printf("%f ", to_test.matrix[y][x]);
+		printf("\n");
+	}
+	printf("\n");
+}
 
 static void	key_hook(void *param)
 {
@@ -62,10 +34,7 @@ static void	key_hook(void *param)
 
 	mlx = (t_mlx *)param;
 	if (mlx_is_key_down(mlx->win_ptr, MLX_KEY_ESCAPE))
-	{
 		mlx_close_window(mlx->win_ptr);
-		// mlx_terminate(mlx->win_ptr);
-	}
 }
 
 int	main(int argc, char **argv)

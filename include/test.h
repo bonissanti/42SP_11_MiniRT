@@ -1,15 +1,27 @@
-# ifndef TEST_H
-#define TEST_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/23 14:53:38 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/23 14:53:47 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include <assert.h>
+#ifndef TEST_H
+# define TEST_H
+
 # include "minirt.h"
+# include <assert.h>
 
-# define RED	"\x1b[91m" 
-# define GREEN	"\x1b[92m"
+# define RED "\x1b[91m"
+# define GREEN "\x1b[92m"
 # define F_WHITE "\x1b[37m"
-# define L_GRAY	"\x1b[90m"
-# define BOLD	"\x1b[1m"
-# define RESET	"\x1b[0m"
+# define L_GRAY "\x1b[90m"
+# define BOLD "\x1b[1m"
+# define RESET "\x1b[0m"
 
 void	test_validation(void);
 void	test_analyze_amblight(void);
@@ -20,7 +32,7 @@ void	test_transform_sphere(void);
 void	test_identity_matrix(void);
 void	test_determinant(void);
 void	test_cofactor_matrix(void);
-void 	test_calculate_minor(void);
+void	test_calculate_minor(void);
 void	test_cylinder(void);
 void	test_ray_hits_sphere(void);
 void	test_set_ray(void);
@@ -32,11 +44,11 @@ void	test_ray_hits_cylinder(void);
 void	test_ray_hits_plane(void);
 void	test_intersection_obj(void);
 
-
 void	check_equal_coords(t_coords *result, t_coords *expected);
-void	check_equal_matrices(t_matrix result, t_matrix expected, const char *testName);
+void	check_equal_matrices(t_matrix result, t_matrix expected,
+			const char *testName);
 void	compare_double(double actual, double expected, const char *testName);
 void	check_equal_doubles_p(double a, double b, const char *testName);
 void	print_matrix(t_matrix to_test);
 
-# endif
+#endif

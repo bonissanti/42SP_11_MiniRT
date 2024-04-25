@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/18 12:20:24 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:54:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,13 @@ t_matrix	transform_cylinder(t_coords coords, double radius,
 	t_matrix	temp_rot;
 
 	rotation = verify_orientation(orientation);
+	printf("Rotation\n");
+	print_matrix(rotation);
 	scaling = scaling_matrix(radius, 1, radius);
 	translation = translation_matrix(coords.x, coords.y, coords.z);
 	temp_rot = matrix_multiply(&rotation, &scaling);
 	transform = matrix_multiply(&translation, &temp_rot);
+	printf("Final");
+	print_matrix(transform);
 	return (transform);
 }

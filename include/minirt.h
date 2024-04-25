@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/23 12:17:12 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:53:14 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_coords	multiply_vector(t_coords v, double scalar);
 
 int			add_objects(t_data *data, void *obj, t_object_type type);
 void		free_objects(t_object *objects);
-void    	add_to_list(t_object *cur, double t, t_inter_list **inter_list);
+void		add_to_list(t_object *cur, double t, t_inter_list **inter_list);
 
 // # Aux ---------------------
 
@@ -104,11 +104,11 @@ t_vec3		get_normal(t_object *obj, t_vec3 point);
 
 // # Color -------------------
 
-t_color	    multiply_color(t_color color, double scalar);
-t_color 	add_colors(t_color a, t_color b);
-t_color 	set_to_range_color(t_color color);
-t_color 	set_color(double color[3]);
-int	        t_color_to_int(t_color color);
+t_color		multiply_color(t_color color, double scalar);
+t_color		add_colors(t_color a, t_color b);
+t_color		set_to_range_color(t_color color);
+t_color		set_color(double color[3]);
+int			t_color_to_int(t_color color);
 
 // # TESTING -----------------
 void		print_objects(t_object *head);

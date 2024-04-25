@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 12:25:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 14:59:32 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	fill_sphere_data(t_sphere *sphere, char **tokens)
 	fill_coordinates(tokens[0], sphere);
 	sphere->transform = transform_sphere(sphere->position, sphere->diameter);
 	invert_matrix(&sphere->transform, &sphere->inversed_t);
-	sphere->position = (t_coords) {0, 0, 0}; //change later
+	sphere->position = (t_coords){0, 0, 0};
 	fill_colors(tokens[2], sphere);
 }
 

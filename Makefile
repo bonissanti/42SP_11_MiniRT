@@ -37,11 +37,6 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/plane.c				\
 			parser/sphere.c				
 
-# BVH			= bvh/create_bvh.c			\
-# 			bvh/get_object_bbox.c		\
-# 			bvh/get_quadrant.c			\
-# 			bvh/sort_list.c				
-
 RENDER		= render/render.c \
 			  render/normal.c \
 			  render/color.c

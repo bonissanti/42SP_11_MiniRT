@@ -12,12 +12,13 @@
 
 #include "../include/libft.h"
 
-int	ft_putstr_fd(const char *s, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
-    int len;
-    
-    len = 0;
-    while (*s)
-        len += write(fd, s++, 1);
-    return (len);
+	if (!s)
+		return ;
+	while (*s)
+	{
+		write (fd, s, 1);
+		s++;
+	}
 }

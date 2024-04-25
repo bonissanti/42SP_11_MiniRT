@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 12:37:24 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:14:00 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,6 @@ t_matrix	verify_orientation(t_vec3 orientation)
 		return (arbitrary_rotation_xy(M_PI / 2, atan2(orientation.x,
 					orientation.z)));
 	else
-		return (arbitrary_rotation_zx(atan2(orientation.z, orientation.y),
-				atan2(-orientation.x, orientation.y)));
+		return (arbitrary_rotation_zx(atan2(-orientation.x, orientation.y),
+				atan2(orientation.z, orientation.y)));
 }

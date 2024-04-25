@@ -1,20 +1,5 @@
 #include "../../../include/test.h"
 
-void	print_matrix(t_matrix to_test)
-{
-	int	x;
-	int	y;
-
-	y = -1;
-	while (++y < 4)
-	{
-		x = -1;
-		while (++x < 4)
-			printf("%f ", to_test.matrix[y][x]);
-		printf("\n");
-	}
-	printf("\n");
-}
 
 static void	check_intersection(t_cylinder cyl, t_ray ray, double closest_t[2], double expected_t[2], int mode)
 {
