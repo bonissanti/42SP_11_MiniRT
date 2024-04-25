@@ -6,7 +6,7 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 15:21:35 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:45:22 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ bool	intersection_obj(t_object *object, t_ray *ray,
 
 	cur = object;
 	hit = false;
+	ft_memset(&t, 0, sizeof(t));
 	while (cur != NULL)
 	{
 		if (attempt_intersection(cur, ray, t, inter_list))
@@ -68,6 +69,7 @@ bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 
 	if (!list)
 		return (false);
+	found = false;
 	current = list;
 	closest_t = INFINITY;
 	*closest_inter = (t_inter){.t = INFINITY, .object = NULL};

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:34:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 12:21:23 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:39:14 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	valid_file(char *file, t_data *data)
 	int	bytes_read;
 
 	fd = open(file, O_RDONLY);
-	if (fd < -1)
-		return (print_error("File not found\n"));
+	if (fd == -1)
+		return (print_error("File not found"));
 	bytes_read = read(fd, data->buffer, 65535);
 	if (bytes_read <= 0)
 	{
