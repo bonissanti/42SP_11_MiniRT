@@ -6,13 +6,14 @@
 /*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:25 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 15:12:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 15:21:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-bool	attempt_intersection(t_object *cur, t_ray *ray, double t[2], t_inter_list **inter_list)
+bool	attempt_intersection(t_object *cur, t_ray *ray, double t[2],
+						t_inter_list **inter_list)
 {
 	bool	last_hit;
 
@@ -58,7 +59,6 @@ bool	intersection_obj(t_object *object, t_ray *ray,
 	}
 	return (hit);
 }
-
 
 bool	find_closest_inter(t_inter *closest_inter, t_inter_list *list)
 {

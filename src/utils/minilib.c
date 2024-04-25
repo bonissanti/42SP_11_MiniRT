@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:23:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 12:25:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 16:07:16 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,22 @@ char	*ft_strtok(char *str, const char *delim)
 	return (str);
 }
 
+int	valid_number(char **str)
+{
+	int	sign;
+
+	sign = 1;
+	while ((**str >= 9 && **str <= 13) || **str == 32)
+		(*str)++;
+	if (**str == '-' || **str == '+')
+	{
+		if (**str == '-')
+			sign = -1;
+		(*str)++;
+	}
+	return (sign);
+}
+
 /**
  * Function: ft_atod
  * --------------------
@@ -124,15 +140,7 @@ double	ft_atod(char *str)
 
 	result = 0.0;
 	power = 1.0;
-	sign = 1;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = -1;
-		str++;
-	}
+	sign = valid_number(&str);
 	while (*str >= '0' && *str <= '9')
 	{
 		result = result * 10 + (*str - '0');
@@ -149,29 +157,6 @@ double	ft_atod(char *str)
 		}
 	}
 	return (sign * result / power);
-}
-
-int	is_number(char *coord)
-{
-	int	i;
-	int	count_dot;
-
-	i = -1;
-	count_dot = 0;
-	if (coord[0] == '-')
-		i++;
-	while (coord[++i] != '\0')
-	{
-		if (coord[i] == '.')
-		{
-			count_dot++;
-			if (count_dot > 1)
-				return (ERROR);
-		}
-		else if (!ft_isdigit(coord[i]))
-			return (ERROR);
-	}
-	return (OK);
 }
 
 /**

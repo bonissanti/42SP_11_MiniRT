@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:53 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 11:44:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 16:07:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,29 @@ int	validate_range_3d(char **str)
 		range = ft_atod(str[i]);
 		if (range < -1.0 || range > 1.0)
 			return (print_error("Value out of range, e.g [-1.1,0.0,1.0]"));
+	}
+	return (OK);
+}
+
+int	is_number(char *coord)
+{
+	int	i;
+	int	count_dot;
+
+	i = -1;
+	count_dot = 0;
+	if (coord[0] == '-')
+		i++;
+	while (coord[++i] != '\0')
+	{
+		if (coord[i] == '.')
+		{
+			count_dot++;
+			if (count_dot > 1)
+				return (ERROR);
+		}
+		else if (!ft_isdigit(coord[i]))
+			return (ERROR);
 	}
 	return (OK);
 }
