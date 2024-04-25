@@ -6,10 +6,10 @@ void		print_matrix(t_matrix to_test)
 	int	x;
 
 	y = -1;
-	while (y < 4)
+	while (++y < 4)
 	{
 		x = -1;
-		while (x < 4)
+		while (++x < 4)
 			printf("%f ", to_test.matrix[y][x]);
 		printf("\n");
 	}

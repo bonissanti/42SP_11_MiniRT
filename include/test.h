@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 11:39:20 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 11:39:20 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 17:42:20 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ void	test_sphere(void);
 void	test_ray_hits_cylinder(void);
 void	test_ray_hits_plane(void);
 void	test_intersection_obj(void);
+void	test_atan(void);
 
 void	check_equal_coords(t_coords *result, t_coords *expected);
 void	check_equal_matrices(t_matrix result, t_matrix expected,
 			const char *testName);
 void	compare_double(double actual, double expected, const char *testName);
 void	check_equal_doubles_p(double a, double b, const char *testName);
+void		print_matrix(t_matrix to_test);
 
 #endif

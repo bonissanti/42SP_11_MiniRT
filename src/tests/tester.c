@@ -21,5 +21,6 @@ int	main(void)
 	test_ray_hits_cylinder();
 	test_ray_hits_plane();
 	test_intersection_obj();
+	test_atan();
 	return (0);
 }

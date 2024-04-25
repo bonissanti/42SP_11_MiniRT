@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 12:01:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 17:52:33 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,9 @@ t_matrix	verify_orientation(t_vec3 orientation)
 	else if (compare_vectors(orientation, set_vector(0, 0, -1)))
 		return (simple_rotation_x(-M_PI / 2));
 	if (check_equal_doubles(orientation.y, 0))
-		return (arbitrary_rotation_xy(M_PI / 2, atan2(orientation.x,
+		return (arbitrary_rotation_xy(M_PI / 2, atan(orientation.x /
 					orientation.z)));
 	else
-		return (arbitrary_rotation_zx(atan2(-orientation.x, orientation.y),
-				atan2(orientation.z, orientation.y)));
+		return (arbitrary_rotation_zx(atan(-orientation.x / orientation.y),
+				atan(orientation.z / orientation.y)));
 }
