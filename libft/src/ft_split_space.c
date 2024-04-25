@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/12 14:02:37 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/07/20 14:45:46 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/libft.h"
 
-static size_t count_words(char const *str)
+static char	count_words(const char *str)
 {
-	size_t count = 0;
+	size_t	count;
+
+	count = 0;
 	while (*str)
 	{
 		while (*str && ft_isspace(*str))
@@ -14,23 +28,25 @@ static size_t count_words(char const *str)
 				str++;
 		}
 	}
-	return count;
+	return (count);
 }
 
-static size_t count_chars(char const *str)
+static char	count_chars(char const *str)
 {
-	size_t count = 0;
+	size_t	count;
+
+	count = 0;
 	while (*str && !ft_isspace(*str))
 	{
 		count++;
 		str++;
 	}
-	return count;
+	return (count);
 }
 
-static void copy_words(char **word_list, char const *str)
+static void	copy_words(char **word_list, char const *str)
 {
-	size_t len_words;
+	size_t	len_words;
 
 	while (*str)
 	{
@@ -39,33 +55,27 @@ static void copy_words(char **word_list, char const *str)
 		if (*str)
 		{
 			len_words = count_chars(str);
-			*word_list = malloc(len_words + 1);
-			if (*word_list == NULL) return; // Handle malloc failure
-			for (size_t i = 0; i < len_words; i++)
-			{
-				(*word_list)[i] = str[i];
-			}
-			(*word_list)[len_words] = '\0';
+			*word_list = ft_substr(str, 0, len_words);
 			word_list++;
 			str += len_words;
 		}
+		else
+			str++;
 	}
 	*word_list = NULL;
 }
 
-char **ft_split_space(char const *s)
+char	**ft_split_space(char const *s)
 {
-	char **str;
-	size_t words;
+	char	**str;
+	size_t	words;
 
 	if (!s)
 		return (NULL);
 	words = count_words(s);
-	str = malloc(sizeof(char *) * (words + 1));
+	str = (char **)malloc(sizeof(char *) * (words + 1));
 	if (str == NULL)
-	{
 		return (NULL);
-	}
 	copy_words(str, s);
 	return (str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/20 19:01:34 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:20:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,10 @@ static void	fill_sphere_data(t_sphere *sphere, char **tokens)
 {
 	sphere->diameter = ft_atod(tokens[1]) / 2;
 	fill_coordinates(tokens[0], sphere);
-	sphere->transform = transform_sphere(sphere->position,
-			sphere->diameter);
+	sphere->transform = transform_sphere(sphere->position, sphere->diameter);
 	invert_matrix(&sphere->transform, &sphere->inversed_t);
-	sphere->position = (t_coords) {0, 0, 0}; //change later
+	sphere->position = (t_coords){0, 0, 0};
 	fill_colors(tokens[2], sphere);
-
 }
 
 int	analyze_sphere(char *line, t_data *data)

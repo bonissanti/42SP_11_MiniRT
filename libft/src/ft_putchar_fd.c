@@ -12,11 +12,7 @@
 
 #include "../include/libft.h"
 
-int	ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(char c, int fd)
 {
-	int	len;
-
-	len = 0;
-	len += write (fd, &c, 1);
-	return (len);
+	write (fd, &c, 1);
 }

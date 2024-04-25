@@ -10,15 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "../include/ft_printf.h"
 
-int	ft_putchar(char c)
+void	ft_putchar(char c)
 {
-	int len;
-
-	len = 0;
-	len += write(1, &c, 1);
-	return (len);
+	write(1, &c, 1);
 }
 
 int	get_specifier_length(const char *format)

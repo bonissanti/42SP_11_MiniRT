@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:22 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 20:07:32 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/25 12:01:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+
 /**
  *
  * Function: matrix_multiply
@@ -30,7 +31,7 @@
  *
  * @param str: The input string to be tokenized.
  * @param delim: The delimiter string used to separate the tokens.
- * 
+ *
  * @return: A pointer to the next token found in the string, or NULL if no more.
  */
 
@@ -91,7 +92,6 @@ t_coords	matrix_multiply_coords(t_matrix original, const t_coords coords)
 	coord_mat.matrix[1][0] = coords.y;
 	coord_mat.matrix[2][0] = coords.z;
 	coord_mat.matrix[3][0] = 1.0;
-
 	result_mat = matrix_multiply(&original, &coord_mat);
 	result.x = result_mat.matrix[0][0];
 	result.y = result_mat.matrix[1][0];
@@ -99,81 +99,22 @@ t_coords	matrix_multiply_coords(t_matrix original, const t_coords coords)
 	return (result);
 }
 
-t_matrix	simple_rotation_x(double angle)
-{
-	t_matrix	rotation;
-
-	matrix_identity(&rotation);
-	rotation.matrix[1][1] = cos(angle);
-	rotation.matrix[1][2] = -sin(angle);
-	rotation.matrix[2][1] = sin(angle);
-	rotation.matrix[2][2] = cos(angle);
-	return (rotation);
-}
-
-t_matrix	simple_rotation_y(double angle)
-{
-	t_matrix	rotation;
-
-	matrix_identity(&rotation);
-	rotation.matrix[0][0] = cos(angle);
-	rotation.matrix[0][2] = sin(angle);
-	rotation.matrix[2][0] = -sin(angle);
-	rotation.matrix[2][2] = cos(angle);
-	return (rotation);
-}
-
-t_matrix simple_rotation_z(double angle)
-{
-	t_matrix	rotation;
-
-	matrix_identity(&rotation);
-	rotation.matrix[0][0] = cos(angle);
-	rotation.matrix[0][1] = -sin(angle);
-	rotation.matrix[1][0] = sin(angle);
-	rotation.matrix[1][1] = cos(angle);
-	return (rotation);
-}
-
-t_matrix	arbitrary_rotation_xy(double x_angle, double y_angle)
-{
-	t_matrix	result;
-	t_matrix	rotation_x;
-	t_matrix	rotation_y;
-
-	rotation_x = simple_rotation_x(x_angle);
-	rotation_y = simple_rotation_y(y_angle);
-	result = matrix_multiply(&rotation_y, &rotation_x);
-	return (result);
-}
-
-t_matrix	arbitrary_rotation_zx(double z_angle, double x_angle)
-{
-	t_matrix	result;
-	t_matrix	rotation_z;
-	t_matrix	rotation_x;
-
-	rotation_z = simple_rotation_z(z_angle);
-	rotation_x = simple_rotation_x(x_angle);
-	result = matrix_multiply(&rotation_x, &rotation_z);
-	return (result);
-}
-
 /**
  * Function: verify_orientation
  * --------------------
- * This funtion verify the orientation of a vector 3D and returns a rotation matrix.
- * If orientation corresponds to a mainly axis (or opposites), this function will return
- * a simple rotation in this specific axis. 
- * 
- * @param str: The input string to be searched.
- * @param set: The set of characters to be used for comparison, 
- * depending on the mode.
- * @param mode: Determines the function mode; 0 for strspn mode, 1 for 
- * strcspn mode.
+ * This funtion verify the orientation of a vector 3D and returns a
+ * rotation matrix.
+ * If orientation corresponds to a mainly axis (or opposites), this
+ * function will return a simple rotation in this specific axis.
  *
- * @return: The length of the initial segment of 'str' based on the selected 
- * mode.
+ * @param str: The input string to be searched.
+ * @param set: The set of characters to be used for comparison,
+ * depending on the mode.
+ * @param mode: Determines the function mode; 0 for strspn mode, 
+ * 1 for strcspn mode.
+ *
+ * @return: The length of the initial segment of 'str' based on the 
+ * selected mode.
  */
 
 t_matrix	verify_orientation(t_vec3 orientation)
@@ -184,9 +125,9 @@ t_matrix	verify_orientation(t_vec3 orientation)
 	if (compare_vectors(orientation, set_vector(0, 1, 0)))
 		return (rotation);
 	else if (compare_vectors(orientation, set_vector(0, -1, 0)))
-		return (simple_rotation_x(M_PI)); // 180 
+		return (simple_rotation_x(M_PI));
 	else if (compare_vectors(orientation, set_vector(1, 0, 0)))
-		return (simple_rotation_z(-M_PI / 2)); // 90
+		return (simple_rotation_z(-M_PI / 2));
 	else if (compare_vectors(orientation, set_vector(-1, 0, 0)))
 		return (simple_rotation_z(M_PI / 2));
 	else if (compare_vectors(orientation, set_vector(0, 0, 1)))
@@ -194,7 +135,9 @@ t_matrix	verify_orientation(t_vec3 orientation)
 	else if (compare_vectors(orientation, set_vector(0, 0, -1)))
 		return (simple_rotation_x(-M_PI / 2));
 	if (check_equal_doubles(orientation.y, 0))
-		return (arbitrary_rotation_xy(M_PI / 2, atan2(orientation.x, orientation.z)));
+		return (arbitrary_rotation_xy(M_PI / 2, atan2(orientation.x,
+					orientation.z)));
 	else
-	 	return (arbitrary_rotation_zx(atan2(-orientation.x, orientation.y), atan2(orientation.z, orientation.y)));
+		return (arbitrary_rotation_zx(atan2(-orientation.x, orientation.y),
+				atan2(orientation.z, orientation.y)));
 }

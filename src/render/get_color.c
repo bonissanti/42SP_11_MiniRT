@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 21:03:36 by renato            #+#    #+#             */
-/*   Updated: 2024/04/23 23:47:15 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/25 12:45:08 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	intersect_object(t_ray ray, t_object *obj, double *t,
 {
 	t[0] = -1.0;
 	t[1] = -1.0;
-	
 	if (obj == origin_obj)
 		return ;
 	if (obj->type == SPHERE)
@@ -37,7 +36,7 @@ void	intersect_object(t_ray ray, t_object *obj, double *t,
 				get_geo(obj).cylinder->inversed_t), t);
 }
 
-bool is_in_shadow(t_comps *closest, t_light light, t_object *objects)
+bool	is_in_shadow(t_comps *closest, t_light light, t_object *objects)
 {
 	t_object	*obj;
 	t_ray		shadow_ray;
@@ -101,8 +100,9 @@ t_color	get_color(t_data *data, t_comps *closest)
 	color = multiply_color(color, data->light.brightness);
 	light = normalize_vector(subtract_coords(data->light.position,
 				closest->over_point));
-	ambient = multiply_color(set_color(data->amblight.color), data->amblight.ratio);
-    ambient = add_colors(ambient, color);
+	ambient = multiply_color(set_color(data->amblight.color),
+			data->amblight.ratio);
+	ambient = add_colors(ambient, color);
 	light_dot_normal = dot_product(light, closest->normalv);
 	if (light_dot_normal < 0
 		|| is_in_shadow(closest, data->light, data->objects))

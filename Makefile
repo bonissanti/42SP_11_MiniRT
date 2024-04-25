@@ -24,7 +24,11 @@ BIN_MLX = ./MLX42/build/libmlx42.a
 
 INIT		= init/init.c \
 			init/list_objects.c
-UTILS		= utils/to_finish.c
+
+UTILS		= utils/to_finish.c \
+			  utils/minilib.c \
+			  utils/geo.c
+
 PARSER 		= parser/aux_functions.c 	\
 			parser/aux_functions2.c		\
 			parser/validation.c 		\
@@ -35,30 +39,28 @@ PARSER 		= parser/aux_functions.c 	\
 			parser/plane.c				\
 			parser/sphere.c				
 
-BVH			= bvh/create_bvh.c			\
-			bvh/get_object_bbox.c		\
-			bvh/get_quadrant.c			\
-			bvh/sort_list.c				
-
 RENDER		= render/render.c			\
 			  render/normal.c			\
 			  render/color.c			\
+			  render/comps.c			\
 			  render/get_color.c
 
 INTER		= intersection/hit.c \
+			  intersection/hit_cylinder_utils.c \
 			  intersection/intersections.c \
 			  intersection/list.c \
 			  intersection/ray.c
 
 OPERATIONS	= operations/vector.c \
 			  operations/coords.c \
-			  operations/equal_values.c \
+			  operations/dots_and_utils.c \
 			  operations/tuple.c
 
-MATRIX		= matrix/matrix.c \
+MATRIX		= matrix/identity_and_utils.c \
 			  matrix/inverse.c \
 			  matrix/transformation.c \
-			  matrix/operations.c 
+			  matrix/operations.c \
+			  matrix/rotations.c
 
 TEST_DIR	= ./src/tests
 MAND_SRCS 	= main.c $(INIT) $(PARSER) $(UTILS) $(OPERATIONS) $(BVH) $(RENDER) $(INTER) $(MATRIX)
@@ -82,7 +84,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 -o -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42 -lglfw3 -lm -ldl -pthread
+LDFLAGS = -L./MLX42/build -lmlx42 -lglfw -lm -ldl -pthread
 
 ################################ Progress ###################################
 

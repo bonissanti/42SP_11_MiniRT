@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:37:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/21 21:06:06 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/25 12:35:24 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,6 @@ t_vec3	normalize_vector(t_vec3 value)
 	return (normalized);
 }
 
-t_vec3	matrix_multiply_vector(const t_matrix m, const t_vec3 *point)
-{
-	t_vec3	result;
-
-	result.x = m.matrix[0][0] * point->x + m.matrix[0][1] * point->y + m.matrix[0][2] * point->z;
-	result.y = m.matrix[1][0] * point->x + m.matrix[1][1] * point->y + m.matrix[1][2] * point->z;
-	result.z = m.matrix[2][0] * point->x + m.matrix[2][1] * point->y + m.matrix[2][2] * point->z;
-	return (result);
-}
-
 t_vec3	subtract_vector(t_vec3 a, t_vec3 b)
 {
 	t_vec3	result;
@@ -53,24 +43,16 @@ t_vec3	subtract_vector(t_vec3 a, t_vec3 b)
 	return (result);
 }
 
+double	vector_length(t_vec3 v)
+{
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+}
+
 bool	compare_vectors(t_vec3 result, t_vec3 expected)
 {
-	if (check_equal_doubles(result.x, expected.x) && check_equal_doubles(result.y, expected.y) && check_equal_doubles(result.z, expected.z))
+	if (check_equal_doubles(result.x, expected.x)
+		&& check_equal_doubles(result.y, expected.y)
+		&& check_equal_doubles(result.z, expected.z))
 		return (true);
 	return (false);
-}
-
-t_vec3	cross_vector(t_vec3 a, t_vec3 b)
-{
-	t_vec3	result;
-
-	result.x = a.y * b.z - a.z * b.y;
-	result.y = a.z * b.x - a.x * b.z;
-	result.z = a.x * b.y - a.y * b.x;
-	return (result);
-}
-
-double	dot_product(t_vec3 a, t_vec3 b)
-{
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }

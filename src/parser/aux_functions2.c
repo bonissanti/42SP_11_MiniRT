@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:53 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:36:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:44:01 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	set_vector_3d(char *vector_line)
 {
-	char **vector_split;
+	char	**vector_split;
 
 	vector_split = ft_split(vector_line, ',');
 	if (count_token(vector_split, 3, "Incorrect number of vector, e.g[0,0,1]"))
@@ -38,7 +38,7 @@ int	set_vector_3d(char *vector_line)
 	return (OK);
 }
 
-int validate_range_3d(char **str)
+int	validate_range_3d(char **str)
 {
 	int	i;
 	int	range;
@@ -53,7 +53,6 @@ int validate_range_3d(char **str)
 	return (OK);
 }
 
-
 int	normalize_and_set(char **vector_str)
 {
 	double	x;
@@ -65,7 +64,6 @@ int	normalize_and_set(char **vector_str)
 	y = ft_atod(vector_str[1]);
 	z = ft_atod(vector_str[2]);
 	magnitude = sqrt(x * x + y * y + z * z);
-
 	if (fabs(magnitude) < EPSILON)
 		return (print_error("Cannot normalize a zero vector"));
 	return (OK);

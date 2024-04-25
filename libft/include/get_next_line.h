@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 18:15:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/07/20 14:45:46 by brunrodr         ###   ########.fr       */
+/*   Created: 2023/06/05 12:15:58 by brunrodr          #+#    #+#             */
+/*   Updated: 2024/04/25 11:40:33 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-void	*ft_calloc(size_t num_elem, size_t size)
-{
-	void	*ptr;
-	size_t	total_size;
+# include <stdlib.h>
+# include <unistd.h>
 
-	total_size = num_elem * size;
-	if (num_elem == 0 || size == 0)
-	{
-		return (malloc(0));
-	}
-	else if (total_size / num_elem != size)
-		return (NULL);
-	ptr = malloc(sizeof(char) * (num_elem * size));
-	if (!ptr)
-	{
-		return (NULL);
-	}
-	ft_bzero(ptr, num_elem * size);
-	return (ptr);
-}
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 50
+# endif
+
+//####################  GNL ###################
+
+char	*get_next_line(int fd);
+
+//##################  UTILS  ##################
+
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup(const char *s);
+size_t	ft_strlen(char *s);
+
+#endif

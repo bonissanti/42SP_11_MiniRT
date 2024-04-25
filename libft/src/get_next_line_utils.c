@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "../include/get_next_line.h"
 
-size_t	gnl_strlen(char *s)
+size_t	ft_strlen(char *s)
 {
 	size_t	lenght;
 
@@ -27,7 +27,7 @@ size_t	gnl_strlen(char *s)
 	return (lenght);
 }
 
-char	*gnl_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
 	char	*p;

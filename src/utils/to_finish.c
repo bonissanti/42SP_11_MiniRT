@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   to_finish.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:35:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/03/12 15:35:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:44:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-void    free_array(char **array)
+void	free_array(char **array)
 {
-    char **ptr;
+	char	**ptr;
 
-    ptr = array;
-    while (*ptr)
-    {
-        free(*ptr);
-        ptr++;
-    }
-    free(array);
+	ptr = array;
+	while (*ptr)
+	{
+		free(*ptr);
+		ptr++;
+	}
+	free(array);
 }
 
 int	print_error(char *msg)

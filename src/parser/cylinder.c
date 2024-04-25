@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:47 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/23 16:36:39 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:08:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,11 @@ static void	fill_cylinder_data(t_cylinder *cyl, char **tokens)
 	cyl->height = ft_atod(tokens[3]);
 	cyl->max = cyl->height / 2;
 	cyl->min = -(cyl->height / 2);
-	cyl->transform = transform_cylinder(cyl->position,
-			cyl->diameter / 2, cyl->vector);
+	cyl->transform = transform_cylinder(cyl->position, cyl->diameter / 2,
+			cyl->vector);
 	invert_matrix(&cyl->transform, &cyl->inversed_t);
 	cyl->position = (t_coords){0, 0, 0};
 	cyl->vector = (t_coords){0, 1, 0};
-	print_matrix(cyl->transform);
-	// print_matrix(cyl->inversed_t);
-	printf("\n");
 	fill_colors(tokens[4], cyl);
 }
 
@@ -101,4 +98,3 @@ int	analyze_cylinder(char *line, t_data *data)
 	free_array(token);
 	return (OK);
 }
-

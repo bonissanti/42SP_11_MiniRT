@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:57:25 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/23 16:45:12 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:44:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ t_vec3	sphere_normal(t_vec3 point, t_sphere *sphere)
 
 t_vec3	plane_normal(t_vec3 point, t_plane *plane)
 {
-	t_vec3		obj_normal;
-	t_vec3		normal;
+	t_vec3	obj_normal;
+	t_vec3	normal;
 
 	(void)point;
 	obj_normal = set_vector(0, 1, 0);
@@ -51,8 +51,7 @@ t_vec3	cylinder_normal(t_vec3 point, t_cylinder *cy)
 		normal = set_vector(0, -1, 0);
 	else
 		normal = set_vector(obj_point.x, 0, obj_point.z);
-	normal = matrix_multiply_vector(cy->transform,
-			&normal);
+	normal = matrix_multiply_vector(cy->transform, &normal);
 	return (normal);
 }
 

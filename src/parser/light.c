@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:36:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/22 18:19:30 by rseelaen         ###   ########.fr       */
+/*   Updated: 2024/04/25 11:44:17 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,3 @@ int	analyze_light(char *line, t_data *data)
 	free_array(token);
 	return (OK);
 }
-

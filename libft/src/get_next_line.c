@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "../include/get_next_line.h"
 
 char		*read_lines(int fd, char *current_line);
 static char	find_breakline(char *str);
@@ -25,7 +25,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 && BUFFER_SIZE <= 0)
 		return (NULL);
 	line = read_lines(fd, line);
-	if (!gnl_strlen(line))
+	if (!ft_strlen(line))
 		return (NULL);
 	current_line = get_line(line);
 	if (!current_line)
@@ -48,7 +48,7 @@ char	*read_lines(int fd, char *current_line)
 		if (bytes_read <= 0)
 			break ;
 		buffer[bytes_read] = '\0';
-		current_line = gnl_strjoin(current_line, buffer);
+		current_line = ft_strjoin(current_line, buffer);
 		if (!current_line)
 			return (NULL);
 	}
@@ -110,7 +110,7 @@ static char	*get_remaining(char *str)
 		free(save_position);
 		return (NULL);
 	}
-	remaining = (char *)malloc(sizeof(char) * (gnl_strlen(p) + 1));
+	remaining = (char *)malloc(sizeof(char) * (ft_strlen(p) + 1));
 	p = remaining;
 	while (*str != '\n' && *str != '\0')
 		str++;

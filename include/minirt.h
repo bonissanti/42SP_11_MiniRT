@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/23 22:05:04 by renato           ###   ########.fr       */
+/*   Updated: 2024/04/25 12:39:50 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,22 @@
 
 # include "../MLX42/include/MLX42/MLX42.h"
 # include "../libft/include/libft.h"
-# include "bvh.h"
 # include "elements.h"
+# include "intersection.h"
 # include "matrix.h"
 # include "mlx_utils.h"
 # include "ray.h"
 # include "structs.h"
-# include "intersection.h"
 # include "test.h" // for tests
 # include <fcntl.h>
-# include <math.h>
 # include <float.h> // DBL_MAX, DBL_MIN
+# include <math.h>
+# include <stdbool.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <stddef.h>
 # include <string.h>
 # include <unistd.h>
-# include <stdbool.h>
 
 /* Macros */
 
@@ -70,18 +69,19 @@ t_vec3		cross_vector(t_vec3 a, t_vec3 b);
 t_vec3		matrix_multiply_vector(const t_matrix m, const t_vec3 *point);
 t_vec3		subtract_vector(t_vec3 a, t_vec3 b);
 t_vec3		subtract_coords(t_coords a, t_coords b);
-void		print_matrix(t_matrix to_test);
 t_coords	add_tuple(t_coords a, t_coords b);
 t_coords	multiply_tuple(t_coords a, double scalar);
 t_coords	subtract_tuple(t_coords a, t_coords b);
 double		vector_length(t_vec3 v);
 t_coords	multiply_vector(t_coords v, double scalar);
+t_coords	add_coords(t_coords a, t_coords b);
+t_vec3		is_inside(t_vec3 eyev, t_vec3 normal);
 
 // # Object lists ------------
 
 int			add_objects(t_data *data, void *obj, t_object_type type);
 void		free_objects(t_object *objects);
-void    	add_to_list(t_object *cur, double t, t_inter_list **inter_list);
+void		add_to_list(t_object *cur, double t, t_inter_list **inter_list);
 
 // # Aux ---------------------
 
@@ -102,17 +102,17 @@ t_vec3		plane_normal(t_vec3 point, t_plane *plane);
 t_vec3		cylinder_normal(t_vec3 point, t_cylinder *cy);
 t_vec3		get_normal(t_object *obj, t_vec3 point);
 
-t_vec3	    reflect_vector(t_vec3 in, t_vec3 normal);
+t_vec3		reflect_vector(t_vec3 in, t_vec3 normal);
 
 // # Color -------------------
 
-t_color	    multiply_color(t_color color, double scalar);
-t_color 	add_colors(t_color a, t_color b);
-t_color 	set_to_range_color(t_color color);
-t_color 	set_color(double color[3]);
-int	        t_color_to_int(t_color color);
+t_color		multiply_color(t_color color, double scalar);
+t_color		add_colors(t_color a, t_color b);
+t_color		set_to_range_color(t_color color);
+t_color		set_color(double color[3]);
+int			t_color_to_int(t_color color);
 
-t_color	    get_color(t_data *data, t_comps *closest);
+t_color		get_color(t_data *data, t_comps *closest);
 
 // # TESTING -----------------
 void		print_objects(t_object *head);
