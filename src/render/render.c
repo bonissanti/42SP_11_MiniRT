@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/25 12:36:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:53:38 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,29 @@ t_color	trace_ray(t_data *data, t_ray ray)
 	computations = prepare_comps(closest_inter, ray);
 	return (get_color(data, &computations));
 }
+
+/**
+ * Function: ray_for_pixel
+ * -------------------
+ * This function calculates the ray that goes from the camera origin to a
+ * specific pixel on the screen. It calculates the world coordinates of the
+ * pixel and then transforms it to the camera space. Finally, it returns the
+ * ray that goes from the camera origin to the pixel.
+ * 
+ * Important notes:
+ * - xoffset and yoffset are calculated based on the pixel size and the position
+ * of the pixel on the screen, they are the center of the pixel.
+ * - world is the world coordinates of the pixel, it is calculated based on the
+ * position of the pixel on the screen.
+ * - pixel is the pixel coordinates in the camera space, it is calculated by
+ * multiplying the world coordinates by the inverse of the camera transformation
+ * matrix.
+ * - ray.origin is the camera origin.
+ * - ray.direction is the normalized vector that goes from the camera origin to
+ * the object.
+ *
+ * @return: t_geo_u, aka the object of the union.
+ */
 
 t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 {
