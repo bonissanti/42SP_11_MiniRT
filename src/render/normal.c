@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:57:25 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/25 11:44:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/30 23:08:19 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_vec3	plane_normal(t_vec3 point, t_plane *plane)
 
 	(void)point;
 	obj_normal = set_vector(0, 1, 0);
-	normal = matrix_multiply_vector(transpose_matrix(&plane->transform),
+	normal = matrix_multiply_vector(plane->transform,
 			&obj_normal);
 	return (normal);
 }

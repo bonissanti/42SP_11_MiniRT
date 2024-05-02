@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:16:39 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 17:59:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/05/01 23:27:50 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ static void	key_hook(void *param)
 
 	mlx = (t_mlx *)param;
 	if (mlx_is_key_down(mlx->win_ptr, MLX_KEY_ESCAPE))
+	{
+		mlx_delete_image(mlx->win_ptr, mlx->img_ptr);
 		mlx_close_window(mlx->win_ptr);
+	}
 }
 
 int	main(int argc, char **argv)
@@ -36,6 +39,8 @@ int	main(int argc, char **argv)
 		return (1);
 	else if (parse_lines(&data) == ERROR)
 		return (1);
+	mlx.win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
+	mlx.img_ptr = mlx_new_image(mlx.win_ptr, WIDTH, HEIGHT);
 	render_scene(&data, &mlx);
 	mlx_loop_hook(mlx.win_ptr, key_hook, &mlx);
 	mlx_loop(mlx.win_ptr);

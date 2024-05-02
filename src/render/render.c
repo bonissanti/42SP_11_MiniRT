@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 18:24:33 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/25 12:36:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/05/01 23:19:57 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,29 @@ t_ray	ray_for_pixel(t_camera *camera, double pos_x, double pos_y)
 	return (ray);
 }
 
+void	blank_canvas(t_mlx *mlx)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < HEIGHT)
+	{
+		x = -1;
+		while (++x < WIDTH)
+			mlx_put_pixel(mlx->img_ptr, x, y, 0x00FF);
+	}
+}
+
 void	render_scene(t_data *data, t_mlx *mlx)
 {
 	int		x;
 	int		y;
 	t_ray	ray;
 
-	mlx->win_ptr = mlx_init(WIDTH, HEIGHT, "miniRT", false);
-	mlx->img_ptr = mlx_new_image(mlx->win_ptr, WIDTH, HEIGHT);
+	blank_canvas(mlx);
+	mlx_put_string(mlx->win_ptr, "Rendering...", 10, 10);
+	mlx_image_to_window(mlx->win_ptr, mlx->img_ptr, 0, 0);
 	printf("Rendering...\n");
 	y = -1;
 	while (++y < data->camera.height_v)

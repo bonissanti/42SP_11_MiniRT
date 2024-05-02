@@ -6,7 +6,7 @@
 /*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 21:03:36 by renato            #+#    #+#             */
-/*   Updated: 2024/04/25 12:45:08 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/04/30 20:52:45 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,10 @@ t_color	get_color(t_data *data, t_comps *closest)
 		color = set_color(get_geo(closest->object).plane->color);
 	else
 		color = set_color(get_geo(closest->object).cylinder->color);
-	color = multiply_color(color, data->light.brightness);
 	light = normalize_vector(subtract_coords(data->light.position,
 				closest->over_point));
-	ambient = multiply_color(set_color(data->amblight.color),
-			data->amblight.ratio);
-	ambient = add_colors(ambient, color);
+	ambient = add_colors(set_color(data->amblight.color), color);
+	ambient = multiply_color(ambient, data->amblight.ratio);
 	light_dot_normal = dot_product(light, closest->normalv);
 	if (light_dot_normal < 0
 		|| is_in_shadow(closest, data->light, data->objects))

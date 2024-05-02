@@ -16,15 +16,15 @@
 }
 
 {
-   glfw
+   ignore-glfw-leaks
    Memcheck:Leak
    ...
-   fun:???
+   fun:*
 }
 
 {
-   glfw3
+   ignore-glfw3-leaks
    Memcheck:Leak
    ...
-   fun:???
+   fun:*
 }
