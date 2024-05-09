@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:34:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/05/09 13:23:16 by renato           ###   ########.fr       */
+/*   Updated: 2024/05/09 15:03:27 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,16 @@ int	analyze_line(char *line, t_data *data)
 		return (OK);
 	else if (line[0] == 'L' && analyze_light(line + 1, data) == 0)
 		return (OK);
-	else if (line[0] == 's' && line[1] == 'p' && analyze_sphere(line + 2, data) == 0)
+	else if (line[0] == 's' && line[1] == 'p'
+		&& analyze_sphere(line + 2, data) == 0)
 		return (OK);
-	else if (line[0] == 'p' && line[1] == 'l' && analyze_plane(line + 2, data) == 0)
+	else if (line[0] == 'p' && line[1] == 'l'
+		&& analyze_plane(line + 2, data) == 0)
 		return (OK);
-	else if (line[0] == 'c' && line[1] == 'y' && analyze_cylinder(line + 2, data) == 0)
+	else if (line[0] == 'c' && line[1] == 'y'
+		&& analyze_cylinder(line + 2, data) == 0)
 		return (OK);
-	else if  (line[0] == '#')
+	else if (line[0] == '#')
 		return (OK);
 	printf("Error\nInvalid line: %s\n", line);
 	exit(1);
@@ -112,6 +115,17 @@ int	analyze_line(char *line, t_data *data)
  * @return: 0 if the parsing was successful.
  */
 
+int	is_empty_line(char *line)
+{
+	while (*line)
+	{
+		if (!ft_isspace(*line))
+			return (0);
+		line++;
+	}
+	return (1);
+}
+
 int	parse_lines(t_data *data)
 {
 	char	*line;
@@ -121,10 +135,10 @@ int	parse_lines(t_data *data)
 	line = ft_strtok(buffer, "\n");
 	while (line)
 	{
-		if (ft_isspace(*line) || *line == '\0')
+		if (is_empty_line(line) || *line == '\0')
 		{
 			line = ft_strtok(NULL, "\n");
-			continue;
+			continue ;
 		}
 		analyze_line(line, data);
 		line = ft_strtok(NULL, "\n");

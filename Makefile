@@ -14,6 +14,7 @@ RESET	= \033[0m
 ################################# Project ###################################
 
 NAME 	= miniRT
+BONUS	= miniRT_bonus
 TEST_N 	= miniTESTER
 HEADER 	= ./include
 LIBFT	= ./libft	
@@ -74,7 +75,9 @@ OBJS_COMMON = $(SRCS_COMMON:%.c=$(OBJS_DIR)/%.o)
 
 OBJS 		= $(MAND_SRCS:.c=.o)
 OBJS_DIR 	= ./objs
-TEST_OBJS	= $(TEST_SRCS:$(TEST_DIR)/%.c=$(OBJS_DIR)/%.o)
+
+B_OBJS 		= $(MAND_SRCS:.c=.o)
+B_OBJS_DIR 	= ./bonus_objs
 
 ################################# Flags #####################################
 
@@ -84,7 +87,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 -o -I$(HEADER) -I$(MLX)
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) -s
 LIBFT_LIB = $(LIBFT)/libft.a
 
-LDFLAGS = -L./MLX42/build -lmlx42 -lglfw3 -lm -ldl -pthread
+LDFLAGS = -L./MLX42/build -lmlx42 -lglfw -lm -ldl -pthread
 
 ################################ Progress ###################################
 
@@ -109,12 +112,6 @@ $(NAME): $(LIBFT_LIB) $(OBJS:%=$(OBJS_DIR)/%)
 	@echo ""
 	@echo "$(GREEN)$(NAME) created$(RESET)"
 
-test: CFLAGS += -D TEST
-test: $(LIBFT_LIB) $(OBJS_COMMON) $(TEST_OBJS)
-	@$(CC) $(CFLAGS) $(OBJS_COMMON) $(TEST_OBJS) -o $(TEST_N) $(LDFLAGS) -L$(LIBFT) -lft
-	@echo "$(GREEN)$(TEST_N) created$(RESET)"
-
-
 $(LIBFT_LIB):
 	@echo "$(YELLOW)Creating libft...$(RESET)"
 	@$(LIBFT_MAKE)
@@ -124,30 +121,28 @@ $(OBJS_DIR)/%.o: src/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	$(call print_progress, $(BLUE_B)Compiling:$(RESET) $<)
 
-$(OBJS_DIR)/%.o: $(TEST_DIR)/%.c
-	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) -c $< -o $@
-
 clean:
 	@$(LIBFT_MAKE) clean
-	@rm -rf $(OBJS_DIR) 
+	@rm -rf $(OBJS_DIR)
+	@rm -rf $(B_OBJS_DIR) 
 	@echo "$(RED)$(NAME) objects deleted$(RESET)"
-
-clean_t:
-	@rm -f $(TEST_OBJS)
-	@echo "$(RED)Test objects deleted"
 
 fclean: clean
 	@$(LIBFT_MAKE) fclean
-	@rm -f $(NAME) $(TEST_N)
-	@rm -rf $(OBJS_DIR)
+	@rm -f $(NAME) $(BONUS)
 	@echo "$(RED)$(NAME) deleted$(RESET)"
 
-fclean_t: clean_test
-	@rm -f $(TEST_N)
-	@echo "$(RED)$(TEST_N) deleted$(RESET)"
-
 re: fclean all
+
+bonus: $(LIBFT_LIB) $(B_OBJS:%=$(B_OBJS_DIR)/%)
+	@$(CC) $(CFLAGS) $(B_OBJS:%=$(B_OBJS_DIR)/%) -o $(BONUS) $(LDFLAGS) -L$(LIBFT) -lft
+	@echo ""
+	@echo "$(GREEN)$(NAME) created$(RESET)"
+
+$(B_OBJS_DIR)/%.o: src/%.c
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	$(call print_progress, $(BLUE_B)Compiling:$(RESET) $<)
 
 val:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=supp.supp ./$(NAME) scenes/teste_cor.rt

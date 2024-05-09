@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:06:35 by rseelaen          #+#    #+#             */
-/*   Updated: 2024/04/25 12:39:50 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/05/09 14:48:31 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@
 # include "mlx_utils.h"
 # include "ray.h"
 # include "structs.h"
-# include "test.h" // for tests
 # include <fcntl.h>
-# include <float.h> // DBL_MAX, DBL_MIN
+# include <float.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stddef.h>

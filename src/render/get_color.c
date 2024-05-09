@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_color.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rseelaen <rseelaen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 21:03:36 by renato            #+#    #+#             */
-/*   Updated: 2024/04/30 20:52:45 by renato           ###   ########.fr       */
+/*   Updated: 2024/05/09 16:59:08 by rseelaen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_color	get_color(t_data *data, t_comps *closest)
 {
 	t_color		color;
 	t_color		ambient;
-	t_vec3		light;
+	t_vec3		light_v;
 	double		light_dot_normal;
 
 	if (closest->object->type == SPHERE)
@@ -97,14 +97,16 @@ t_color	get_color(t_data *data, t_comps *closest)
 		color = set_color(get_geo(closest->object).plane->color);
 	else
 		color = set_color(get_geo(closest->object).cylinder->color);
-	light = normalize_vector(subtract_coords(data->light.position,
+	ambient = (t_color){color.r * data->amblight.color[0], color.g
+		* data->amblight.color[1], color.b * data->amblight.color[2], 1};
+	light_v = normalize_vector(subtract_coords(data->light.position,
 				closest->over_point));
-	ambient = add_colors(set_color(data->amblight.color), color);
 	ambient = multiply_color(ambient, data->amblight.ratio);
-	light_dot_normal = dot_product(light, closest->normalv);
+	light_dot_normal = dot_product(light_v, closest->normalv);
 	if (light_dot_normal < 0
 		|| is_in_shadow(closest, data->light, data->objects))
 		return (set_to_range_color(ambient));
+	color = multiply_color(color, data->light.brightness);
 	return (set_to_range_color(get_diffuse(ambient, *closest, *data,
-				(t_color_data){color, light, light_dot_normal})));
+				(t_color_data){color, light_v, light_dot_normal})));
 }
