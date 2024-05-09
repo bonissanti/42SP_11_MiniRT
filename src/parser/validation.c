@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: renato <renato@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:34:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/04/25 18:39:14 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:23:16 by renato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,25 +79,22 @@ int	analyze_line(char *line, t_data *data)
 	data->parser.has_a += (line[0] == 'A');
 	data->parser.has_c += (line[0] == 'C');
 	data->parser.has_l += (line[0] == 'L');
-	if (line[0] == 'A')
-		if (analyze_amblight(line + 1, data) != 0)
-			exit(1);
-	if (line[0] == 'C')
-		if (analyze_camera(line + 1, data) != 0)
-			exit(1);
-	if (line[0] == 'L')
-		if (analyze_light(line + 1, data) != 0)
-			exit(1);
-	if (line[0] == 's' && line[1] == 'p')
-		if (analyze_sphere(line + 2, data) != 0)
-			exit(1);
-	if (line[0] == 'p' && line[1] == 'l')
-		if (analyze_plane(line + 2, data) != 0)
-			exit(1);
-	if (line[0] == 'c' && line[1] == 'y')
-		if (analyze_cylinder(line + 2, data) != 0)
-			exit(1);
-	return (OK);
+	if (line[0] == 'A' && analyze_amblight(line + 1, data) == 0)
+		return (OK);
+	else if (line[0] == 'C' && analyze_camera(line + 1, data) == 0)
+		return (OK);
+	else if (line[0] == 'L' && analyze_light(line + 1, data) == 0)
+		return (OK);
+	else if (line[0] == 's' && line[1] == 'p' && analyze_sphere(line + 2, data) == 0)
+		return (OK);
+	else if (line[0] == 'p' && line[1] == 'l' && analyze_plane(line + 2, data) == 0)
+		return (OK);
+	else if (line[0] == 'c' && line[1] == 'y' && analyze_cylinder(line + 2, data) == 0)
+		return (OK);
+	else if  (line[0] == '#')
+		return (OK);
+	printf("Error\nInvalid line: %s\n", line);
+	exit(1);
 }
 
 /**
@@ -124,6 +121,11 @@ int	parse_lines(t_data *data)
 	line = ft_strtok(buffer, "\n");
 	while (line)
 	{
+		if (ft_isspace(*line) || *line == '\0')
+		{
+			line = ft_strtok(NULL, "\n");
+			continue;
+		}
 		analyze_line(line, data);
 		line = ft_strtok(NULL, "\n");
 	}
